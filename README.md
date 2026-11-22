@@ -117,6 +117,14 @@ Some antivirus software may flag the tool because downloading and replacing file
 
 ---
 
+## DLSS Files
+
+DLSS files are now served from the [`dlss-files`](https://github.com/itsyohanes/dlss-updater-dotnet/releases/tag/dlss-files) pre-release in this repo instead of the separate `dlss-updater-files` repo. The release holds the DLLs and `dlss_manifest.json`, and is updated in place when new DLSS versions are available. It is marked as a pre-release so app releases remain the latest release.
+
+Builds before this change still download from `dlss-updater-files`.
+
+---
+
 ## Development
 
 ### Build From Source
