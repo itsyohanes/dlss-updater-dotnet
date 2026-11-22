@@ -2,7 +2,7 @@
 
 A simple desktop tool for finding and updating NVIDIA DLSS files in your application folders, remade in C# for Windows.
 
-The C#/.NET Framework version keeps the executable lightweight at around 215 KB, compared with around 10 MB for the Python build.
+The C#/.NET Framework version keeps the executable lightweight at around 216 KB, compared with around 10 MB for the Python build.
 
 ![Release](https://img.shields.io/github/v/release/sparepillowgit/dlss-updater-dotnet)
 ![Last commit](https://img.shields.io/github/last-commit/sparepillowgit/dlss-updater-dotnet)
@@ -104,7 +104,7 @@ Other tools offer more features, but DLSS Updater focuses on simplicity. It's a 
 No. DLSS Updater is portable and can be run directly from a folder or USB drive.
 
 **How large is the download?**  
-The executable is around 215 KB, or around 80 KB as a ZIP. Additional space is required when downloading updated DLSS files.
+The executable is around 216 KB, or around 88 KB as a ZIP. Additional space is required when downloading updated DLSS files.
 
 **What languages does it support?**  
 DLSS Updater is available in English, German, French, Spanish, Italian, Polish, Ukrainian, Simplified Chinese, Russian, Japanese, Korean, Czech, Dutch, and Portuguese. It uses your system language by default when supported, and you can change it at any time from the language picker.
