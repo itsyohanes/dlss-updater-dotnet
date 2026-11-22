@@ -43,14 +43,19 @@ namespace dlss_updater.Services
 
     internal static class DlssReleaseClient
     {
+        // DLSS files live in a fixed-tag release that is never marked Latest,
+        // so app releases in the same repo can be Latest without affecting it.
+        private const string FilesReleaseTag = "dlss-files";
+        private const string FilesDownloadPath =
+            "/itsyohanes/dlss-updater-dotnet/releases/download/" + FilesReleaseTag + "/";
         private const string ManifestUrl =
-            "https://github.com/sparepillowgit/dlss-updater-files/releases/latest/download/dlss_manifest.json";
-        private const string LatestReleaseApiUrl =
-            "https://api.github.com/repos/sparepillowgit/dlss-updater-files/releases/latest";
+            "https://github.com" + FilesDownloadPath + "dlss_manifest.json";
+        private const string FilesReleaseApiUrl =
+            "https://api.github.com/repos/itsyohanes/dlss-updater-dotnet/releases/tags/" + FilesReleaseTag;
         private const string LegacyDlssFileName = "nvngx_dlss.dll";
         private const string LegacyDlssVersion = "1.3.2.0";
         private const string LegacyDlssUrl =
-            "https://github.com/sparepillowgit/dlss-updater-files/releases/download/v1.3.2/nvngx_dlss.dll";
+            "https://github.com" + FilesDownloadPath + "nvngx_dlss-1.3.2.dll";
         private const string LegacyDlssSha256 =
             "53271884b0f3e89af0de27f6373d727101e61a711f3b6e3f9d0a775b32d278c0";
 
@@ -112,7 +117,7 @@ namespace dlss_updater.Services
                 {
                     if (releaseDigests == null)
                     {
-                        releaseDigests = await GetLatestReleaseAssetSha256Async();
+                        releaseDigests = await GetFilesReleaseAssetSha256Async();
                     }
 
                     string releaseDigest;
@@ -280,9 +285,9 @@ namespace dlss_updater.Services
             }
         }
 
-        private static async Task<Dictionary<string, string>> GetLatestReleaseAssetSha256Async()
+        private static async Task<Dictionary<string, string>> GetFilesReleaseAssetSha256Async()
         {
-            using (HttpResponseMessage response = await HttpClient.GetAsync(LatestReleaseApiUrl))
+            using (HttpResponseMessage response = await HttpClient.GetAsync(FilesReleaseApiUrl))
             {
                 response.EnsureSuccessStatusCode();
                 string json = await response.Content.ReadAsStringAsync();
@@ -430,7 +435,7 @@ namespace dlss_updater.Services
                 string.Equals(uri.Scheme, Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase) &&
                 string.Equals(uri.Host, "github.com", StringComparison.OrdinalIgnoreCase) &&
                 uri.AbsolutePath.StartsWith(
-                    "/sparepillowgit/dlss-updater-files/releases/",
+                    FilesDownloadPath,
                     StringComparison.OrdinalIgnoreCase);
         }
     }
