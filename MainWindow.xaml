@@ -16,6 +16,31 @@
 
         
 
+        <Style x:Key="ThinProgressBar"
+               TargetType="ProgressBar">
+            <Setter Property="Height"
+                    Value="3"/>
+            <Setter Property="Minimum"
+                    Value="0"/>
+            <Setter Property="Maximum"
+                    Value="1"/>
+            <Setter Property="Foreground"
+                    Value="#76B900"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ProgressBar">
+                        <Grid>
+                            <Border x:Name="PART_Track"
+                                    Background="Transparent"/>
+                            <Border x:Name="PART_Indicator"
+                                    HorizontalAlignment="Left"
+                                    Background="{TemplateBinding Foreground}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="Card"
                TargetType="Border">
 
@@ -924,11 +949,12 @@
 
         
 
+        <Grid Margin="0,16,0,0">
+
         <Border x:Name="DlssSectionCard"
                 IsEnabled="False"
                 Opacity="0.5"
-                Style="{StaticResource Card}"
-                Margin="0,16,0,0">
+                Style="{StaticResource Card}">
 
             <Grid>
 
@@ -1234,6 +1260,15 @@
 
         </Border>
 
+            <!-- Sits on the Scan results divider, outside the card so the
+                 card's dimming during an update doesn't fade it. -->
+            <ProgressBar x:Name="UpdateProgressBar"
+                         Style="{StaticResource ThinProgressBar}"
+                         VerticalAlignment="Top"
+                         Margin="1,49,1,0"
+                         Visibility="Hidden"/>
+        </Grid>
+
 
         
 
@@ -1389,29 +1424,13 @@
 
         
 
-        <StackPanel x:Name="UpdateProgressPanel"
-                    Margin="0,20,0,0"
-                    Visibility="Hidden">
-            <TextBlock x:Name="UpdateProgressText"
-                       Text="{services:Tr PreparingUpdate}"
-                       FontSize="13"
-                       Foreground="#A4AEA2"/>
-            <ProgressBar x:Name="UpdateProgressBar"
-                         Height="3"
-                         Margin="0,10,0,0"
-                         IsIndeterminate="True"
-                         Foreground="#76B900"
-                         Background="#2A302A"
-                         BorderThickness="0"/>
-        </StackPanel>
-
         <Button x:Name="UpdateButton"
                 Content="{services:Tr Update}"
                 Style="{StaticResource PrimaryButton}"
                 IsEnabled="False"
                 Opacity="0.5"
                 HorizontalAlignment="Right"
-                Margin="0,12,0,0"
+                Margin="0,49,0,0"
                 Click="UpdateButton_Click"/>
 
 

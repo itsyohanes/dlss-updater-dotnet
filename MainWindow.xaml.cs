@@ -5,10 +5,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Interop;
 using System.Windows.Markup;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using dlss_updater.Services;
 
 namespace dlss_updater
@@ -433,10 +435,10 @@ namespace dlss_updater
             SetUpdateInProgress(true);
             UpdateButton.IsEnabled = false;
             SetButtonText(UpdateButton, "Updating");
-            UpdateProgressText.Text = Translator.T("RescanningBeforeUpdate");
-            UpdateProgressPanel.Visibility = Visibility.Visible;
+            ShowUpdateProgressBar();
+            IProgress<double> fileProgress = new Progress<double>(SetUpdateProgress);
             IProgress<string> progress = new Progress<string>(message =>
-                UpdateProgressText.Text = message);
+                SetStatus(DlssStatusText, () => message, NeutralStatusBrush));
 
             try
             {
@@ -452,7 +454,8 @@ namespace dlss_updater
                     await GameFolderUpdateService.UpdateAsync(
                         filesToUpdate,
                         OverwriteToggle.IsChecked == true,
-                        progress);
+                        progress,
+                        fileProgress);
 
                 progress.Report(Translator.T("RefreshingResults"));
                 List<string> backupWarnings = new List<string>();
@@ -488,7 +491,7 @@ namespace dlss_updater
             {
                 InvokeOnUiThread(() =>
                 {
-                    UpdateProgressPanel.Visibility = Visibility.Hidden;
+                    HideUpdateProgressBar();
                     SetUpdateInProgress(false);
                     SetButtonText(UpdateButton, "Update");
                     bool hasDlssFiles =
@@ -816,6 +819,46 @@ namespace dlss_updater
         {
             RestoreBackupButton.IsEnabled = enabled;
             DeleteBackupButton.IsEnabled = enabled;
+        }
+
+        private void ShowUpdateProgressBar()
+        {
+            UpdateProgressBar.BeginAnimation(RangeBase.ValueProperty, null);
+            UpdateProgressBar.BeginAnimation(OpacityProperty, null);
+            UpdateProgressBar.Value = 0;
+            UpdateProgressBar.Opacity = 1;
+            UpdateProgressBar.Visibility = Visibility.Visible;
+        }
+
+        private void SetUpdateProgress(double fraction)
+        {
+            DoubleAnimation fill = new DoubleAnimation(
+                Math.Max(0, Math.Min(1, fraction)),
+                TimeSpan.FromMilliseconds(250))
+            {
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
+            };
+            UpdateProgressBar.BeginAnimation(RangeBase.ValueProperty, fill);
+        }
+
+        private void HideUpdateProgressBar()
+        {
+            SetUpdateProgress(1.0);
+
+            DoubleAnimation fade = new DoubleAnimation(0, TimeSpan.FromMilliseconds(400))
+            {
+                BeginTime = TimeSpan.FromMilliseconds(300)
+            };
+            fade.Completed += (sender, args) =>
+            {
+                if (_updateInProgress)
+                {
+                    return;
+                }
+
+                UpdateProgressBar.Visibility = Visibility.Hidden;
+            };
+            UpdateProgressBar.BeginAnimation(OpacityProperty, fade);
         }
 
         private void SetUpdateInProgress(bool inProgress)

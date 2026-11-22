@@ -41,7 +41,8 @@ namespace dlss_updater.Services
         public static async Task<DlssUpdateResult> UpdateAsync(
             IList<ScannedFile> installedFiles,
             bool overwriteExistingBackups,
-            IProgress<string> progress = null)
+            IProgress<string> progress = null,
+            IProgress<double> fileProgress = null)
         {
             DlssUpdateResult result = new DlssUpdateResult();
 
@@ -62,6 +63,7 @@ namespace dlss_updater.Services
 
             foreach (ScannedFile installedFile in installedFiles)
             {
+                fileProgress?.Report((double)fileIndex / installedFiles.Count);
                 fileIndex++;
                 string fileName = Path.GetFileName(installedFile.Path);
                 progress?.Report(
@@ -170,6 +172,7 @@ namespace dlss_updater.Services
                 }
             }
 
+            fileProgress?.Report(1.0);
             return result;
         }
 
