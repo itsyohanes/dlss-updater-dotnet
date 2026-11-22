@@ -101,6 +101,20 @@
         </details>
 
         <details class="faq-item">
+          <summary>Where do the DLSS files come from?</summary>
+          <p>
+            DLSS files are now served from the
+            <a href="https://github.com/itsyohanes/dlss-updater-dotnet/releases/tag/dlss-files" target="_blank"
+              rel="noopener noreferrer" data-umami-event="visit-external-link"
+              data-umami-event-link="github-dlss-files">dlss-files</a> pre-release in the DLSS Updater .NET repository
+            instead of the separate <code>dlss-updater-files</code> repository. The release holds the DLLs and
+            <code>dlss_manifest.json</code>, and is updated in place when new DLSS versions are available. It is marked
+            as a pre-release so app releases remain the latest release. v1.2.1 and older still download from
+            <code>dlss-updater-files</code>.
+          </p>
+        </details>
+
+        <details class="faq-item">
           <summary>“But you can swap DLSS files with the NVIDIA App now, why do I need this?”</summary>
           <p>DLSS Updater exists for people who don't want a ~170 MB application and its background processes
             just to manage a few DLSS files. It's a small tool that does one job and then gets out of the way. I'm not a
