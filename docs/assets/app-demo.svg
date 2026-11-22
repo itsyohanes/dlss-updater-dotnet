@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 736 658" width="736" height="658" role="img" aria-labelledby="t">
+  <title id="t">DLSS Updater scanning a folder and updating its DLSS files</title>
+  <style>
+    text { font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif; font-size: 14px; fill: #E8EDE8; }
+    .title { font-size: 12px; fill: #1b1b1b; }
+    .h { font-size: 14.5px; font-weight: 600; }
+    .dim { fill: #697469; }
+    .muted { fill: #A4AEA2; }
+    .btn { fill: #2A302A; stroke: #465046; }
+    .btn-off { fill: #1E231E; stroke: #2A302A; }
+    .panel { fill: #1C211C; stroke: #2A302A; }
+    .rule { stroke: #2A302A; }
+    .c { text-anchor: middle; }
+
+    .anim { animation-duration: 12s; animation-iteration-count: infinite; animation-timing-function: linear; }
+    .typed { animation-name: type; }
+    .focus { animation-name: focus; }
+    .scanning { animation-name: scanning; }
+    .found { animation-name: found; }
+    .updating { animation-name: updating; }
+    .done { animation-name: done; }
+    .ready { animation-name: ready; }
+    .press { animation-name: press; transform-origin: 652px 610px; transform-box: view-box; }
+    .bar { animation-name: bar; }
+    .cursor { animation-name: cursor; animation-timing-function: ease-in-out; }
+
+    @keyframes type { 0%, 6% { width: 0; } 22%, 94% { width: 340px; } 96%, 100% { width: 0; } }
+    @keyframes focus { 0%, 5% { opacity: 0; } 6%, 23% { opacity: 1; } 25%, 100% { opacity: 0; } }
+    @keyframes scanning { 0%, 23% { opacity: 0; } 24%, 29% { opacity: 1; } 30%, 100% { opacity: 0; } }
+    @keyframes found { 0%, 29% { opacity: 0; } 30%, 48% { opacity: 1; } 49%, 100% { opacity: 0; } }
+    @keyframes updating { 0%, 48% { opacity: 0; } 49%, 59% { opacity: 1; } 60%, 100% { opacity: 0; } }
+    @keyframes done { 0%, 59% { opacity: 0; } 61%, 93% { opacity: 1; } 95%, 100% { opacity: 0; } }
+    @keyframes ready { 0%, 29% { opacity: 0; } 31%, 93% { opacity: 1; } 95%, 100% { opacity: 0; } }
+    @keyframes press { 0%, 46.5% { transform: scale(1); } 47.5% { transform: scale(0.96); } 49%, 100% { transform: scale(1); } }
+    @keyframes bar { 0%, 49% { width: 0; opacity: 1; } 59% { width: 678px; opacity: 1; } 62%, 100% { width: 678px; opacity: 0; } }
+    @keyframes cursor {
+      0%, 33% { transform: translate(470px, 560px); opacity: 0; }
+      35% { transform: translate(470px, 560px); opacity: 1; }
+      45%, 50% { transform: translate(640px, 606px); opacity: 1; }
+      66% { transform: translate(560px, 540px); opacity: 1; }
+      70%, 100% { transform: translate(560px, 540px); opacity: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .anim { animation: none; }
+      .focus, .scanning, .found, .updating, .bar, .cursor { opacity: 0; }
+    }
+  </style>
+
+  <defs>
+    <clipPath id="window"><rect width="736" height="658" rx="8"/></clipPath>
+    <clipPath id="typing"><rect class="anim typed" x="58" y="180" width="340" height="34"/></clipPath>
+  </defs>
+
+  <g clip-path="url(#window)">
+    <!-- Window chrome -->
+    <rect width="736" height="658" fill="#171A17"/>
+    <rect width="736" height="31" fill="#F3F3F3"/>
+    <rect x="9" y="8" width="16" height="16" rx="3" fill="#76B900"/>
+    <circle cx="17" cy="16" r="4.5" fill="none" stroke="#fff" stroke-width="1.6"/>
+    <text class="title" x="31" y="20">DLSS Updater</text>
+    <path d="M614 16h10" stroke="#1b1b1b"/>
+    <rect x="661.5" y="10.5" width="9" height="9" fill="none" stroke="#b8b8b8"/>
+    <path d="M707 11l10 10M717 11l-10 10" stroke="#1b1b1b"/>
+
+    <!-- Language picker -->
+    <rect x="567.5" y="59.5" width="139" height="31" rx="4" class="btn"/>
+    <rect x="578" y="69" width="18" height="12" fill="#2B4C9A"/>
+    <path d="M578 69l18 12M596 69l-18 12" stroke="#fff" stroke-width="2.4"/>
+    <path d="M578 69l18 12M596 69l-18 12" stroke="#C8102E" stroke-width="1"/>
+    <path d="M587 69v12M578 75h18" stroke="#fff" stroke-width="3.6"/>
+    <path d="M587 69v12M578 75h18" stroke="#C8102E" stroke-width="2"/>
+    <text x="604" y="80">English</text>
+    <path d="M685 72l5 5 5-5" fill="none" stroke="#A4AEA2" stroke-width="1.4"/>
+
+    <!-- Folder to scan -->
+    <rect x="29.5" y="107.5" width="677" height="128" rx="6" class="panel"/>
+    <text class="h" x="48" y="139">Folder to scan</text>
+    <path d="M30 157.5h676" class="rule"/>
+    <rect x="48.5" y="178.5" width="543" height="36" rx="4" fill="#171A17" stroke="#394139"/>
+    <rect class="anim focus" x="48.5" y="178.5" width="543" height="36" rx="4" fill="none" stroke="#76B900" opacity="0"/>
+    <text x="60" y="202" clip-path="url(#typing)">D:\Games\SteamLibrary\steamapps\common</text>
+    <rect x="600.5" y="178.5" width="87" height="36" rx="4" class="btn"/>
+    <text class="c" x="644" y="202">Browse</text>
+
+    <!-- Scan results -->
+    <rect x="29.5" y="252.5" width="677" height="103" rx="6" class="panel"/>
+    <text class="h dim" x="48" y="284">Scan results</text>
+    <text class="h anim ready" x="48" y="284">Scan results</text>
+    <path d="M30 302.5h676" class="rule"/>
+    <rect class="anim bar" x="30" y="301" width="0" height="3" fill="#76B900"/>
+    <text class="muted anim scanning" x="48" y="334" opacity="0">Scanning…</text>
+    <text class="muted anim found" x="48" y="334" opacity="0">Found 3 DLSS files</text>
+    <text class="muted anim updating" x="48" y="334" opacity="0">Updating 3 files…</text>
+    <text class="muted anim done" x="48" y="334">Updated 3 file(s). 0 file(s) were already current.</text>
+    <rect x="576.5" y="311.5" width="111" height="36" rx="4" class="btn-off"/>
+    <text class="c dim" x="632" y="335">Show details</text>
+    <g class="anim ready">
+      <rect x="576.5" y="311.5" width="111" height="36" rx="4" class="btn"/>
+      <text class="c" x="632" y="335">Show details</text>
+    </g>
+
+    <!-- Backup -->
+    <rect x="29.5" y="372.5" width="677" height="156" rx="6" class="panel"/>
+    <text class="h dim" x="48" y="404">Backup</text>
+    <text class="h anim done" x="48" y="404">Backup</text>
+    <path d="M30 423.5h676" class="rule"/>
+    <text class="anim done" x="48" y="455" fill="#86CC0A" style="fill:#86CC0A">✓  3 backups found</text>
+    <rect x="415.5" y="431.5" width="134" height="36" rx="4" class="btn-off"/>
+    <text class="c dim" x="482" y="455">Restore backups</text>
+    <rect x="558.5" y="431.5" width="129" height="36" rx="4" class="btn-off"/>
+    <text class="c dim" x="623" y="455">Delete backups</text>
+    <g class="anim done">
+      <rect x="415.5" y="431.5" width="134" height="36" rx="4" class="btn"/>
+      <text class="c" x="482" y="455">Restore backups</text>
+      <rect x="558.5" y="431.5" width="129" height="36" rx="4" class="btn"/>
+      <text class="c" x="623" y="455">Delete backups</text>
+    </g>
+    <path d="M30 476.5h676" class="rule"/>
+    <text class="muted" x="48" y="508">Overwrite backup when updating</text>
+    <text class="muted" x="622" y="508">On</text>
+    <rect x="648" y="492" width="40" height="20" rx="10" fill="#609600"/>
+    <circle cx="678" cy="502" r="7" fill="#E8EDE8"/>
+
+    <!-- Update -->
+    <rect x="597" y="591" width="110" height="37" rx="4" fill="#2C3A1C"/>
+    <text class="c" x="652" y="615" style="fill:#5B6B45">Update</text>
+    <g class="anim press">
+      <g class="anim ready">
+        <rect x="597" y="591" width="110" height="37" rx="4" fill="#76B900"/>
+        <text class="c anim found" x="652" y="615" style="fill:#11170D;font-weight:600">Update</text>
+        <text class="c anim updating" x="652" y="615" opacity="0" style="fill:#11170D;font-weight:600">Updating…</text>
+        <text class="c anim done" x="652" y="615" style="fill:#11170D;font-weight:600">Update</text>
+      </g>
+    </g>
+
+    <!-- Pointer -->
+    <g class="anim cursor" opacity="0">
+      <path d="M0 0v17l4.5-4 3 7 3-1.3-3-6.8h6z" fill="#fff" stroke="#000" stroke-width="1" stroke-linejoin="round"/>
+    </g>
+  </g>
+</svg>

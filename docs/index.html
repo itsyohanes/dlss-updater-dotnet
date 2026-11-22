@@ -4,9 +4,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="DLSS Updater is a simple, open-source desktop tool for finding and updating NVIDIA DLSS files across your
-        applications.">
-  <title>DLSS Updater</title>
+  <title>DLSS Updater: Update NVIDIA DLSS Files in Your Games</title>
+  <meta name="description" content="DLSS Updater is a small, free, open-source Windows tool that finds the NVIDIA DLSS files in your games and updates them to the latest version, with a backup of each one.">
+  <meta name="theme-color" content="#10130f">
+  <link rel="canonical" href="https://www.dlssupdater.com/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="DLSS Updater">
+  <meta property="og:url" content="https://www.dlssupdater.com/">
+  <meta property="og:title" content="DLSS Updater: Update NVIDIA DLSS Files in Your Games">
+  <meta property="og:description" content="A small, free Windows tool that finds the DLSS files in your games and updates them, with a backup of each one.">
+  <meta name="twitter:card" content="summary">
+
   <link rel="icon" href="./favicon.ico" sizes="any">
   <link rel="icon" href="./assets/logo.svg" type="image/svg+xml">
 
@@ -15,50 +24,63 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500;600;700&family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap"
     rel="stylesheet">
 
   <link rel="stylesheet" href="./normalize.css">
   <link rel="stylesheet" href="./style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "DLSS Updater",
+    "url": "https://www.dlssupdater.com/",
+    "image": "https://www.dlssupdater.com/assets/logo.svg",
+    "description": "Free, open-source Windows tool that finds the NVIDIA DLSS files in your games and updates them to the latest version, with a backup of each one.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Windows 10, Windows 11",
+    "softwareVersion": "1.2.3",
+    "fileSize": "216KB",
+    "license": "https://opensource.org/licenses/MIT",
+    "downloadUrl": "https://github.com/itsyohanes/dlss-updater-dotnet/releases/latest",
+    "sameAs": "https://github.com/itsyohanes/dlss-updater-dotnet",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "featureList": [
+      "Finds nvngx_dlss.dll, nvngx_dlssd.dll and nvngx_dlssg.dll in a folder and its subfolders",
+      "Updates only files that are older than the latest supported version",
+      "Backs up each file before replacing it, with one-click restore",
+      "Portable, with no installation",
+      "Available in 14 languages"
+    ]
+  }
+  </script>
 </head>
 
 <body>
-  <aside class="announce-bar" aria-label="Site announcement">
-    <p>
-      <strong>Update:</strong> The original repository has been reinstated following an abusive DMCA takedown by
-      Recol/DLSS-Updater (<a href="./dmca/">more context here</a>). While the repository was offline, I
-      remade the project in C# to make it significantly smaller.
-    </p>
-  </aside>
-
   <main class="page">
-    <section class="container column info" aria-labelledby="page-title">
-      <h1 id="page-title">DLSS Updater</h1>
+    <section class="hero" aria-labelledby="page-title">
+      <h1 id="page-title" class="title"><img class="title-logo" src="./assets/logo.svg" alt="" width="48"
+          height="48">DLSS Updater</h1>
 
-      <p class="desc">A simple, open-source desktop tool for finding and updating NVIDIA DLSS files across your
-        applications.
-      </p>
+      <p class="lede">A simple, open-source desktop tool for finding and updating NVIDIA DLSS files across your
+        applications.</p>
 
-      <img src="./assets/screenshot.webp"
-        alt="Screenshot of the DLSS Updater desktop app showing detected DLSS files and update options"
-        class="screenshot hero-screenshot" loading="lazy">
-
-    </section>
-
-    <section class="container column download" aria-labelledby="download-title">
-      <h2 id="download-title">Download</h2>
-
-      <div class="download-version">
-        <h3>From GitHub</h3>
-
-        <div class="download-item">
-          <p class="download-file"><span class="download-file-name">Latest release</span><span class="download-file-size">Executable or ZIP</span></p>
-          <a class="file-download-link" href="https://github.com/itsyohanes/dlss-updater-dotnet/releases/latest"
-            target="_blank" rel="noopener noreferrer" aria-label="Download the latest release from GitHub"
-            data-umami-event="visit-external-link" data-umami-event-link="github-latest-release"><img class="external-icon" src="./assets/external-link.svg"
-              alt="">Download</a>
-        </div>
+      <div class="cta">
+        <a class="file-download-link" href="https://github.com/itsyohanes/dlss-updater-dotnet/releases/latest"
+          target="_blank" rel="noopener noreferrer" data-umami-event="visit-external-link"
+          data-umami-event-link="github-latest-release"><img class="external-icon" src="./assets/external-link.svg"
+            alt="">Download from GitHub</a>
+        <a class="source-link" href="https://github.com/itsyohanes/dlss-updater-dotnet" target="_blank"
+          rel="noopener noreferrer" data-umami-event="visit-external-link"
+          data-umami-event-link="github-source-code-hero">View the source &rarr;</a>
       </div>
+
+      <p class="meta"><span>Version 1.2.3</span><span>216 KB</span><span>Windows 10 &amp; 11</span><span>Portable</span><span>Free, MIT licence</span></p>
+
+      <img src="./assets/app-demo.svg"
+        alt="Animation of the DLSS Updater desktop app scanning a folder and updating its DLSS files"
+        class="screenshot hero-screenshot" width="736" height="658">
     </section>
 
     <section class="container column info faq-section" aria-labelledby="faq-title">
@@ -158,7 +180,7 @@
           <p>
             The original Python repository was taken down following a DMCA notice filed by the owner of
             Recol/DLSS-Updater. I believe the notice abused the DMCA process and kept the repository offline for far too
-            long. GitHub has since reinstated the <a href="https://github.com/sparepillowgit/dlss-updater"
+            long. GitHub has since reinstated the <a href="https://github.com/itsyohanes/dlss-updater"
               target="_blank" rel="noopener noreferrer">original repository</a>, but the project has moved to C#. <a
               href="./dmca/">Read my original
               response to the notice</a>.
@@ -170,10 +192,10 @@
           <p>
             The Python version is now a legacy release, and development has moved to C#. You can still find the Python
             version's
-            <a href="https://github.com/sparepillowgit/dlss-updater" target="_blank" rel="noopener noreferrer" 
+            <a href="https://github.com/itsyohanes/dlss-updater" target="_blank" rel="noopener noreferrer" 
                data-umami-event="visit-external-link" data-umami-event-link="github-python-source-code">source
               code</a> and
-            <a href="https://github.com/sparepillowgit/dlss-updater/releases/latest" target="_blank"
+            <a href="https://github.com/itsyohanes/dlss-updater/releases/latest" target="_blank"
               rel="noopener noreferrer"
                data-umami-event="visit-external-link" data-umami-event-link="github-python-release">latest release</a> on GitHub.
           </p>
@@ -183,7 +205,7 @@
           <summary>Where can I find the source code?</summary>
           <p>
             The current .NET version's source code is available in the
-            <a href="https://github.com/sparepillowgit/dlss-updater-dotnet" target="_blank"
+            <a href="https://github.com/itsyohanes/dlss-updater-dotnet" target="_blank"
               rel="noopener noreferrer"  data-umami-event="visit-external-link" data-umami-event-link="github-source-code">DLSS Updater .NET GitHub repository</a>.
           </p>
         </details>
@@ -193,23 +215,40 @@
         <h2 id="version-title">DLSS Version Support</h2>
 
         <div>
-          <p class="filename">nvngx_dlss.dll Super Resolution</p>
-          <p class="fileversion">310.9.1 (Added September 11, 2026)</p>
+          <p class="filename">Super Resolution</p>
+          <p class="dllname">nvngx_dlss.dll</p>
+          <p class="fileversion">310.9.1</p>
+          <p class="fileadded">Added September 11, 2026</p>
         </div>
 
         <div>
-          <p class="filename">nvngx_dlssd.dll Ray Reconstruction</p>
-          <p class="fileversion">310.9.1 (Added September 11, 2026)</p>
+          <p class="filename">Ray Reconstruction</p>
+          <p class="dllname">nvngx_dlssd.dll</p>
+          <p class="fileversion">310.9.1</p>
+          <p class="fileadded">Added September 11, 2026</p>
         </div>
 
         <div>
-          <p class="filename">nvngx_dlssg.dll Frame Generation</p>
-          <p class="fileversion">310.9.1 (Added September 11, 2026)</p>
+          <p class="filename">Frame Generation</p>
+          <p class="dllname">nvngx_dlssg.dll</p>
+          <p class="fileversion">310.9.1</p>
+          <p class="fileadded">Added September 11, 2026</p>
         </div>
       </section>
     </section>
 
   </main>
+
+  <footer class="site-footer">
+    <p>
+      <a href="https://github.com/itsyohanes/dlss-updater-dotnet" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <span aria-hidden="true">·</span>
+      <a href="https://github.com/itsyohanes/dlss-updater-dotnet/releases" target="_blank"
+        rel="noopener noreferrer">Releases</a>
+      <span aria-hidden="true">·</span>
+      <a href="./dmca/">DMCA response</a>
+    </p>
+  </footer>
 
   <script>
     if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

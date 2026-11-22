@@ -8,6 +8,7 @@
 	font-synthesis: none;
 	--color-text: #f1f4eb;
 	--color-muted: #a4ab9b;
+	--color-soft: #cfd5c7;
 	--color-link: #8cc63f;
 	--color-accent: #76b900;
 	--color-accent-hover: #8bd500;
@@ -44,14 +45,15 @@ p {
 
 body {
 	min-height: 100vh;
-	padding: 132px 0 32px;
+	padding: 0;
 	color: var(--color-text);
 }
 
 /* Type and links */
 h1 {
-	font-size: 2.5rem;
+	font-size: 2.75rem;
 	line-height: 1.1;
+	letter-spacing: -0.02em;
 }
 
 h2 {
@@ -65,7 +67,16 @@ h3 {
 }
 
 p {
-	line-height: 1.5;
+	line-height: 1.6;
+}
+
+code {
+	padding: 0.1rem 0.35rem;
+	border-radius: 0.3rem;
+	background: rgb(255 255 255 / 8%);
+	color: #fff;
+	font-family: "Roboto Mono", ui-monospace, Consolas, monospace;
+	font-size: 0.88em;
 }
 
 a {
@@ -91,7 +102,7 @@ a:focus-visible {
 	gap: var(--space-4);
 	width: 100%;
 	max-width: var(--page-width);
-	margin: var(--space-4) auto 0;
+	margin: 48px auto 0;
 	padding: 16px;
 }
 
@@ -109,70 +120,104 @@ a:focus-visible {
 	gap: var(--space-6);
 }
 
-.faq-section {
+/* Hero */
+.hero {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	padding: var(--space-6) var(--space-5) 0;
+	text-align: center;
+}
+
+.hero .title {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.3em;
+	font-family: "Instrument Sans", "Roboto", sans-serif;
+	font-size: clamp(2.6rem, 6.5vw, 4.75rem);
+	font-weight: 700;
+	line-height: 1;
+	letter-spacing: -0.035em;
+}
+
+.title-logo {
+	width: 0.9em;
+	height: 0.9em;
+	flex: 0 0 auto;
+}
+
+.lede {
+	max-width: 30em;
+	margin-top: var(--space-5);
+	color: var(--color-soft);
+	font-size: 1.25rem;
+	line-height: 1.55;
+}
+
+.cta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-4) 28px;
 	margin-top: var(--space-6);
 }
 
-.container.info .desc {
-	max-width: 70%;
-	font-size: 1.4rem;
+.source-link {
+	color: var(--color-muted);
+	text-decoration: none;
+	white-space: nowrap;
 }
 
-.container.download {
-	gap: var(--space-6);
-	background: var(--color-panel);
+.source-link:hover {
+	color: var(--color-text);
+	text-decoration: none;
 }
 
-.download-version h3 {
-	padding-bottom: var(--space-2);
-	border-bottom: 1px solid var(--color-border);
-	color: var(--color-link);
-	font-size: 0.8rem;
-	font-weight: 600;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-}
-
-.download-item {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto auto;
-	align-items: center;
-	column-gap: var(--space-5);
-	padding: var(--space-4) 0;
-}
-
-.download-item + .download-item {
-	border-top: 1px solid var(--color-border);
-}
-
-.download-item:last-child {
-	padding-bottom: 0;
-}
-
-.download-file {
+.meta {
 	display: flex;
-	align-items: baseline;
-	gap: var(--space-2);
-}
-
-.download-file-name {
-	font-weight: 500;
-}
-
-.download-file-size {
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-top: 20px;
 	color: var(--color-muted);
 	font-size: 0.875rem;
+	line-height: 1.5;
+}
+
+.meta span {
+	white-space: nowrap;
+}
+
+.meta span + span::before {
+	content: "\00b7";
+	margin: 0 0.6em;
+}
+
+.faq-section {
+	margin: clamp(48px, 7vw, 88px) auto 0;
+}
+
+.container.info .desc {
+	max-width: 36rem;
+	color: var(--color-soft);
+	font-size: 1.4rem;
+	line-height: 1.5;
 }
 
 .screenshot {
 	width: 100%;
-	max-width: 502px;
+	max-width: 560px;
 	height: auto;
-	border-radius: 8px;
+	border: 1px solid var(--color-border);
+	border-radius: 10px;
+	box-shadow: 0 24px 60px -20px rgb(0 0 0 / 70%);
 }
 
 .hero-screenshot {
-	margin-bottom: 96px;
+	max-width: 736px;
+	margin-top: 56px;
 }
 
 hr {
@@ -182,56 +227,22 @@ hr {
 	border-top: 1px solid var(--color-border);
 }
 
-/* Announcement */
-.announce-bar {
-	position: fixed;
-	z-index: 10;
-	top: 0;
-	left: 0;
-	display: flex;
-	justify-content: center;
-	width: 100%;
-	padding: 12px 30px;
-	background: #263b12;
-	border-bottom: 1px solid var(--color-accent);
-	box-shadow: 0 2px 12px rgb(0 0 0 / 35%);
-}
-
-.announce-bar p {
-	max-width: 700px;
-	color: #fff;
-	font-size: 0.85rem;
-	font-weight: 500;
-	line-height: 1.4;
-	text-align: center;
-	overflow-wrap: break-word;
-}
-
-.announce-bar a {
-	color: #d5f3a8;
-	font-weight: 700;
-	text-decoration-thickness: 2px;
-}
-
-.announce-bar a:hover {
-	opacity: 0.9;
-}
-
 /* Download and version details */
 .file-download-link {
-	grid-column: -2;
 	display: inline-flex;
 	align-items: center;
 	gap: var(--space-2);
 	width: fit-content;
 	max-width: 100%;
-	padding: var(--space-2) var(--space-3);
-	border: 1px solid var(--color-link);
-	border-radius: 6px;
-	background: transparent;
-	color: var(--color-text);
+	padding: 14px 26px;
+	border: 1px solid var(--color-accent);
+	font-size: 1rem;
+	border-radius: 999px;
+	background: var(--color-accent);
+	color: var(--color-button-text);
 	font-weight: 600;
 	text-decoration: none;
+	transition: background-color 150ms ease, border-color 150ms ease;
 }
 
 .file-download-link:hover {
@@ -258,15 +269,6 @@ hr {
 	transform: translateY(-1px);
 }
 
-.file-download-link .download-icon,
-.file-download-link .external-icon {
-	filter: invert(1);
-}
-
-.file-download-link:hover .download-icon,
-.file-download-link:hover .external-icon {
-	filter: none;
-}
 
 .scan-badge {
 	display: inline-flex;
@@ -301,33 +303,51 @@ hr {
 }
 
 .version-info {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-4);
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--space-5);
 	margin-top: var(--space-6);
-	font-size: 0.75rem;
+	padding: var(--space-5);
+	border: 1px solid var(--color-border);
+	border-radius: 12px;
+	background: var(--color-panel);
 }
 
 .version-info h2 {
-	flex: 0 0 100%;
+	grid-column: 1 / -1;
 	color: var(--color-muted);
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 	font-weight: 600;
-	letter-spacing: 0.04em;
+	letter-spacing: 0.08em;
 	text-transform: uppercase;
 }
 
 .version-info > div {
-	flex: 1 1 180px;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
 }
 
 .version-info .filename {
+	font-weight: 600;
+}
+
+.version-info .dllname {
 	color: var(--color-muted);
-	font-weight: 500;
+	font-family: "Roboto Mono", ui-monospace, Consolas, monospace;
+	font-size: 0.8rem;
 }
 
 .version-info .fileversion {
-	color: #c0c5b9;
+	margin-top: var(--space-2);
+	color: var(--color-link);
+	font-size: 1.25rem;
+	font-weight: 600;
+}
+
+.version-info .fileadded {
+	color: var(--color-muted);
+	font-size: 0.8rem;
 }
 
 .url {
@@ -350,7 +370,12 @@ hr {
 }
 
 .faq h2 {
-	margin-bottom: var(--space-3);
+	margin-bottom: var(--space-5);
+	font-family: "Instrument Sans", "Roboto", sans-serif;
+	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	font-weight: 600;
+	letter-spacing: -0.03em;
+	text-align: center;
 }
 
 .faq-item {
@@ -366,6 +391,11 @@ hr {
 	font-weight: 600;
 	list-style: none;
 	cursor: pointer;
+	transition: color 150ms ease;
+}
+
+.faq-item summary:hover {
+	color: var(--color-link);
 }
 
 .faq-item summary::-webkit-details-marker {
@@ -391,7 +421,9 @@ hr {
 }
 
 .faq-item p {
-	padding: 0 0 var(--space-4);
+	max-width: 70ch;
+	padding: 0 0 var(--space-5);
+	color: var(--color-soft);
 }
 
 .faq-animated .faq-item > p {
@@ -407,6 +439,30 @@ hr {
 	}
 }
 
+/* Footer */
+.site-footer {
+	max-width: var(--page-width);
+	margin: var(--space-6) auto 0;
+	padding: var(--space-5) 40px var(--space-6);
+	border-top: 1px solid var(--color-border);
+	color: var(--color-muted);
+	font-size: 0.875rem;
+}
+
+.site-footer p {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2) var(--space-3);
+}
+
+.site-footer a {
+	color: var(--color-muted);
+}
+
+.site-footer a:hover {
+	color: var(--color-text);
+}
+
 /* Small screens */
 @media (max-width: 767px) {
 	.page {
@@ -415,8 +471,34 @@ hr {
 		padding-top: 0;
 	}
 
+	.page {
+		margin-top: var(--space-5);
+	}
+
+	h1 {
+		font-size: 2.1rem;
+	}
+
+	.hero {
+		padding: var(--space-4) var(--space-4) 0;
+	}
+
+	.lede {
+		font-size: 1.1rem;
+	}
+
 	.hero-screenshot {
-		margin-bottom: var(--space-6);
+		margin-top: 40px;
+	}
+
+	.version-info {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--space-4);
+		padding: var(--space-4);
+	}
+
+	.site-footer {
+		padding: var(--space-5) var(--space-5) var(--space-6);
 	}
 
 	.container {
@@ -428,18 +510,9 @@ hr {
 		font-size: 1.2rem;
 	}
 
-	.download-item {
-		grid-template-columns: minmax(0, 1fr);
-		justify-items: start;
-		row-gap: var(--space-3);
-	}
-
 	.file-download-link {
 		justify-content: center;
 		width: 100%;
 	}
 
-	.announce-bar p {
-		font-size: 0.7rem;
-	}
 }
