@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DLSS Updater is a simple, open-source desktop tool for finding and updating NVIDIA DLSS files across your
+        applications.">
+  <title>DLSS Updater</title>
+  <link rel="icon" href="./favicon.ico" sizes="any">
+  <link rel="icon" href="./assets/logo.svg" type="image/svg+xml">
+
+  <script defer src="https://umami.yohanesmar.io/script.js"
+    data-website-id="987707ef-2dd8-4729-a462-cdc994d1a8ba"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="./normalize.css">
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <aside class="announce-bar" aria-label="Site announcement">
+    <p>
+      <strong>Update:</strong> The original repository has been reinstated following an abusive DMCA takedown by
+      Recol/DLSS-Updater (<a href="./dmca/">more context here</a>). While the repository was offline, I
+      remade the project in C# to make it significantly smaller.
+    </p>
+  </aside>
+
+  <main class="page">
+    <section class="container column info" aria-labelledby="page-title">
+      <h1 id="page-title">DLSS Updater</h1>
+
+      <p class="desc">A simple, open-source desktop tool for finding and updating NVIDIA DLSS files across your
+        applications.
+      </p>
+
+      <img src="./assets/screenshot.webp"
+        alt="Screenshot of the DLSS Updater desktop app showing detected DLSS files and update options"
+        class="screenshot hero-screenshot" loading="lazy">
+
+    </section>
+
+    <section class="container column download" aria-labelledby="download-title">
+      <h2 id="download-title">Download</h2>
+
+      <div class="download-version">
+        <h3>From GitHub</h3>
+
+        <div class="download-item">
+          <p class="download-file"><span class="download-file-name">Latest release</span><span class="download-file-size">Executable or ZIP</span></p>
+          <a class="file-download-link" href="https://github.com/sparepillowgit/dlss-updater-dotnet/releases/latest"
+            target="_blank" rel="noopener noreferrer" aria-label="Download the latest release from GitHub"
+            data-umami-event="visit-external-link" data-umami-event-link="github-latest-release"><img class="external-icon" src="./assets/external-link.svg"
+              alt="">Download</a>
+        </div>
+      </div>
+
+      <div class="download-version">
+        <h3>From this website</h3>
+
+        <div class="download-item">
+          <p class="download-file"><span class="download-file-name">Executable</span><span class="download-file-size">215 KB</span></p>
+          <a class="file-download-link" href="./downloads/dlss-updater-v1.2.1.exe" download
+            aria-label="Download .NET version executable"
+             data-umami-event="file-download" data-umami-event-ext="exe"><img class="download-icon" src="./assets/download.svg"
+              alt="">Download</a>
+        </div>
+
+        <div class="download-item">
+          <p class="download-file"><span class="download-file-name">ZIP</span><span class="download-file-size">80 KB</span></p>
+          <a class="file-download-link" href="./downloads/dlss-updater-v1.2.1.zip" download
+            aria-label="Download .NET version ZIP archive"
+             data-umami-event="file-download" data-umami-event-ext="zip"><img class="download-icon" src="./assets/download.svg"
+              alt="">Download</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="container column info faq-section" aria-labelledby="faq-title">
+
+      <div class="faq" aria-labelledby="faq-title">
+        <h2 id="faq-title">FAQ</h2>
+
+        <details class="faq-item">
+          <summary>What are DLSS files?</summary>
+          <p>DLSS files are NVIDIA libraries used by supported applications for features such as AI upscaling, frame
+            generation, and ray reconstruction. Files like <code>nvngx_dlss.dll</code>, <code>nvngx_dlssg.dll</code>, and <code>nvngx_dlssd.dll</code>
+            are typically bundled with applications and can be updated to access newer versions of these features,
+            potentially improving image quality, performance, or compatibility.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>How does DLSS Updater work?</summary>
+          <p>It scans a selected folder, detects DLSS files, and updates them when newer versions are
+            available.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>“But you can swap DLSS files with the NVIDIA App now, why do I need this?”</summary>
+          <p>DLSS Updater exists for people who don't want a ~170 MB application and its background processes
+            just to manage a few DLSS files. It's a small tool that does one job and then gets out of the way. I'm not a
+            fan of software accumulating features until a simple utility turns into an entire platform. Not everything
+            needs to be bundled into an app that manages your apps, runs in the background, collects usage data, and
+            does
+            a dozen other things you never asked for.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Why choose this over DLSS Swapper or other similar apps?</summary>
+          <p>Other apps offer more features, but DLSS Updater focuses on simplicity. It's a lightweight,
+            no-setup tool that quickly scans your application folders and updates DLSS files without extra integrations
+            or background processes.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Does it require installation?</summary>
+          <p>No. DLSS Updater is a portable tool and can be run directly from a folder or USB drive.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>How do I uninstall DLSS Updater?</summary>
+          <p>DLSS Updater is portable, so there's nothing to uninstall. It doesn't install services, run background
+            processes, or make permanent system changes. To remove it, close the application and delete the executable.
+            Cached DLSS files are stored in <code>%LOCALAPPDATA%\DLSS Updater</code>, so delete that folder to remove
+            them as well. Backups created during updates are stored beside the original DLSS files as
+            <code>.dubackup.zip</code> files and can be deleted manually if you no longer need them.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>How large is the download?</summary>
+          <p>The executable is around 215 KB, or around 80 KB as a ZIP. Additional space will be used when downloading updated DLSS files.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>What languages does it support?</summary>
+          <p>DLSS Updater is available in English, German, French, Spanish, Italian, Polish, Ukrainian, Simplified
+            Chinese, Russian, Japanese, Korean, Czech, Dutch, and Portuguese. It uses your system language by default
+            when supported, and you can change it at any time from the language picker.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Can updating DLSS files break my applications?</summary>
+          <p>Yes. Newer DLSS versions aren't guaranteed to work correctly with every application. Updating files can
+            cause compatibility issues, visual glitches, or crashes. Back up your original files before updating so you
+            can restore them if necessary.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Why did my antivirus flag DLSS Updater?</summary>
+          <p>Some antivirus software may flag the tool because downloading and replacing files can resemble behaviour
+            associated with malware. This can trigger heuristic detections, particularly in small utilities distributed
+            as standalone executables. DLSS Updater is open source, so you can inspect its code. To reduce the risk of
+            downloading a modified or malicious copy, obtain it from the official project source and review any
+            antivirus detections rather than automatically assuming they're false positives.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Why was the original repository unavailable for so long?</summary>
+          <p>
+            The original Python repository was taken down following a DMCA notice filed by the owner of
+            Recol/DLSS-Updater. I believe the notice abused the DMCA process and kept the repository offline for far too
+            long. GitHub has since reinstated the <a href="https://github.com/sparepillowgit/dlss-updater"
+              target="_blank" rel="noopener noreferrer">original repository</a>, but the project has moved to C#. <a
+              href="./dmca/">Read my original
+              response to the notice</a>.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>What happened to the Python version?</summary>
+          <p>
+            The Python version is now a legacy release, and development has moved to C#. You can still find the Python
+            version's
+            <a href="https://github.com/sparepillowgit/dlss-updater" target="_blank" rel="noopener noreferrer" 
+               data-umami-event="visit-external-link" data-umami-event-link="github-python-source-code">source
+              code</a> and
+            <a href="https://github.com/sparepillowgit/dlss-updater/releases/latest" target="_blank"
+              rel="noopener noreferrer"
+               data-umami-event="visit-external-link" data-umami-event-link="github-python-release">latest release</a> on GitHub.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Where can I find the source code?</summary>
+          <p>
+            The current .NET version's source code is available in the
+            <a href="https://github.com/sparepillowgit/dlss-updater-dotnet" target="_blank"
+              rel="noopener noreferrer"  data-umami-event="visit-external-link" data-umami-event-link="github-source-code">DLSS Updater .NET GitHub repository</a>.
+          </p>
+        </details>
+      </div>
+
+      <section class="version-info" aria-labelledby="version-title">
+        <h2 id="version-title">DLSS Version Support</h2>
+
+        <div>
+          <p class="filename">nvngx_dlss.dll Super Resolution</p>
+          <p class="fileversion">310.9.1 (Added September 11, 2026)</p>
+        </div>
+
+        <div>
+          <p class="filename">nvngx_dlssd.dll Ray Reconstruction</p>
+          <p class="fileversion">310.9.1 (Added September 11, 2026)</p>
+        </div>
+
+        <div>
+          <p class="filename">nvngx_dlssg.dll Frame Generation</p>
+          <p class="fileversion">310.9.1 (Added September 11, 2026)</p>
+        </div>
+      </section>
+    </section>
+
+  </main>
+
+  <script>
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.documentElement.classList.add("faq-animated");
+
+      document.querySelectorAll(".faq-item > summary").forEach((summary) => {
+        summary.addEventListener("click", (event) => {
+          event.preventDefault();
+
+          const item = summary.parentElement;
+          const answer = summary.nextElementSibling;
+          if (item.dataset.animating === "true") return;
+
+          const opening = !item.open;
+          item.dataset.animating = "true";
+
+          if (opening) {
+            item.open = true;
+            answer.style.height = "0px";
+            requestAnimationFrame(() => {
+              answer.style.height = `${answer.scrollHeight}px`;
+            });
+          } else {
+            answer.style.height = `${answer.scrollHeight}px`;
+            answer.offsetHeight;
+            answer.style.height = "0px";
+          }
+
+          answer.addEventListener("transitionend", function finishTransition(e) {
+            if (e.propertyName !== "height") return;
+            answer.removeEventListener("transitionend", finishTransition);
+
+            if (opening) {
+              answer.style.height = "auto";
+            } else {
+              item.open = false;
+              answer.style.height = "";
+            }
+
+            delete item.dataset.animating;
+          });
+        });
+      });
+    }
+  </script>
+</body>
+
+</html>

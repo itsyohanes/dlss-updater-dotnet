@@ -1,0 +1,152 @@
+article {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+	width: 100%;
+	max-width: 860px;
+	margin: 0;
+	line-height: 1.7;
+	color: var(--color-text);
+}
+
+article h2 {
+	margin: 0;
+	font-size: clamp(1.35rem, 2vw, 1.75rem);
+	line-height: 1.25;
+	letter-spacing: -0.02em;
+	color: #ffffff;
+}
+
+article h2:not(:first-child) {
+	margin-top: var(--space-3);
+}
+
+article p {
+	margin: 0;
+	font-size: 1rem;
+	color: var(--color-text);
+}
+
+article a {
+	color: var(--color-link);
+	text-decoration: none;
+	border-bottom: 1px solid rgb(140 198 63 / 45%);
+}
+
+article a:hover {
+	color: #b6e87c;
+	border-bottom-color: #b6e87c;
+}
+
+article code {
+	padding: 0.1rem 0.3rem;
+	border-radius: 0.3rem;
+	background: rgba(255, 255, 255, 0.08);
+	color: #ffffff;
+	font-size: 0.95em;
+}
+
+article ul {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	margin: 0;
+	padding-left: 1.2rem;
+}
+
+article li {
+	margin: 0;
+	color: var(--color-text);
+}
+
+article table {
+	width: 100%;
+	margin: 0;
+	border-collapse: collapse;
+	/* border-radius: 0.75rem; */
+	overflow: hidden;
+	background: rgba(255, 255, 255, 0.035);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+article th,
+article td {
+	padding: 0.75rem;
+	text-align: left;
+	vertical-align: top;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+article th {
+	font-size: 0.85rem;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: #ffffff;
+	background: rgba(255, 255, 255, 0.05);
+}
+
+article td {
+	color: var(--color-text);
+}
+
+article tr:last-child td {
+	border-bottom: none;
+}
+
+article blockquote {
+	margin: 0;
+	padding: 0.85rem 1rem;
+	border-left: 3px solid var(--color-accent);
+	border-radius: 0.4rem;
+	background: rgb(118 185 0 / 8%);
+	color: #f2f2f2;
+}
+
+.back-link {
+	margin-top: 0;
+}
+
+.back-link a {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	color: var(--color-link);
+	text-decoration: underline;
+	font-size: 0.95rem;
+	transition: color 0.15s ease;
+}
+
+.back-link a:hover {
+	color: #ffffff;
+}
+
+@media (max-width: 700px) {
+	article table,
+	article thead,
+	article tbody,
+	article tr,
+	article th,
+	article td {
+		display: block;
+		width: 100%;
+	}
+
+	article thead {
+		display: none;
+	}
+
+	article tr {
+		padding: 0.75rem;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	}
+
+	article td {
+		padding: 0.25rem 0;
+		border-bottom: none;
+	}
+
+	article td:first-child {
+		font-weight: 700;
+		color: #ffffff;
+	}
+}

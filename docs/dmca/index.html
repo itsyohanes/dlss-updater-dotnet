@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Documenting the DMCA takedown notice filed against my DLSS updater project, the claims made by the
+				owner of Recol/DLSS-Updater, and why I dispute them.">
+	<title>I got DMCA'd by Recol/DLSS-Updater</title>
+	<link rel="icon" href="../favicon.ico" sizes="any">
+	<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+  
+	<script defer src="https://umami.yohanesmar.io/script.js" data-website-id="987707ef-2dd8-4729-a462-cdc994d1a8ba"></script>
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+		rel="stylesheet">
+
+	<link rel="stylesheet" href="../normalize.css">
+	<link rel="stylesheet" href="../style.css">
+	<link rel="stylesheet" href="../dmca.css">
+</head>
+
+<body>
+	<main class="page">
+		<section class="container column info" aria-labelledby="page-title">
+			<h1 id="page-title">I got DMCA'd by Recol/DLSS-Updater</h1>
+
+			<img src="../assets/dmca.webp" alt="Screenshot of my DMCA'd GitHub repository" class="screenshot"
+				loading="lazy">
+
+			<p class="desc">Documenting the DMCA takedown notice filed against my DLSS updater project, the claims made
+				by the
+				owner of Recol/DLSS-Updater, and why I dispute them.
+			</p>
+
+			<hr>
+
+			<article>
+				<h2>Public DMCA Notice</h2>
+
+				<p>
+					The notice has since been published in GitHub's public DMCA archive,
+					which stores takedown notices submitted to GitHub.
+				</p>
+
+				<p>
+					The DMCA notice was submitted by the owner of the
+					<a href="https://github.com/Recol/DLSS-Updater">
+						Recol/DLSS-Updater
+					</a>
+					repository on GitHub.
+				</p>
+
+				<p>
+					You can read the archived notice here:
+					<a href="https://github.com/github/dmca/blob/master/2026/05/2026-05-07-dlss-updater.md">
+						2026-05-07-dlss-updater.md
+					</a>
+				</p>
+
+				<h2>Background</h2>
+
+				<p>
+					My project is a small open-source hobby tool designed to help users
+					update NVIDIA DLSS DLL files in game directories.
+				</p>
+
+				<p>
+					The idea is simple: point the application at a folder, detect
+					supported DLSS files, and replace them with newer versions where
+					appropriate.
+				</p>
+
+				<p>
+					In May 2026, a DMCA notice was filed against my GitHub repository by
+					the owner of the
+					<a href="https://github.com/Recol/DLSS-Updater">
+						Recol/DLSS-Updater
+					</a>
+					project, alleging that my repository infringed on their work.
+				</p>
+
+				<h2>The Allegations</h2>
+
+				<p>
+					The notice alleged that my repository constituted a derivative work
+					of the
+					<a href="https://github.com/Recol/DLSS-Updater">
+						Recol/DLSS-Updater
+					</a>
+					project and cited several supposed similarities as evidence.
+				</p>
+
+				<p>
+					These included:
+				</p>
+
+				<ul>
+					<li>folders such as <code>services/</code>, <code>ui/</code>, and <code>utils/</code></li>
+					<li><code>tests/</code> and <code>.github/workflows/</code></li>
+					<li>a utility function named <code>centre_window</code></li>
+					<li>style-related names such as <code>configure_styles</code> and <code>BG_MAIN</code></li>
+					<li>DLSS version compatibility logic</li>
+					<li>the use of a Git-hosted manifest</li>
+					<li>targeting standard DLSS DLL files</li>
+					<li>FAQ wording regarding PyInstaller antivirus false positives</li>
+				</ul>
+
+				<p>
+					I was particularly surprised to see standard repository structures
+					and common updater behaviour presented as evidence of copyright
+					infringement.
+				</p>
+
+				<h2>Claim vs Reality</h2>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Claim</th>
+							<th>My response</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr>
+							<td><code>centre_window</code></td>
+							<td>
+								A descriptive utility function name commonly found in Tkinter examples,
+								tutorials, and GUI applications.
+							</td>
+						</tr>
+
+						<tr>
+							<td><code>services/</code>, <code>ui/</code>, <code>utils/</code></td>
+							<td>
+								Common organisational naming conventions used throughout Python and GUI
+								applications.
+							</td>
+						</tr>
+
+						<tr>
+							<td><code>tests/</code></td>
+							<td>
+								A standard testing directory used across countless software projects.
+							</td>
+						</tr>
+
+						<tr>
+							<td><code>.github/workflows/</code></td>
+							<td>
+								The default GitHub Actions workflow directory automatically used by
+								GitHub.
+							</td>
+						</tr>
+
+						<tr>
+							<td><code>configure_styles</code>, <code>BG_MAIN</code></td>
+							<td>
+								Generic style-related naming conventions commonly used in GUI
+								applications.
+							</td>
+						</tr>
+
+						<tr>
+							<td>Git-hosted manifest architecture</td>
+							<td>
+								A common and conventional approach for storing update metadata and
+								version manifests.
+							</td>
+						</tr>
+
+						<tr>
+							<td>Version compatibility logic</td>
+							<td>
+								Major-version compatibility checks are ordinary updater behaviour used
+								throughout software.
+							</td>
+						</tr>
+
+						<tr>
+							<td><code>nvngx_dlss.dll</code>, <code>nvngx_dlssg.dll</code>, <code>nvngx_dlssd.dll</code>
+							</td>
+							<td>
+								A DLSS updater targeting DLSS DLL files is the obvious and expected
+								purpose of the application.
+							</td>
+						</tr>
+
+						<tr>
+							<td>PyInstaller antivirus FAQ wording</td>
+							<td>
+								The cited FAQ wording describes common antivirus false positives using
+								generic language widely repeated across software forums, GitHub
+								repositories, tutorials, and documentation.
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<p>
+					Below, I will respond to several direct excerpts from the claims made in the
+					notice.
+				</p>
+
+				<h2>Naming Conventions</h2>
+
+				<blockquote>
+					"The function <code>centre_window</code> imported from
+					<code>utils/window.py</code>, matching my project's naming conventions
+					verbatim"
+				</blockquote>
+
+				<blockquote>
+					"Identical style constants (<code>configure_styles</code>,
+					<code>BG_MAIN</code>) imported from <code>ui/styles</code>"
+				</blockquote>
+
+				<p>
+					Of course some of these names are identical. They are generic descriptive
+					names following common GUI and Python naming conventions.
+				</p>
+
+				<p>
+					<code>centre_window</code> appears throughout Tkinter tutorials, examples,
+					and GUI projects because it literally describes a function that centres a
+					window.
+				</p>
+
+				<p>
+					Similarly, <code>configure_styles</code> and <code>BG_MAIN</code> are highly
+					generic names for UI styling code. One describes configuring styles, while
+					the other abbreviates "background main".
+				</p>
+
+				<p>
+					Using the same straightforward descriptive names for common functionality is
+					not evidence of copying. It is what naturally happens when developers follow
+					the same conventions while solving the same problems.
+				</p>
+
+				<h2>Repository Structure</h2>
+
+				<blockquote>
+					"Identical module structure: <code>services/</code>, <code>ui/</code>,
+					<code>utils/</code>, <code>tests/</code>,
+					<code>.github/workflows/</code>"
+				</blockquote>
+
+				<p>
+					One of the stranger parts of the notice was the claim of an
+					"identical module structure".
+				</p>
+
+				<p>
+					The notice referenced folders including
+					<code>services/</code>, <code>ui/</code>, and
+					<code>utils/</code>. Based on my comparison of the repositories,
+					several of these structures did not appear in the same form within
+					the claimant's repository.
+				</p>
+
+				<p>
+					I created a side-by-side file tree comparison here:
+					<a href="https://gist.github.com/sparepillowgit/710ce176f9d79ee144dd868f9a938d98">
+						gist.github.com/sparepillowgit/710ce176f9d79ee144dd868f9a938d98
+					</a>
+				</p>
+
+				<p>
+					The comparison was created specifically because the notice cited
+					"Identical module structure: services/, ui/, utils/, tests/,
+					.github/workflows/" as evidence of infringement.
+				</p>
+
+				<p>
+					More broadly, the idea that common repository folders such as
+					<code>tests/</code> or <code>.github/workflows/</code> could
+					meaningfully establish infringement struck me as unusually broad.
+				</p>
+
+				<h2>Manifest Architecture</h2>
+
+				<blockquote>
+					"The architectural design of sourcing a manifest from a git repository,
+					a <strong>non-obvious</strong> design decision originating in my project"
+				</blockquote>
+
+				<p>
+					Using a remotely hosted manifest for updates is an extremely common software
+					design pattern used by launchers, patchers, mod managers, and update tools.
+					Hosting that manifest in a git repository is also entirely conventional,
+					because git provides simple hosting, version control, and easy distribution.
+				</p>
+
+				<p>
+					Calling this a "<strong>non-obvious</strong>" design decision is like claiming
+					ownership over downloading configuration files over HTTP. It is a generic
+					engineering approach, not a unique creative work.
+				</p>
+
+				<h2>Version Compatibility Logic</h2>
+
+				<blockquote>
+					"Identical version compatibility logic (1.x versions restricted to 1.x;
+					2.x and 3.x treated as compatible)"
+				</blockquote>
+
+				<p>
+					Version-based compatibility checks are standard updater behaviour used
+					throughout software, package managers, launchers, mod managers, and patching
+					tools.
+				</p>
+
+				<p>
+					Restricting compatibility based on major version numbers is a routine
+					functional decision, not a uniquely original creative work.
+				</p>
+
+				<h2>Target DLL Files</h2>
+
+				<blockquote>
+					"Identical scope of target DLL files:
+					nvngx_dlss.dll, nvngx_dlssg.dll, nvngx_dlssd.dll"
+				</blockquote>
+
+				<p>
+					A DLSS updater targeting standard NVIDIA DLSS DLL filenames is not evidence
+					of copying. Those are the official filenames used by NVIDIA's DLSS
+					technologies across games and applications.
+				</p>
+
+				<p>
+					Any utility designed to locate and update DLSS components would necessarily
+					interact with those same files.
+				</p>
+
+				<h2>PyInstaller Antivirus FAQ</h2>
+
+				<blockquote>
+					"FAQ content describing PyInstaller AV false positives in substantively
+					identical terms"
+				</blockquote>
+
+				<p>
+					Warnings about antivirus false positives in PyInstaller applications are
+					extremely common across software forums, GitHub repositories, tutorials, and
+					documentation.
+				</p>
+
+				<p>
+					The wording referenced in the notice consists of generic technical
+					explanations repeatedly used throughout software communities whenever users
+					ask why packaged applications may trigger antivirus detections.
+				</p>
+
+				<p>
+					Describing common PyInstaller false positives in broadly similar language is
+					not unusual, particularly when explaining the same technical issue to users.
+				</p>
+
+				<h2>Licensing and Derivative Work</h2>
+
+				<p>
+					The notice also argued that my repository violated the AGPL-3.0
+					licence used by the
+					<a href="https://github.com/Recol/DLSS-Updater">
+						Recol/DLSS-Updater
+					</a>
+					project.
+				</p>
+
+				<p>
+					My position is straightforward: licence obligations only become
+					relevant if a project is actually derived from the licensed work in
+					the first place.
+				</p>
+
+				<p>
+					I did not copy code from the
+					<a href="https://github.com/Recol/DLSS-Updater">
+						Recol/DLSS-Updater
+					</a>
+					repository, and I do not believe generic folder names, ordinary
+					updater logic, or common naming conventions establish that my project
+					is a derivative work.
+				</p>
+
+				<h2>Why I Am Publishing This</h2>
+
+				<p>
+					I am publishing this page for transparency and documentation.
+				</p>
+
+				<p>
+					GitHub DMCA notices can have significant practical consequences
+					regardless of whether the underlying claims would ultimately hold up
+					under closer scrutiny.
+				</p>
+
+				<p>
+					Rather than rely on vague summaries or second-hand discussions, I
+					wanted to document the claims made by the owner of the
+					<a href="https://github.com/Recol/DLSS-Updater">
+						Recol/DLSS-Updater
+					</a>
+					repository and explain why I disagree with them.
+				</p>
+
+				<h2>Closing Thoughts</h2>
+
+				<p>
+					Open-source licensing matters, and developers absolutely deserve
+					protection against genuine code theft.
+				</p>
+
+				<p>
+					At the same time, copyright claims should be specific, accurate, and
+					based on substantial copying rather than ordinary software
+					conventions or common project structures.
+				</p>
+
+				<p>
+					In my view, the DMCA notice filed regarding the
+					<a href="https://github.com/Recol/DLSS-Updater">
+						Recol/DLSS-Updater
+					</a>
+					project does not meet that standard.
+				</p>
+			</article>
+
+			<hr>
+
+			<div class="back-link">
+				<a href="../">← Back to DLSS Updater</a>
+			</div>
+		</section>
+	</main>
+</body>
+
+</html>
