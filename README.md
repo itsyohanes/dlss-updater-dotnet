@@ -39,10 +39,6 @@ The C#/.NET Framework version keeps the executable lightweight at around 216 KB,
 
 ![DLSS Updater scanning a folder and updating its DLSS files](docs/assets/app-demo.svg)
 
-## Screenshot
-
-![DLSS Updater Screenshot](Assets/screenshot-01.png)
-
 ---
 
 ## Download
