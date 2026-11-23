@@ -4,9 +4,9 @@ A simple desktop tool for finding and updating NVIDIA DLSS files in your applica
 
 The C#/.NET Framework version keeps the executable lightweight at around 216 KB, compared with around 10 MB for the Python build.
 
-![Release](https://img.shields.io/github/v/release/sparepillowgit/dlss-updater-dotnet)
-![Last commit](https://img.shields.io/github/last-commit/sparepillowgit/dlss-updater-dotnet)
-![License](https://img.shields.io/github/license/sparepillowgit/dlss-updater-dotnet)
+![Release](https://img.shields.io/github/v/release/itsyohanes/dlss-updater-dotnet)
+![Last commit](https://img.shields.io/github/last-commit/itsyohanes/dlss-updater-dotnet)
+![License](https://img.shields.io/github/license/itsyohanes/dlss-updater-dotnet)
 ![.NET Framework](https://img.shields.io/badge/.NET_Framework-4.8-512BD4)
 
 ---
@@ -14,8 +14,8 @@ The C#/.NET Framework version keeps the executable lightweight at around 216 KB,
 ## Links
 
 - Website: https://www.dlssupdater.com
-- GitHub: https://github.com/sparepillowgit/dlss-updater-dotnet
-- Latest Release: https://github.com/sparepillowgit/dlss-updater-dotnet/releases/latest
+- GitHub: https://github.com/itsyohanes/dlss-updater-dotnet
+- Latest Release: https://github.com/itsyohanes/dlss-updater-dotnet/releases/latest
 
 ---
 
@@ -35,6 +35,10 @@ The C#/.NET Framework version keeps the executable lightweight at around 216 KB,
 
 ---
 
+## Demo
+
+![DLSS Updater scanning a folder and updating its DLSS files](docs/assets/app-demo.svg)
+
 ## Screenshot
 
 ![DLSS Updater Screenshot](Assets/screenshot-01.png)
@@ -45,7 +49,7 @@ The C#/.NET Framework version keeps the executable lightweight at around 216 KB,
 
 Download the latest version:
 
-https://github.com/sparepillowgit/dlss-updater-dotnet/releases/latest
+https://github.com/itsyohanes/dlss-updater-dotnet/releases/latest
 
 - Portable (no installation required)
 
