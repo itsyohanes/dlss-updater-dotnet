@@ -57,6 +57,7 @@ namespace dlss_updater
             Translator.Instance.LanguageChanged += Localization_LanguageChanged;
             Closed += (sender, e) =>
                 Translator.Instance.LanguageChanged -= Localization_LanguageChanged;
+            Loaded += MainWindow_Loaded;
         }
 
         private void LanguagePicker_SelectionChanged(
@@ -80,6 +81,8 @@ namespace dlss_updater
             {
                 apply();
             }
+
+            RefreshSavedGames();
         }
 
         private void SetLocalized(
@@ -164,10 +167,7 @@ namespace dlss_updater
                 UpdateDlssSummary();
                 UpdateBackupResult(_backupFiles);
                 OverwriteToggle.IsEnabled = true;
-                bool hasDlssFiles =
-                    _dlssFiles.Count + _dlssdFiles.Count + _dlssgFiles.Count > 0;
-                UpdateButton.IsEnabled = hasDlssFiles;
-                UpdateButton.Opacity = hasDlssFiles ? 1.0 : 0.5;
+                ApplyUpdateButtonState();
                 return;
             }
 
@@ -220,6 +220,7 @@ namespace dlss_updater
 
         private void ResetFolderScanState()
         {
+            ResetFolderUpdateCheck();
             _scannedFolderPath = string.Empty;
             _dlssFiles = new List<ScannedFile>();
             _dlssdFiles = new List<ScannedFile>();
@@ -336,6 +337,7 @@ namespace dlss_updater
             OverwriteToggle.IsEnabled = !_updateInProgress;
             UpdateButton.IsEnabled = false;
             UpdateButton.Opacity = 0.5;
+            ResetFolderUpdateCheck();
 
             ResetFileLists();
             SetSearchingState();
@@ -410,73 +412,53 @@ namespace dlss_updater
                 dlssdWarnings,
                 dlssgWarnings,
                 backupWarnings);
+            _scannedFolderPath = folder;
             UpdateDlssSummary();
             PopulateDlssDetails(folder);
             UpdateBackupResult(_backupFiles);
-
-            bool hasDlssFiles =
-                _dlssFiles.Count + _dlssdFiles.Count + _dlssgFiles.Count > 0;
-            UpdateButton.IsEnabled = hasDlssFiles;
-            UpdateButton.Opacity = hasDlssFiles ? 1.0 : 0.5;
-            _scannedFolderPath = folder;
+            ApplyUpdateButtonState();
 
             if (_updateInProgress)
             {
                 SetUpdateInProgress(true);
             }
+
+            OnFolderScanned(folder, generation);
         }
 
         private async void UpdateButton_Click(
             object sender,
             RoutedEventArgs e)
         {
-            string folder = FolderPathTextBox.Text;
+            await RunSingleUpdateAsync(FolderPathTextBox.Text);
+        }
+
+        // Updates one folder with progress and a result dialog. Used by the
+        // main Update button and each row's Update button in Your folders.
+        private async Task RunSingleUpdateAsync(string folder)
+        {
+            if (_updateInProgress)
+            {
+                return;
+            }
 
             SetUpdateInProgress(true);
             UpdateButton.IsEnabled = false;
             SetButtonText(UpdateButton, "Updating");
             ShowUpdateProgressBar();
             IProgress<double> fileProgress = new Progress<double>(SetUpdateProgress);
-            IProgress<string> progress = new Progress<string>(message =>
-                SetStatus(DlssStatusText, () => message, NeutralStatusBrush));
 
             try
             {
-                await ScanFolderAsync(folder);
-
-                List<ScannedFile> filesToUpdate =
-                    new List<ScannedFile>();
-                filesToUpdate.AddRange(_dlssFiles);
-                filesToUpdate.AddRange(_dlssdFiles);
-                filesToUpdate.AddRange(_dlssgFiles);
-
                 DlssUpdateResult result =
-                    await GameFolderUpdateService.UpdateAsync(
-                        filesToUpdate,
-                        OverwriteToggle.IsChecked == true,
-                        progress,
-                        fileProgress);
-
-                progress.Report(Translator.T("RefreshingResults"));
-                List<string> backupWarnings = new List<string>();
-                _backupFiles = await Task.Run(() =>
-                    BackupScanner.FindBackupFiles(folder, backupWarnings));
-                _scanWarningPaths = MergeScanWarningPaths(
-                    _scanWarningPaths,
-                    backupWarnings);
+                    await UpdateFolderAsync(folder, fileProgress);
 
                 InvokeOnUiThread(() =>
-                {
-                    UpdateDlssSummary();
-                    PopulateDlssDetails(folder);
-                    UpdateBackupResult(_backupFiles);
-
                     ShowOperationResult(
                         result.GetSummary(),
                         result.Errors,
                         "DLSS Updater",
-                        result.SkippedFiles);
-                });
+                        result.SkippedFiles));
             }
             catch (Exception ex)
             {
@@ -493,13 +475,62 @@ namespace dlss_updater
                 {
                     HideUpdateProgressBar();
                     SetUpdateInProgress(false);
-                    SetButtonText(UpdateButton, "Update");
-                    bool hasDlssFiles =
-                        _dlssFiles.Count + _dlssdFiles.Count + _dlssgFiles.Count > 0;
-                    UpdateButton.IsEnabled = hasDlssFiles;
-                    UpdateButton.Opacity = hasDlssFiles ? 1.0 : 0.5;
+                    ApplyUpdateButtonState();
                 });
             }
+        }
+
+        // Rescans the folder, updates every outdated DLL in it and refreshes
+        // the results. Shared by the Update button and Update all.
+        private async Task<DlssUpdateResult> UpdateFolderAsync(
+            string folder,
+            IProgress<double> fileProgress)
+        {
+            IProgress<string> progress = new Progress<string>(message =>
+                SetStatus(DlssStatusText, () => message, NeutralStatusBrush));
+
+            await ScanFolderAsync(folder);
+
+            List<ScannedFile> filesToUpdate =
+                new List<ScannedFile>();
+            filesToUpdate.AddRange(_dlssFiles);
+            filesToUpdate.AddRange(_dlssdFiles);
+            filesToUpdate.AddRange(_dlssgFiles);
+
+            DlssUpdateResult result =
+                await GameFolderUpdateService.UpdateAsync(
+                    filesToUpdate,
+                    OverwriteToggle.IsChecked == true,
+                    progress,
+                    fileProgress);
+
+            progress.Report(Translator.T("RefreshingResults"));
+            List<string> backupWarnings = new List<string>();
+            _backupFiles = await Task.Run(() =>
+                BackupScanner.FindBackupFiles(folder, backupWarnings));
+            _scanWarningPaths = MergeScanWarningPaths(
+                _scanWarningPaths,
+                backupWarnings);
+
+            InvokeOnUiThread(() =>
+            {
+                if (SavedGamesStore.RecordScan(folder, filesToUpdate, true))
+                {
+                    _justAddedFolder = SavedGamesStore.Find(folder).Folder;
+
+                    // With the list already open the user sees the new row
+                    // (and its badge) straight away, so skip the notice.
+                    _justAddedNoticeSeen = SavedGamesStore.FoldersExpanded;
+                }
+
+                EvaluateFolderUpdates();
+                UpdateDlssSummary();
+                PopulateDlssDetails(folder);
+                UpdateBackupResult(_backupFiles);
+                RefreshSavedGames();
+            });
+
+            return result;
         }
 
         private async void RestoreBackupButton_Click(
@@ -632,14 +663,17 @@ namespace dlss_updater
 
             InvokeOnUiThread(() =>
             {
-            UpdateDlssSummary();
-            PopulateDlssDetails(folder);
+                List<ScannedFile> files = new List<ScannedFile>();
+                files.AddRange(_dlssFiles);
+                files.AddRange(_dlssdFiles);
+                files.AddRange(_dlssgFiles);
+                SavedGamesStore.RecordScan(folder, files, false);
+                EvaluateFolderUpdates();
+                UpdateDlssSummary();
+                PopulateDlssDetails(folder);
                 UpdateBackupResult(_backupFiles);
-
-                bool hasDlssFiles =
-                    _dlssFiles.Count + _dlssdFiles.Count + _dlssgFiles.Count > 0;
-                UpdateButton.IsEnabled = hasDlssFiles;
-                UpdateButton.Opacity = hasDlssFiles ? 1.0 : 0.5;
+                ApplyUpdateButtonState();
+                RefreshSavedGames();
             });
         }
 
@@ -879,6 +913,8 @@ namespace dlss_updater
                 (hasFiles || _scanWarningPaths.Count > 0);
             SetBackupButtonsEnabled(!inProgress && _backupFiles.Count > 0);
             LanguagePicker.IsEnabled = !inProgress;
+            SavedGamesPanel.IsEnabled = !inProgress;
+            UpdateAllButton.IsEnabled = !inProgress;
         }
 
         private void UpdateBackupResult(
@@ -1020,9 +1056,11 @@ namespace dlss_updater
                         summary += Translator.T("ScanWarningsMany", warningCount);
                     }
 
-                    return summary;
+                    return summary + GetUpdateCheckSuffix();
                 },
-                warningCount > 0 ? WarningStatusBrush : SuccessStatusBrush);
+                warningCount > 0 || _folderUpdatableCount > 0
+                    ? WarningStatusBrush
+                    : SuccessStatusBrush);
             SetButtonText(ShowDetailsButton, "ShowDetails");
             ShowDetailsButton.IsEnabled = true;
             ShowDetailsButton.Visibility = Visibility.Visible;
@@ -1087,11 +1125,16 @@ namespace dlss_updater
                 };
                 row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(90) });
                 row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100) });
+                row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(120) });
                 row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+                Brush latestBrush;
+                string latestText = GetLatestColumnText(file, out latestBrush);
 
                 AddDetailsCell(row, type, 0);
                 AddDetailsCell(row, file.Version, 1);
-                AddDetailsCell(row, GetDisplayPath(folderPath, file.Path), 2, true);
+                AddDetailsCell(row, latestText, 2, false, latestBrush);
+                AddDetailsCell(row, GetDisplayPath(folderPath, file.Path), 3, true);
                 DetailsFileListPanel.Children.Add(row);
 
                 Border separator = new Border
@@ -1107,13 +1150,14 @@ namespace dlss_updater
             Grid row,
             string text,
             int column,
-            bool wrap = false)
+            bool wrap = false,
+            Brush foreground = null)
         {
             TextBlock cell = new TextBlock
             {
                 Text = text,
                 FontSize = 13,
-                Foreground = new SolidColorBrush(Color.FromRgb(164, 174, 162)),
+                Foreground = foreground ?? NeutralStatusBrush,
                 TextWrapping = wrap ? TextWrapping.Wrap : TextWrapping.NoWrap,
                 Margin = new Thickness(0, 0, 8, 0)
             };

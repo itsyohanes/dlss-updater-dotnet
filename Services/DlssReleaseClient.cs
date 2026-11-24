@@ -80,11 +80,96 @@ namespace dlss_updater.Services
             return client;
         }
 
-        public static async Task<Dictionary<string, DlssReleaseAsset>>
-            GetLatestManifestAsync()
+        // How long a version-only manifest fetch is reused, so scanning several
+        // folders in a row doesn't download the manifest every time.
+        private static readonly TimeSpan LatestVersionsCacheDuration =
+            TimeSpan.FromMinutes(5);
+        private static readonly object LatestVersionsLock = new object();
+        private static Task<Dictionary<string, string>> _latestVersionsTask;
+        private static DateTime _latestVersionsFetchedUtc;
+
+        // Version-only view of the manifest: file name -> version. Unlike
+        // GetLatestManifestAsync it never calls the GitHub API for digests,
+        // so it's cheap enough to run after every scan and on startup.
+        public static Task<Dictionary<string, string>> GetLatestVersionsAsync()
+        {
+            lock (LatestVersionsLock)
+            {
+                Task<Dictionary<string, string>> cached = _latestVersionsTask;
+                if (cached != null &&
+                    !cached.IsFaulted &&
+                    !cached.IsCanceled &&
+                    DateTime.UtcNow - _latestVersionsFetchedUtc < LatestVersionsCacheDuration)
+                {
+                    return cached;
+                }
+
+                _latestVersionsFetchedUtc = DateTime.UtcNow;
+                _latestVersionsTask = FetchLatestVersionsAsync();
+                return _latestVersionsTask;
+            }
+        }
+
+        private static async Task<Dictionary<string, string>> FetchLatestVersionsAsync()
+        {
+            Dictionary<string, DlssReleaseAsset> downloadedManifest =
+                await DownloadManifestAsync().ConfigureAwait(false);
+
+            return ToVersionMap(downloadedManifest);
+        }
+
+        private static Dictionary<string, string> ToVersionMap(
+            IDictionary<string, DlssReleaseAsset> manifest)
+        {
+            Dictionary<string, string> versions =
+                new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (KeyValuePair<string, DlssReleaseAsset> item in manifest)
+            {
+                Version parsed;
+                if (IsSupportedDll(item.Key) &&
+                    item.Value != null &&
+                    Version.TryParse(item.Value.Version, out parsed))
+                {
+                    versions[item.Key] = item.Value.Version;
+                }
+            }
+
+            if (versions.Count == 0)
+            {
+                throw new InvalidDataException(Translator.T("EmptyManifest"));
+            }
+
+            return versions;
+        }
+
+        // The full manifest was just downloaded for an update: reuse its
+        // versions for the update check so both see the same manifest.
+        private static void RememberLatestVersions(
+            IDictionary<string, DlssReleaseAsset> manifest)
+        {
+            Dictionary<string, string> versions;
+
+            try
+            {
+                versions = ToVersionMap(manifest);
+            }
+            catch (InvalidDataException)
+            {
+                return;
+            }
+
+            lock (LatestVersionsLock)
+            {
+                _latestVersionsFetchedUtc = DateTime.UtcNow;
+                _latestVersionsTask = Task.FromResult(versions);
+            }
+        }
+
+        private static async Task<Dictionary<string, DlssReleaseAsset>> DownloadManifestAsync()
         {
             string json =
-                await HttpClient.GetStringAsync(ManifestUrl);
+                await HttpClient.GetStringAsync(ManifestUrl).ConfigureAwait(false);
 
             DataContractJsonSerializerSettings serializerSettings =
                 new DataContractJsonSerializerSettings
@@ -97,15 +182,19 @@ namespace dlss_updater.Services
                     typeof(Dictionary<string, DlssReleaseAsset>),
                     serializerSettings);
 
-            Dictionary<string, DlssReleaseAsset> downloadedManifest;
-
             using (MemoryStream stream =
                 new MemoryStream(Encoding.UTF8.GetBytes(json)))
             {
-                downloadedManifest =
-                    (Dictionary<string, DlssReleaseAsset>)
+                return (Dictionary<string, DlssReleaseAsset>)
                     serializer.ReadObject(stream);
             }
+        }
+
+        public static async Task<Dictionary<string, DlssReleaseAsset>>
+            GetLatestManifestAsync()
+        {
+            Dictionary<string, DlssReleaseAsset> downloadedManifest =
+                await DownloadManifestAsync();
 
             Dictionary<string, DlssReleaseAsset> manifest =
                 new Dictionary<string, DlssReleaseAsset>(
@@ -185,6 +274,7 @@ namespace dlss_updater.Services
                     Translator.T("EmptyManifest"));
             }
 
+            RememberLatestVersions(manifest);
             return manifest;
         }
 

@@ -885,6 +885,56 @@
                   SelectionChanged="LanguagePicker_SelectionChanged"/>
 
 
+        <!-- Startup notice: shown when the manifest has newer DLSS files
+             than the last time the app told you about them. -->
+        <Border x:Name="StartupBanner"
+                Background="#1F2A14"
+                BorderBrush="#4E7A10"
+                BorderThickness="1"
+                CornerRadius="6"
+                Padding="16,12,10,12"
+                Margin="0,0,0,16"
+                Visibility="Collapsed">
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           Text="&#xE896;"
+                           FontFamily="Segoe MDL2 Assets"
+                           FontSize="20"
+                           Foreground="#76B900"
+                           VerticalAlignment="Center"
+                           Margin="0,0,14,0"/>
+
+                <StackPanel Grid.Column="1"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="{services:Tr NewDlssFilesTitle}"
+                               FontWeight="SemiBold"/>
+                    <TextBlock x:Name="StartupBannerText"
+                               FontSize="13"
+                               Foreground="#A4AEA2"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+
+                <Button Grid.Column="2"
+                        Style="{StaticResource ExpandButton}"
+                        Margin="12,0,0,0"
+                        Content="&#xE711;"
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="12"
+                        VerticalAlignment="Center"
+                        ToolTip="{services:Tr Dismiss}"
+                        Click="DismissBannerButton_Click"/>
+
+            </Grid>
+
+        </Border>
 
 
         <Border Style="{StaticResource Card}">
@@ -894,6 +944,8 @@
                 <Grid.RowDefinitions>
 
                     <RowDefinition Height="50"/>
+
+                    <RowDefinition Height="Auto"/>
 
                     <RowDefinition Height="Auto"/>
 
@@ -941,6 +993,115 @@
                             Click="BrowseButton_Click"/>
 
                 </Grid>
+
+
+                <!-- Games the app has scanned before, with their update status. -->
+                <StackPanel x:Name="SavedGamesSection"
+                            Grid.Row="2"
+                            Visibility="Collapsed">
+
+                    <!-- Clicking anywhere on this row (except Update all)
+                         expands or collapses the list. -->
+                    <Border BorderBrush="#343B34"
+                            BorderThickness="0,1,0,0"
+                            Background="Transparent"
+                            Cursor="Hand"
+                            Height="44"
+                            MouseLeftButtonUp="SavedFoldersHeader_MouseLeftButtonUp">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Orientation="Horizontal"
+                                        VerticalAlignment="Center"
+                                        Margin="18,0">
+                                <TextBlock x:Name="SavedFoldersTitle"
+                                           FontSize="13"
+                                           FontWeight="SemiBold"
+                                           Foreground="#A4AEA2"/>
+                                <TextBlock x:Name="SavedFoldersSummary"
+                                           FontSize="13"
+                                           Foreground="#E6B84A"/>
+                            </StackPanel>
+
+                            <Button x:Name="UpdateAllButton"
+                                    Grid.Column="1"
+                                    Height="30"
+                                    FontSize="13"
+                                    Cursor="Arrow"
+                                    Margin="0,0,4,0"
+                                    VerticalAlignment="Center"
+                                    Visibility="Collapsed"
+                                    Click="UpdateAllButton_Click"/>
+
+                            <Button x:Name="SavedFoldersExpandButton"
+                                    Grid.Column="2"
+                                    Style="{StaticResource ExpandButton}"
+                                    Content="▼"
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center"
+                                    Click="SavedFoldersExpandButton_Click"/>
+                        </Grid>
+
+                    </Border>
+
+                    <!-- Shown after Update adds a new folder to the list,
+                         even while the list is collapsed. -->
+                    <Border x:Name="JustAddedNotice"
+                            Visibility="Collapsed"
+                            BorderBrush="#343B34"
+                            BorderThickness="0,1,0,0">
+
+                        <Grid Margin="18,9,10,9">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock x:Name="JustAddedFolderText"
+                                       FontSize="13"
+                                       VerticalAlignment="Center"
+                                       TextTrimming="CharacterEllipsis"/>
+
+                            <Border Grid.Column="1"
+                                    Background="#1F2A14"
+                                    BorderBrush="#4E7A10"
+                                    BorderThickness="1"
+                                    CornerRadius="9"
+                                    Padding="8,1,8,2"
+                                    Margin="12,0,0,0"
+                                    VerticalAlignment="Center">
+                                <TextBlock Text="{services:Tr JustAdded}"
+                                           FontSize="11"
+                                           Foreground="#86CC0A"/>
+                            </Border>
+
+                            <Button Grid.Column="2"
+                                    Content="{services:Tr Remove}"
+                                    Height="30"
+                                    MinWidth="70"
+                                    FontSize="13"
+                                    Margin="12,0,4,0"
+                                    VerticalAlignment="Center"
+                                    Click="JustAddedRemoveButton_Click"/>
+                        </Grid>
+
+                    </Border>
+
+                    <ScrollViewer x:Name="SavedFoldersList"
+                                  Visibility="Collapsed"
+                                  MaxHeight="232"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel x:Name="SavedGamesPanel"/>
+                    </ScrollViewer>
+
+                </StackPanel>
 
             </Grid>
 
@@ -1497,13 +1658,15 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="90"/>
                             <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="120"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="{services:Tr Type}" FontWeight="SemiBold" Foreground="#A4AEA2"/>
                         <TextBlock Grid.Row="0" Grid.Column="1" Text="{services:Tr Version}" FontWeight="SemiBold" Foreground="#A4AEA2"/>
-                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{services:Tr Location}" FontWeight="SemiBold" Foreground="#A4AEA2"/>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{services:Tr Latest}" FontWeight="SemiBold" Foreground="#A4AEA2"/>
+                        <TextBlock Grid.Row="0" Grid.Column="3" Text="{services:Tr Location}" FontWeight="SemiBold" Foreground="#A4AEA2"/>
                         <ScrollViewer Grid.Row="1"
-                                      Grid.ColumnSpan="3"
+                                      Grid.ColumnSpan="4"
                                       MaxHeight="430"
                                       VerticalScrollBarVisibility="Auto"
                                       HorizontalScrollBarVisibility="Disabled">

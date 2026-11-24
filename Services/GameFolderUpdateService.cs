@@ -88,25 +88,31 @@ namespace dlss_updater.Services
                     continue;
                 }
 
-                if (IsLegacyDlss(fileName, installedVersion))
+                if (DlssVersionRules.IsLegacyDlss(fileName, installedVersion))
                 {
                     releaseAsset = DlssReleaseClient.GetLegacyDlssAsset();
                 }
 
-                if (!Version.TryParse(releaseAsset.Version, out latestVersion))
+                DlssFileStatus status = DlssVersionRules.Evaluate(
+                    fileName,
+                    installedVersion,
+                    releaseAsset.Version,
+                    out latestVersion);
+
+                if (status == DlssFileStatus.Unknown)
                 {
                     result.Errors.Add(
                         Translator.T("CouldNotCompareVersion", installedFile.Path));
                     continue;
                 }
 
-                if (latestVersion <= installedVersion)
+                if (status == DlssFileStatus.UpToDate)
                 {
                     result.AlreadyCurrentFiles++;
                     continue;
                 }
 
-                if (!AreVersionsCompatible(fileName, installedVersion, latestVersion))
+                if (status == DlssFileStatus.Incompatible)
                 {
                     result.SkippedFiles.Add(
                         Translator.T(
@@ -173,53 +179,6 @@ namespace dlss_updater.Services
 
             fileProgress?.Report(1.0);
             return result;
-        }
-
-        private static bool AreVersionsCompatible(
-            string fileName,
-            Version installedVersion,
-            Version latestVersion)
-        {
-            int installedMajor = GetDlssCompatibilityMajor(installedVersion.Major);
-            int latestMajor = GetDlssCompatibilityMajor(latestVersion.Major);
-
-            if (string.Equals(
-                fileName,
-                "nvngx_dlssg.dll",
-                StringComparison.OrdinalIgnoreCase))
-            {
-                installedMajor = NormalizeFrameGenerationMajor(installedMajor);
-                latestMajor = NormalizeFrameGenerationMajor(latestMajor);
-            }
-
-            if (installedMajor == latestMajor)
-            {
-                return true;
-            }
-
-            return (installedMajor == 2 || installedMajor == 3) &&
-                (latestMajor == 2 || latestMajor == 3);
-        }
-
-        private static bool IsLegacyDlss(string fileName, Version installedVersion)
-        {
-            return string.Equals(
-                    fileName,
-                    "nvngx_dlss.dll",
-                    StringComparison.OrdinalIgnoreCase) &&
-                GetDlssCompatibilityMajor(installedVersion.Major) == 1;
-        }
-
-        private static int NormalizeFrameGenerationMajor(int major)
-        {
-            return major == 1 ? 3 : major;
-        }
-
-        private static int GetDlssCompatibilityMajor(int fileVersionMajor)
-        {
-            return fileVersionMajor >= 100
-                ? fileVersionMajor / 100
-                : fileVersionMajor;
         }
 
         private static async Task<Dictionary<string, DlssReleaseAsset>>

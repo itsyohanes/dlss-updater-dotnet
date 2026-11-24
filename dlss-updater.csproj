@@ -67,6 +67,8 @@
     <Compile Include="Services\DlssReleaseClient.cs" />
     <Compile Include="Services\BackupArchiveService.cs" />
     <Compile Include="Services\GameFolderUpdateService.cs" />
+    <Compile Include="Services\DlssVersionRules.cs" />
+    <Compile Include="Services\SavedGamesStore.cs" />
     <Compile Include="Services\Translator.cs" />
     <Compile Include="Services\FlagIcons.cs" />
     <Page Include="MainWindow.xaml">
@@ -78,6 +80,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.Library.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
