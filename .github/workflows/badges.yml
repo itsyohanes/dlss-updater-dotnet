@@ -10,29 +10,35 @@ on:
     - cron: "0 6 * * 1"
   workflow_dispatch:
 
-permissions:
-  contents: write
+# Nothing gets write access by default. Only the publish job below can
+# write, and it runs no third-party code: the npm packages are installed
+# and run in the read-only build job.
+permissions: {}
 
 concurrency:
   group: badges
   cancel-in-progress: true
 
 jobs:
-  badges:
+  build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           ref: main
+          persist-credentials: false
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
 
+      # Exact versions from package-lock.json, with install scripts disabled.
       - name: Install badge tools
         working-directory: .github/scripts
-        run: npm install --no-save --no-package-lock badge-maker@6 simple-icons@16
+        run: npm ci --ignore-scripts --no-audit --no-fund
 
       - name: Collect badge values
         env:
@@ -51,12 +57,33 @@ jobs:
       - name: Build badges
         run: node .github/scripts/badges.mjs "$RUNNER_TEMP/badges"
 
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: badges
+          path: ${{ runner.temp }}/badges/*.svg
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: badges
+          path: badges
+
       - name: Publish to the badges branch
-        working-directory: ${{ runner.temp }}/badges
+        working-directory: badges
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git init -q -b badges
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -q -m "chore: update badges"
-          git push -f "https://x-access-token:${{ github.token }}@github.com/$GITHUB_REPOSITORY.git" badges
+          git push -f "https://x-access-token:${GH_TOKEN}@github.com/$GITHUB_REPOSITORY.git" badges

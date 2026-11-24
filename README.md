@@ -4,7 +4,7 @@ A simple desktop tool for finding and updating NVIDIA DLSS files in your applica
 
 The C#/.NET Framework version keeps the executable lightweight at around 291 KB, compared with around 10 MB for the Python build.
 
-[![Test](https://github.com/itsyohanes/dlss-updater-dotnet/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/itsyohanes/dlss-updater-dotnet/actions/workflows/test.yml)
+[![Test](https://github.com/itsyohanes/dlss-updater-dotnet/actions/workflows/test.yml/badge.svg?event=pull_request)](https://github.com/itsyohanes/dlss-updater-dotnet/actions/workflows/test.yml)
 [![Release](https://raw.githubusercontent.com/itsyohanes/dlss-updater-dotnet/badges/release.svg)](https://github.com/itsyohanes/dlss-updater-dotnet/releases/latest)
 [![Last commit](https://raw.githubusercontent.com/itsyohanes/dlss-updater-dotnet/badges/last-commit.svg)](https://github.com/itsyohanes/dlss-updater-dotnet/commits/main)
 [![License](https://raw.githubusercontent.com/itsyohanes/dlss-updater-dotnet/badges/license.svg)](https://github.com/itsyohanes/dlss-updater-dotnet/blob/main/LICENSE)
