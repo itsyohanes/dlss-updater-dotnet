@@ -1,60 +1,76 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 736 658" width="736" height="658" role="img" aria-labelledby="t">
-  <title id="t">DLSS Updater scanning a folder and updating its DLSS files</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 736 751" width="736" height="751" role="img" aria-labelledby="t">
+  <title id="t">DLSS Updater scanning Cyberpunk 2077, updating its DLSS file and showing it as just added to Your folders</title>
   <style>
     text { font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif; font-size: 14px; fill: #E8EDE8; }
     .title { font-size: 12px; fill: #1b1b1b; }
     .h { font-size: 14.5px; font-weight: 600; }
     .dim { fill: #697469; }
     .muted { fill: #A4AEA2; }
+    .small { font-size: 12px; }
+    .ok { fill: #76B900; }
+    .warn { fill: #E6B84A; }
     .btn { fill: #2A302A; stroke: #465046; }
     .btn-off { fill: #1E231E; stroke: #2A302A; }
     .panel { fill: #1C211C; stroke: #2A302A; }
     .rule { stroke: #2A302A; }
+    .x { stroke: #A4AEA2; stroke-width: 1.3; }
     .c { text-anchor: middle; }
+    .e { text-anchor: end; }
 
-    .anim { animation-duration: 12s; animation-iteration-count: infinite; animation-timing-function: linear; }
+    .anim { animation-duration: 16s; animation-iteration-count: infinite; animation-timing-function: linear; }
     .typed { animation-name: type; }
     .focus { animation-name: focus; }
     .scanning { animation-name: scanning; }
     .found { animation-name: found; }
+    .scanned { animation-name: scanned; }
+    .ready { animation-name: ready; }
     .updating { animation-name: updating; }
     .done { animation-name: done; }
-    .ready { animation-name: ready; }
-    .press { animation-name: press; transform-origin: 652px 610px; transform-box: view-box; }
+    .before { animation-name: before; }
     .bar { animation-name: bar; }
+    .press { animation-name: press; transform-origin: 652px 653.5px; transform-box: view-box; }
+    .notice { animation-name: notice; }
+    .grow { animation-name: grow; animation-timing-function: ease-in-out; }
+    .shift { animation-name: shift; animation-timing-function: ease-in-out; }
+    .win { animation-name: win; animation-timing-function: ease-in-out; }
     .cursor { animation-name: cursor; animation-timing-function: ease-in-out; }
 
-    @keyframes type { 0%, 6% { width: 0; } 22%, 94% { width: 340px; } 96%, 100% { width: 0; } }
-    @keyframes focus { 0%, 5% { opacity: 0; } 6%, 23% { opacity: 1; } 25%, 100% { opacity: 0; } }
-    @keyframes scanning { 0%, 23% { opacity: 0; } 24%, 29% { opacity: 1; } 30%, 100% { opacity: 0; } }
-    @keyframes found { 0%, 29% { opacity: 0; } 30%, 48% { opacity: 1; } 49%, 100% { opacity: 0; } }
-    @keyframes updating { 0%, 48% { opacity: 0; } 49%, 59% { opacity: 1; } 60%, 100% { opacity: 0; } }
-    @keyframes done { 0%, 59% { opacity: 0; } 61%, 93% { opacity: 1; } 95%, 100% { opacity: 0; } }
-    @keyframes ready { 0%, 29% { opacity: 0; } 31%, 93% { opacity: 1; } 95%, 100% { opacity: 0; } }
-    @keyframes press { 0%, 46.5% { transform: scale(1); } 47.5% { transform: scale(0.96); } 49%, 100% { transform: scale(1); } }
-    @keyframes bar { 0%, 49% { width: 0; opacity: 1; } 59% { width: 678px; opacity: 1; } 62%, 100% { width: 678px; opacity: 0; } }
+    @keyframes type { 0%, 10% { width: 0; } 24%, 94% { width: 200px; } 95%, 100% { width: 0; } }
+    @keyframes focus { 0%, 8.9% { opacity: 0; } 9%, 26.9% { opacity: 1; } 27%, 100% { opacity: 0; } }
+    @keyframes scanning { 0%, 24.9% { opacity: 0; } 25%, 28.9% { opacity: 1; } 29%, 100% { opacity: 0; } }
+    @keyframes found { 0%, 28.9% { opacity: 0; } 29%, 39.9% { opacity: 1; } 40%, 100% { opacity: 0; } }
+    @keyframes scanned { 0%, 28.9% { opacity: 0; } 29%, 57.9% { opacity: 1; } 58%, 100% { opacity: 0; } }
+    @keyframes ready { 0%, 24.9% { opacity: 0; } 25%, 94% { opacity: 1; } 95%, 100% { opacity: 0; } }
+    @keyframes updating { 0%, 39.9% { opacity: 0; } 40%, 57.9% { opacity: 1; } 58%, 100% { opacity: 0; } }
+    @keyframes done { 0%, 57.9% { opacity: 0; } 58%, 94% { opacity: 1; } 95%, 100% { opacity: 0; } }
+    @keyframes before { 0%, 57.9% { opacity: 1; } 58%, 94% { opacity: 0; } 95%, 100% { opacity: 1; } }
+    @keyframes bar { 0%, 40% { width: 0; opacity: 1; } 57% { width: 676px; opacity: 1; } 59%, 100% { width: 676px; opacity: 0; } }
+    @keyframes press { 0%, 39% { transform: scale(1); } 39.6% { transform: scale(0.96); } 40.3%, 100% { transform: scale(1); } }
+    @keyframes notice { 0%, 59.5% { opacity: 0; } 61.5%, 94% { opacity: 1; } 95%, 100% { opacity: 0; } }
+    @keyframes grow { 0%, 58% { height: 172px; } 61%, 95% { height: 221px; } 98%, 100% { height: 172px; } }
+    @keyframes shift { 0%, 58% { transform: translateY(0); } 61%, 95% { transform: translateY(49px); } 98%, 100% { transform: translateY(0); } }
+    @keyframes win { 0%, 58% { height: 702px; } 61%, 95% { height: 751px; } 98%, 100% { height: 702px; } }
     @keyframes cursor {
-      0%, 33% { transform: translate(470px, 560px); opacity: 0; }
-      35% { transform: translate(470px, 560px); opacity: 1; }
-      45%, 50% { transform: translate(640px, 606px); opacity: 1; }
-      66% { transform: translate(560px, 540px); opacity: 1; }
-      70%, 100% { transform: translate(560px, 540px); opacity: 0; }
+      0%, 2% { transform: translate(430px, 430px); opacity: 0; }
+      4% { transform: translate(430px, 430px); opacity: 1; }
+      8%, 27% { transform: translate(300px, 197px); opacity: 1; }
+      36%, 58% { transform: translate(646px, 651px); opacity: 1; }
+      60%, 100% { transform: translate(646px, 651px); opacity: 0; }
     }
 
     @media (prefers-reduced-motion: reduce) {
       .anim { animation: none; }
-      .focus, .scanning, .found, .updating, .bar, .cursor { opacity: 0; }
     }
   </style>
 
   <defs>
-    <clipPath id="window"><rect width="736" height="658" rx="8"/></clipPath>
-    <clipPath id="typing"><rect class="anim typed" x="58" y="180" width="340" height="34"/></clipPath>
+    <clipPath id="window"><rect class="anim win" width="736" height="702" rx="8"/></clipPath>
+    <clipPath id="typing"><rect class="anim typed" x="58" y="180" width="200" height="34"/></clipPath>
   </defs>
 
   <g clip-path="url(#window)">
     <!-- Window chrome -->
-    <rect width="736" height="658" fill="#171A17"/>
+    <rect class="anim win" width="736" height="702" fill="#171A17"/>
     <rect width="736" height="31" fill="#F3F3F3"/>
     <rect x="9" y="8" width="16" height="16" rx="3" fill="#76B900"/>
     <circle cx="17" cy="16" r="4.5" fill="none" stroke="#fff" stroke-width="1.6"/>
@@ -73,64 +89,82 @@
     <text x="604" y="80">English</text>
     <path d="M685 72l5 5 5-5" fill="none" stroke="#A4AEA2" stroke-width="1.4"/>
 
-    <!-- Folder to scan -->
-    <rect x="29.5" y="107.5" width="677" height="128" rx="6" class="panel"/>
+    <!-- Folder to scan, with the saved folders list underneath (stays collapsed) -->
+    <rect class="panel anim grow" x="29.5" y="107.5" width="677" height="172" rx="6"/>
     <text class="h" x="48" y="139">Folder to scan</text>
     <path d="M30 157.5h676" class="rule"/>
     <rect x="48.5" y="178.5" width="543" height="36" rx="4" fill="#171A17" stroke="#394139"/>
     <rect class="anim focus" x="48.5" y="178.5" width="543" height="36" rx="4" fill="none" stroke="#76B900" opacity="0"/>
-    <text x="60" y="202" clip-path="url(#typing)">D:\Games\SteamLibrary\steamapps\common</text>
+    <text x="60" y="202" clip-path="url(#typing)">D:\Games\Cyberpunk 2077</text>
     <rect x="600.5" y="178.5" width="87" height="36" rx="4" class="btn"/>
     <text class="c" x="644" y="202">Browse</text>
 
-    <!-- Scan results -->
-    <rect x="29.5" y="252.5" width="677" height="103" rx="6" class="panel"/>
-    <text class="h dim" x="48" y="284">Scan results</text>
-    <text class="h anim ready" x="48" y="284">Scan results</text>
-    <path d="M30 302.5h676" class="rule"/>
-    <rect class="anim bar" x="30" y="301" width="0" height="3" fill="#76B900"/>
-    <text class="muted anim scanning" x="48" y="334" opacity="0">Scanning…</text>
-    <text class="muted anim found" x="48" y="334" opacity="0">Found 3 DLSS files</text>
-    <text class="muted anim updating" x="48" y="334" opacity="0">Updating 3 files…</text>
-    <text class="muted anim done" x="48" y="334">Updated 3 file(s). 0 file(s) were already current.</text>
-    <rect x="576.5" y="311.5" width="111" height="36" rx="4" class="btn-off"/>
-    <text class="c dim" x="632" y="335">Show details</text>
-    <g class="anim ready">
-      <rect x="576.5" y="311.5" width="111" height="36" rx="4" class="btn"/>
-      <text class="c" x="632" y="335">Show details</text>
+    <path d="M30 235.5h676" class="rule"/>
+    <text class="muted anim before" x="48" y="262" style="font-size:13px;font-weight:600" opacity="0">Your folders (3)</text>
+    <text class="muted anim done" x="48" y="262" style="font-size:13px;font-weight:600">Your folders (4)</text>
+    <path d="M676.5 254.5h10l-5 6z" fill="#A4AEA2"/>
+
+    <!-- "Just added" notice: appears once Update adds Cyberpunk 2077 to the list -->
+    <g class="anim notice" opacity="0">
+      <path d="M30 279.5h676" class="rule"/>
+      <text x="48" y="309" style="font-size:13px">D:\Games\Cyberpunk 2077</text>
+      <rect x="540.5" y="295.5" width="70" height="18" rx="9" fill="#1F2A14" stroke="#4E7A10"/>
+      <text class="c" x="575.5" y="308.5" style="font-size:11px;fill:#86CC0A">Just added</text>
+      <rect x="622.5" y="289.5" width="70" height="30" rx="4" class="btn"/>
+      <text class="c" x="657.5" y="309" style="font-size:13px">Remove</text>
     </g>
 
-    <!-- Backup -->
-    <rect x="29.5" y="372.5" width="677" height="156" rx="6" class="panel"/>
-    <text class="h dim" x="48" y="404">Backup</text>
-    <text class="h anim done" x="48" y="404">Backup</text>
-    <path d="M30 423.5h676" class="rule"/>
-    <text class="anim done" x="48" y="455" fill="#86CC0A" style="fill:#86CC0A">✓  3 backups found</text>
-    <rect x="415.5" y="431.5" width="134" height="36" rx="4" class="btn-off"/>
-    <text class="c dim" x="482" y="455">Restore backups</text>
-    <rect x="558.5" y="431.5" width="129" height="36" rx="4" class="btn-off"/>
-    <text class="c dim" x="623" y="455">Delete backups</text>
-    <g class="anim done">
-      <rect x="415.5" y="431.5" width="134" height="36" rx="4" class="btn"/>
-      <text class="c" x="482" y="455">Restore backups</text>
-      <rect x="558.5" y="431.5" width="129" height="36" rx="4" class="btn"/>
-      <text class="c" x="623" y="455">Delete backups</text>
-    </g>
-    <path d="M30 476.5h676" class="rule"/>
-    <text class="muted" x="48" y="508">Overwrite backup when updating</text>
-    <text class="muted" x="622" y="508">On</text>
-    <rect x="648" y="492" width="40" height="20" rx="10" fill="#609600"/>
-    <circle cx="678" cy="502" r="7" fill="#E8EDE8"/>
-
-    <!-- Update -->
-    <rect x="597" y="591" width="110" height="37" rx="4" fill="#2C3A1C"/>
-    <text class="c" x="652" y="615" style="fill:#5B6B45">Update</text>
-    <g class="anim press">
+    <!-- Everything below slides down when the notice appears -->
+    <g class="anim shift">
+      <!-- Scan results -->
+      <rect x="29.5" y="296.5" width="677" height="103" rx="6" class="panel"/>
+      <text class="h dim" x="48" y="328">Scan results</text>
+      <text class="h anim ready" x="48" y="328">Scan results</text>
+      <path d="M30 346.5h676" class="rule"/>
+      <rect class="anim bar" x="30" y="345" width="0" height="3" fill="#76B900"/>
+      <text class="muted anim scanning" x="48" y="378" opacity="0">Searching...</text>
+      <text class="muted anim found" x="48" y="378" opacity="0">Found 1 DLSS file<tspan class="warn"> · 1 update available</tspan></text>
+      <text class="muted anim updating" x="48" y="378" opacity="0">Updating nvngx_dlss.dll…</text>
+      <text class="muted anim done" x="48" y="378">Found 1 DLSS file<tspan class="ok"> · all up to date</tspan></text>
+      <rect x="576.5" y="355.5" width="111" height="36" rx="4" class="btn-off"/>
+      <text class="c dim" x="632" y="379">Show details</text>
       <g class="anim ready">
-        <rect x="597" y="591" width="110" height="37" rx="4" fill="#76B900"/>
-        <text class="c anim found" x="652" y="615" style="fill:#11170D;font-weight:600">Update</text>
-        <text class="c anim updating" x="652" y="615" opacity="0" style="fill:#11170D;font-weight:600">Updating…</text>
-        <text class="c anim done" x="652" y="615" style="fill:#11170D;font-weight:600">Update</text>
+        <rect x="576.5" y="355.5" width="111" height="36" rx="4" class="btn"/>
+        <text class="c" x="632" y="379">Show details</text>
+      </g>
+
+      <!-- Backup -->
+      <rect x="29.5" y="416.5" width="677" height="156" rx="6" class="panel"/>
+      <text class="h dim" x="48" y="448">Backup</text>
+      <text class="h anim ready" x="48" y="448">Backup</text>
+      <path d="M30 467.5h676" class="rule"/>
+      <text class="muted anim scanned" x="48" y="499" opacity="0">No backups detected</text>
+      <text class="anim done" x="48" y="499" style="fill:#86CC0A">✓  Backup found (310.2.1)</text>
+      <rect x="415.5" y="475.5" width="134" height="36" rx="4" class="btn-off"/>
+      <text class="c dim" x="482" y="499">Restore backups</text>
+      <rect x="558.5" y="475.5" width="129" height="36" rx="4" class="btn-off"/>
+      <text class="c dim" x="623" y="499">Delete backups</text>
+      <g class="anim done">
+        <rect x="415.5" y="475.5" width="134" height="36" rx="4" class="btn"/>
+        <text class="c" x="482" y="499">Restore backups</text>
+        <rect x="558.5" y="475.5" width="129" height="36" rx="4" class="btn"/>
+        <text class="c" x="623" y="499">Delete backups</text>
+      </g>
+      <path d="M30 520.5h676" class="rule"/>
+      <text class="muted" x="48" y="552">Overwrite backup when updating</text>
+      <text class="muted" x="622" y="552">On</text>
+      <rect x="648" y="536" width="40" height="20" rx="10" fill="#609600"/>
+      <circle cx="678" cy="546" r="7" fill="#E8EDE8"/>
+
+      <!-- Update: enabled once the scan finds a newer version -->
+      <rect x="597" y="635" width="110" height="37" rx="4" fill="#2C3A1C"/>
+      <text class="c" x="652" y="659" style="fill:#5B6B45">Update</text>
+      <g class="anim press">
+        <g class="anim scanned" opacity="0">
+          <rect x="597" y="635" width="110" height="37" rx="4" fill="#76B900"/>
+          <text class="c anim found" x="652" y="659" opacity="0" style="fill:#11170D;font-weight:600">Update (1)</text>
+          <text class="c anim updating" x="652" y="659" opacity="0" style="fill:#11170D;font-weight:600">Updating...</text>
+        </g>
       </g>
     </g>
 

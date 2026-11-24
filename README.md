@@ -31,13 +31,15 @@ The C#/.NET Framework version keeps the executable lightweight at around 216 KB,
 - Automatically creates per-file backups before updating
 - Choose whether an existing backup is overwritten during an update
 - Restore original files from backups at any time
+- Adds each folder you update to a "Your folders" list, with per-folder Update and Update all
+- Shows a banner on startup when newer DLSS files are available
 - Available in 14 languages
 
 ---
 
 ## Demo
 
-![DLSS Updater scanning a folder and updating its DLSS files](docs/assets/app-demo.svg)
+![DLSS Updater scanning Cyberpunk 2077, updating its DLSS file and adding it to Your folders](docs/assets/app-demo.svg)
 
 ---
 
