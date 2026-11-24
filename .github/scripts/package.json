@@ -1,0 +1,10 @@
+{
+  "name": "dlss-updater-badges",
+  "private": true,
+  "description": "Builds the README badges. Installed in CI with npm ci --ignore-scripts.",
+  "type": "module",
+  "dependencies": {
+    "badge-maker": "6.0.0",
+    "simple-icons": "16.38.1"
+  }
+}
