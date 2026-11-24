@@ -16,11 +16,11 @@ namespace DlssUpdater.Tests
         {
             get
             {
-                FieldInfo field = typeof(Translator).GetField(
+                FieldInfo tablesField = typeof(Translator).GetField(
                     "Tables",
                     BindingFlags.NonPublic | BindingFlags.Static);
-                Assert.NotNull(field);
-                return (Dictionary<string, Dictionary<string, string>>)field.GetValue(null);
+                Assert.NotNull(tablesField);
+                return (Dictionary<string, Dictionary<string, string>>)tablesField.GetValue(null);
             }
         }
 
