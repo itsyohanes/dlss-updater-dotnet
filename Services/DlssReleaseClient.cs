@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
@@ -22,6 +23,15 @@ namespace dlss_updater.Services
 
         [DataMember(Name = "sha256", EmitDefaultValue = false)]
         public string Sha256 { get; set; }
+
+        // Optional compressed copy of the DLL. "sha256" stays the hash of the
+        // extracted DLL; "zipSha256" is the hash of the zip itself. Older app
+        // versions ignore these fields and keep downloading "url".
+        [DataMember(Name = "zipUrl", EmitDefaultValue = false)]
+        public string ZipUrl { get; set; }
+
+        [DataMember(Name = "zipSha256", EmitDefaultValue = false)]
+        public string ZipSha256 { get; set; }
     }
 
     [DataContract]
@@ -135,6 +145,37 @@ namespace dlss_updater.Services
 
                 item.Value.Sha256 = item.Value.Sha256.ToLowerInvariant();
 
+                if (!string.IsNullOrWhiteSpace(item.Value.ZipUrl))
+                {
+                    if (IsTrustedDownloadUrl(item.Value.ZipUrl) &&
+                        !IsSha256(item.Value.ZipSha256))
+                    {
+                        if (releaseDigests == null)
+                        {
+                            releaseDigests = await GetFilesReleaseAssetSha256Async();
+                        }
+
+                        string zipDigest;
+                        if (releaseDigests.TryGetValue(
+                            GetAssetName(item.Value.ZipUrl), out zipDigest))
+                        {
+                            item.Value.ZipSha256 = zipDigest;
+                        }
+                    }
+
+                    if (IsTrustedDownloadUrl(item.Value.ZipUrl) &&
+                        IsSha256(item.Value.ZipSha256))
+                    {
+                        item.Value.ZipSha256 = item.Value.ZipSha256.ToLowerInvariant();
+                    }
+                    else
+                    {
+                        // Unusable zip entry: fall back to the plain DLL.
+                        item.Value.ZipUrl = null;
+                        item.Value.ZipSha256 = null;
+                    }
+                }
+
                 manifest[item.Key] = item.Value;
             }
 
@@ -224,7 +265,126 @@ namespace dlss_updater.Services
         }
 
         public static async Task<string> DownloadToCacheAsync(
-            string url,
+            DlssReleaseAsset asset,
+            string fileName,
+            string version)
+        {
+            if (!string.IsNullOrWhiteSpace(asset.ZipUrl) &&
+                IsSha256(asset.ZipSha256))
+            {
+                try
+                {
+                    return await DownloadToCacheAsync(
+                        () => DownloadZippedDllAsync(asset, fileName),
+                        fileName,
+                        version,
+                        asset.Sha256);
+                }
+                catch
+                {
+                    // Fall back to the uncompressed DLL below.
+                }
+            }
+
+            return await DownloadToCacheAsync(
+                () => DownloadToTemporaryFileAsync(asset.Url, fileName),
+                fileName,
+                version,
+                asset.Sha256);
+        }
+
+        private const long MaxExtractedDllBytes = 512L * 1024 * 1024;
+
+        private static async Task<string> DownloadZippedDllAsync(
+            DlssReleaseAsset asset,
+            string fileName)
+        {
+            string zipPath = null;
+            string extractedPath = Path.Combine(
+                Path.GetTempPath(),
+                "dlss-updater-" + Guid.NewGuid().ToString("N") + "-" + fileName);
+
+            try
+            {
+                zipPath = await DownloadToTemporaryFileAsync(
+                    asset.ZipUrl,
+                    GetAssetName(asset.ZipUrl));
+
+                if (!FileMatchesSha256(zipPath, asset.ZipSha256))
+                {
+                    throw new InvalidDataException(
+                        Translator.T("ShaMismatch", GetAssetName(asset.ZipUrl)));
+                }
+
+                using (FileStream zipStream = File.OpenRead(zipPath))
+                using (ZipArchive archive = new ZipArchive(zipStream, ZipArchiveMode.Read))
+                {
+                    ZipArchiveEntry match = null;
+                    foreach (ZipArchiveEntry entry in archive.Entries)
+                    {
+                        // Only a top-level entry named exactly like the DLL.
+                        if (string.Equals(entry.FullName, fileName, StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (match != null)
+                            {
+                                throw new InvalidDataException(fileName);
+                            }
+
+                            match = entry;
+                        }
+                    }
+
+                    if (match == null || match.Length <= 0 || match.Length > MaxExtractedDllBytes)
+                    {
+                        throw new InvalidDataException(fileName);
+                    }
+
+                    using (Stream source = match.Open())
+                    using (FileStream destination = new FileStream(
+                        extractedPath,
+                        FileMode.CreateNew,
+                        FileAccess.Write,
+                        FileShare.None))
+                    {
+                        byte[] buffer = new byte[81920];
+                        long total = 0;
+                        int read;
+                        while ((read = await source.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                        {
+                            total += read;
+                            if (total > MaxExtractedDllBytes)
+                            {
+                                throw new InvalidDataException(fileName);
+                            }
+
+                            await destination.WriteAsync(buffer, 0, read);
+                        }
+                    }
+                }
+
+                return extractedPath;
+            }
+            catch
+            {
+                TryDeleteFile(extractedPath);
+                throw;
+            }
+            finally
+            {
+                TryDeleteFile(zipPath);
+            }
+        }
+
+        private static string GetAssetName(string url)
+        {
+            Uri uri;
+            return Uri.TryCreate(url, UriKind.Absolute, out uri)
+                ? Uri.UnescapeDataString(Path.GetFileName(uri.AbsolutePath))
+                : string.Empty;
+        }
+
+        private static async Task<string> DownloadToCacheAsync(
+            Func<Task<string>> download,
             string fileName,
             string version,
             string expectedSha256)
@@ -239,7 +399,7 @@ namespace dlss_updater.Services
 
             try
             {
-                downloadedPath = await DownloadToTemporaryFileAsync(url, fileName);
+                downloadedPath = await download();
                 if (!FileMatchesSha256(downloadedPath, expectedSha256))
                 {
                     throw new InvalidDataException(

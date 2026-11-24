@@ -121,6 +121,8 @@ Some antivirus software may flag the tool because downloading and replacing file
 
 DLSS files are now served from the [`dlss-files`](https://github.com/itsyohanes/dlss-updater-dotnet/releases/tag/dlss-files) pre-release in this repo instead of the separate `dlss-updater-files` repo. The release holds the DLLs and `dlss_manifest.json`, and is updated in place when new DLSS versions are available. It is marked as a pre-release so app releases remain the latest release.
 
+Each DLL is published both as-is and as a zip (for example `nvngx_dlss_310.9.16.zip`, about half the size). In the manifest, `url` and `sha256` describe the plain DLL, and the optional `zipUrl` and `zipSha256` describe the zip. Newer app versions download the zip, check both hashes and extract the DLL, falling back to the plain DLL if the zip is missing or fails. Older app versions ignore the zip fields and keep downloading the plain DLL.
+
 v1.2.1 and older still download from `dlss-updater-files`.
 
 ---

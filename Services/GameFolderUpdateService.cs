@@ -137,10 +137,9 @@ namespace dlss_updater.Services
                             progress?.Report(Translator.T("Downloading", fileName));
                             downloadedPath =
                                 await DlssReleaseClient.DownloadToCacheAsync(
-                                    releaseAsset.Url,
+                                    releaseAsset,
                                     fileName,
-                                    latestVersion.ToString(),
-                                    releaseAsset.Sha256);
+                                    latestVersion.ToString());
                         }
                         catch (Exception ex)
                         {
