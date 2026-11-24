@@ -40,7 +40,7 @@ The C#/.NET Framework version keeps the executable lightweight at around 291 KB,
 
 ## Demo
 
-![DLSS Updater scanning Twinmotion 2026.1, updating its DLSS file and adding it to Your folders](docs/assets/app-demo.svg)
+![DLSS Updater scanning Twinmotion 2026.2, updating its DLSS file and adding it to Your folders](docs/assets/app-demo.svg)
 
 ---
 
