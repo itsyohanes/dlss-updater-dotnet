@@ -46,6 +46,32 @@ namespace dlss_updater.Services
         public Dictionary<string, string> SeenVersions { get; set; }
     }
 
+    internal sealed class SavedFolderSnapshot
+    {
+        public string Folder { get; set; }
+
+        public string LastScannedUtc { get; set; }
+
+        public List<string> Paths { get; set; }
+    }
+
+    internal sealed class SavedFoldersDiskState
+    {
+        // Normalized folder paths (see SavedGamesStore.NormalizeFolder).
+        public HashSet<string> MissingFolders { get; } =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        // Folder -> its LastScannedUtc when the snapshot was taken. A folder
+        // scanned again since then already has fresher data, so the result
+        // is not applied to it.
+        public Dictionary<string, string> Stamps { get; } =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+        // DLL path -> version, for the saved DLLs that still exist.
+        public Dictionary<string, string> FileVersions { get; } =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    }
+
     // Saved games and seen manifest versions, kept in
     // %LocalAppData%\DLSS Updater\saved-games.json.
     internal static class SavedGamesStore
@@ -121,17 +147,64 @@ namespace dlss_updater.Services
             return added;
         }
 
-        // Re-reads the version of every saved DLL from disk. A game patch or
-        // a Steam "verify files" can put an older DLL back after we updated
-        // it, and the list should say so instead of showing the old result.
-        // Files that no longer exist are dropped.
-        public static void RefreshFileVersions()
+        // A copy of every saved folder and its DLL paths, taken on the UI
+        // thread so ReadDiskState can run on another one.
+        public static List<SavedFolderSnapshot> GetFolderSnapshot()
+        {
+            return State.Games
+                .Select(game => new SavedFolderSnapshot
+                {
+                    Folder = game.Folder,
+                    LastScannedUtc = game.LastScannedUtc,
+                    Paths = game.Files.Select(file => file.Path).ToList()
+                })
+                .ToList();
+        }
+
+        // Reads which saved folders exist and the version of every saved DLL.
+        // Touches only the disk, never the saved state, so it can run off the
+        // UI thread: a folder on a sleeping drive or an unreachable network
+        // share can take many seconds to answer.
+        public static SavedFoldersDiskState ReadDiskState(
+            IEnumerable<SavedFolderSnapshot> snapshot)
+        {
+            SavedFoldersDiskState state = new SavedFoldersDiskState();
+
+            foreach (SavedFolderSnapshot folder in snapshot)
+            {
+                string key = NormalizeFolder(folder.Folder);
+                state.Stamps[key] = folder.LastScannedUtc ?? string.Empty;
+
+                if (!Directory.Exists(folder.Folder))
+                {
+                    state.MissingFolders.Add(key);
+                    continue;
+                }
+
+                foreach (string path in folder.Paths)
+                {
+                    if (File.Exists(path))
+                    {
+                        state.FileVersions[path] = FolderScanner.GetFileVersion(path);
+                    }
+                }
+            }
+
+            return state;
+        }
+
+        // Applies ReadDiskState's result. A game patch or a Steam "verify
+        // files" can put an older DLL back after we updated it, and the list
+        // should say so instead of showing the old result. Files that no
+        // longer exist are dropped.
+        public static void ApplyDiskState(SavedFoldersDiskState state)
         {
             bool changed = false;
 
             foreach (SavedGame game in State.Games)
             {
-                if (!Directory.Exists(game.Folder))
+                if (!IsUnchangedSince(state, game) ||
+                    state.MissingFolders.Contains(NormalizeFolder(game.Folder)))
                 {
                     continue;
                 }
@@ -140,13 +213,13 @@ namespace dlss_updater.Services
 
                 foreach (SavedGameFile file in game.Files)
                 {
-                    if (!File.Exists(file.Path))
+                    string version;
+                    if (!state.FileVersions.TryGetValue(file.Path, out version))
                     {
                         changed = true;
                         continue;
                     }
 
-                    string version = FolderScanner.GetFileVersion(file.Path);
                     if (!string.Equals(version, file.Version, StringComparison.Ordinal))
                     {
                         file.Version = version;
@@ -163,6 +236,31 @@ namespace dlss_updater.Services
             {
                 Save();
             }
+        }
+
+        // The saved folders ReadDiskState found missing, leaving out any
+        // that were scanned (so exist) after the snapshot was taken.
+        public static HashSet<string> GetMissingFolders(SavedFoldersDiskState state)
+        {
+            HashSet<string> missing = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (SavedGame game in State.Games)
+            {
+                string key = NormalizeFolder(game.Folder);
+                if (state.MissingFolders.Contains(key) && IsUnchangedSince(state, game))
+                {
+                    missing.Add(key);
+                }
+            }
+
+            return missing;
+        }
+
+        private static bool IsUnchangedSince(SavedFoldersDiskState state, SavedGame game)
+        {
+            string stamp;
+            return state.Stamps.TryGetValue(NormalizeFolder(game.Folder), out stamp) &&
+                string.Equals(stamp, game.LastScannedUtc ?? string.Empty, StringComparison.Ordinal);
         }
 
         public static void Remove(string folder)
@@ -204,7 +302,7 @@ namespace dlss_updater.Services
             return string.IsNullOrWhiteSpace(name) ? trimmed : name;
         }
 
-        private static string NormalizeFolder(string folder)
+        internal static string NormalizeFolder(string folder)
         {
             return (folder ?? string.Empty).Trim().TrimEnd(
                 Path.DirectorySeparatorChar,

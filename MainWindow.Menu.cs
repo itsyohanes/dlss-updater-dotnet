@@ -166,7 +166,10 @@ namespace dlss_updater
                 return;
             }
 
-            DeleteAllBackupsMenuItem.IsEnabled = false;
+            if (!TryBeginBackupOperation())
+            {
+                return;
+            }
 
             try
             {
@@ -190,11 +193,18 @@ namespace dlss_updater
                     UpdateBackupResult(_backupFiles);
                 }
 
+                EndBackupOperation();
                 ShowOperationResult(result.GetSummary(false), result.Errors, title);
             }
-            finally
+            catch (Exception ex)
             {
-                DeleteAllBackupsMenuItem.IsEnabled = !_updateInProgress;
+                EndBackupOperation();
+                MessageBox.Show(
+                    this,
+                    Translator.T("DeleteFailedMessage") + Environment.NewLine + ex.Message,
+                    title,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
 

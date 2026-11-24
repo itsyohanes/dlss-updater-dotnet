@@ -59,12 +59,23 @@ namespace dlss_updater.Services
             Dictionary<string, string> downloadedFiles =
                 new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
+            // The same file listed twice would be backed up a second time
+            // after it was already replaced, overwriting the real backup.
+            HashSet<string> seenPaths =
+                new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
             int fileIndex = 0;
 
             foreach (ScannedFile installedFile in installedFiles)
             {
                 fileProgress?.Report((double)fileIndex / installedFiles.Count);
                 fileIndex++;
+
+                if (!seenPaths.Add(Path.GetFullPath(installedFile.Path)))
+                {
+                    continue;
+                }
+
                 string fileName = Path.GetFileName(installedFile.Path);
                 progress?.Report(
                     Translator.T("CheckingFile", fileName, fileIndex, installedFiles.Count));

@@ -66,6 +66,7 @@
     <Compile Include="Services\BackupScanner.cs" />
     <Compile Include="Services\BackupIndexStore.cs" />
     <Compile Include="Services\DlssReleaseClient.cs" />
+    <Compile Include="Services\NvidiaSignature.cs" />
     <Compile Include="Services\BackupArchiveService.cs" />
     <Compile Include="Services\GameFolderUpdateService.cs" />
     <Compile Include="Services\DlssVersionRules.cs" />

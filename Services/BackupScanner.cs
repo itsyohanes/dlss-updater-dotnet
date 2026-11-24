@@ -25,18 +25,16 @@ namespace dlss_updater.Services
                 return results;
             }
 
-            SearchDirectory(
-                folderPath,
-                results,
-                warningPaths);
-
-            // Remember them for File > Delete all backups, including
-            // backups made by older versions of the app.
-            if (results.Count > 0)
+            FolderScanner.Walk(folderPath, "nvngx*.dubackup.zip", file =>
             {
-                BackupIndexStore.Record(results.Select(file => file.Path));
-            }
+                string version;
+                if (TryGetBackupVersion(Path.GetFileName(file), out version))
+                {
+                    results.Add(new ScannedFile { Path = file, Version = version });
+                }
+            }, warningPaths);
 
+            Remember(results);
             return results;
         }
 
@@ -46,54 +44,32 @@ namespace dlss_updater.Services
                 BackupFileNamePattern.IsMatch(fileName);
         }
 
-        private static void SearchDirectory(
-            string folderPath,
-            List<ScannedFile> results,
-            ICollection<string> warningPaths)
+        public static bool TryGetBackupVersion(string fileName, out string version)
         {
-            try
-            {
-                foreach (string file in Directory.GetFiles(
-                    folderPath,
-                    "nvngx*.dubackup.zip"))
-                {
-                    Match match = BackupFileNamePattern.Match(
-                        Path.GetFileName(file));
+            version = null;
 
-                    if (match.Success)
-                    {
-                        results.Add(
-                            new ScannedFile
-                            {
-                                Path = file,
-                                Version = match.Groups["version"].Value
-                            });
-                    }
-                }
-            }
-            catch
+            if (string.IsNullOrEmpty(fileName))
             {
-                warningPaths?.Add(folderPath);
+                return false;
             }
 
-            string[] directories;
-
-            try
+            Match match = BackupFileNamePattern.Match(fileName);
+            if (!match.Success)
             {
-                directories = Directory.GetDirectories(folderPath);
-            }
-            catch
-            {
-                warningPaths?.Add(folderPath);
-                return;
+                return false;
             }
 
-            foreach (string directory in directories)
+            version = match.Groups["version"].Value;
+            return true;
+        }
+
+        // Remember them for File > Delete all backups, including
+        // backups made by older versions of the app.
+        internal static void Remember(IList<ScannedFile> backups)
+        {
+            if (backups.Count > 0)
             {
-                SearchDirectory(
-                    directory,
-                    results,
-                    warningPaths);
+                BackupIndexStore.Record(backups.Select(file => file.Path));
             }
         }
     }
