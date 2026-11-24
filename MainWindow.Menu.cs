@@ -19,6 +19,7 @@ namespace dlss_updater
     {
         private const string WebsiteUrl = "https://www.dlssupdater.com";
         private const string SourceUrl = "https://github.com/itsyohanes/dlss-updater-dotnet";
+        private const string ReleasesUrl = SourceUrl + "/releases";
 
         private static readonly Brush MutedBrush = Freeze(new SolidColorBrush(Color.FromRgb(0xA4, 0xAE, 0xA2)));
         private static readonly Brush TextBrush = Freeze(new SolidColorBrush(Color.FromRgb(0xE8, 0xED, 0xE8)));
@@ -300,6 +301,7 @@ namespace dlss_updater
 
             content.Children.Add(BuildLink("www.dlssupdater.com", WebsiteUrl, new Thickness(0, 14, 0, 0)));
             content.Children.Add(BuildLink(Translator.T("AboutSource"), SourceUrl, new Thickness(0, 4, 0, 0)));
+            content.Children.Add(BuildLink(Translator.T("AboutReleases"), ReleasesUrl, new Thickness(0, 4, 0, 0)));
 
             content.Children.Add(new TextBlock
             {
