@@ -48,13 +48,15 @@ namespace dlss_updater
         private int _folderUpdatableCount;
         private bool _folderAllUpToDate;
 
-        // Folder added to Your folders by the last Update, shown in the
-        // "Just added" notice until it's removed or another folder is added.
-        private string _justAddedFolder;
+        // Folders added to Your folders by Update this session. Their rows
+        // keep a "Just added" badge.
+        private readonly HashSet<string> _justAddedFolders =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        // Set once the user opens the list: the notice goes away for good,
-        // but the folder's row keeps its "Just added" badge.
-        private bool _justAddedNoticeSeen;
+        // The ones the user hasn't seen in the list yet, counted in the
+        // header ("2 just added"). Cleared when the list is opened.
+        private readonly HashSet<string> _unseenAddedFolders =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private Version _folderTargetVersion;
         private List<KeyValuePair<string, string>> _bannerNewVersions =
             new List<KeyValuePair<string, string>>();
@@ -337,31 +339,15 @@ namespace dlss_updater
 
         private void ApplyJustAddedNotice()
         {
-            if (_justAddedFolder != null && SavedGamesStore.Find(_justAddedFolder) == null)
-            {
-                _justAddedFolder = null;
-            }
+            // Forget folders that were removed from the list.
+            _justAddedFolders.RemoveWhere(folder => SavedGamesStore.Find(folder) == null);
+            _unseenAddedFolders.RemoveWhere(folder => SavedGamesStore.Find(folder) == null);
 
-            bool showNotice = _justAddedFolder != null &&
-                !_justAddedNoticeSeen &&
-                !SavedGamesStore.FoldersExpanded;
-            JustAddedNotice.Visibility = showNotice
+            int count = _unseenAddedFolders.Count;
+            JustAddedText.Visibility = count > 0 && !SavedGamesStore.FoldersExpanded
                 ? Visibility.Visible
                 : Visibility.Collapsed;
-            JustAddedFolderText.Text = _justAddedFolder ?? string.Empty;
-            JustAddedFolderText.ToolTip = _justAddedFolder;
-        }
-
-        private void JustAddedRemoveButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (_justAddedFolder == null)
-            {
-                return;
-            }
-
-            SavedGamesStore.Remove(_justAddedFolder);
-            _justAddedFolder = null;
-            RefreshSavedGames();
+            JustAddedText.Text = Translator.T("FoldersJustAdded", count);
         }
 
         private void ApplySavedFoldersExpanded()
@@ -377,7 +363,7 @@ namespace dlss_updater
             SavedGamesStore.FoldersExpanded = !SavedGamesStore.FoldersExpanded;
             if (SavedGamesStore.FoldersExpanded)
             {
-                _justAddedNoticeSeen = true;
+                _unseenAddedFolders.Clear();
             }
 
             ApplySavedFoldersExpanded();
@@ -484,7 +470,7 @@ namespace dlss_updater
                 TextTrimming = TextTrimming.CharacterEllipsis
             };
 
-            if (string.Equals(game.Folder, _justAddedFolder, StringComparison.OrdinalIgnoreCase))
+            if (_justAddedFolders.Contains(game.Folder))
             {
                 StackPanel nameLine = new StackPanel { Orientation = Orientation.Horizontal };
                 nameLine.Children.Add(nameText);

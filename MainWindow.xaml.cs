@@ -516,11 +516,15 @@ namespace dlss_updater
             {
                 if (SavedGamesStore.RecordScan(folder, filesToUpdate, true))
                 {
-                    _justAddedFolder = SavedGamesStore.Find(folder).Folder;
+                    string added = SavedGamesStore.Find(folder).Folder;
+                    _justAddedFolders.Add(added);
 
                     // With the list already open the user sees the new row
-                    // (and its badge) straight away, so skip the notice.
-                    _justAddedNoticeSeen = SavedGamesStore.FoldersExpanded;
+                    // (and its badge) straight away, so it isn't counted.
+                    if (!SavedGamesStore.FoldersExpanded)
+                    {
+                        _unseenAddedFolders.Add(added);
+                    }
                 }
 
                 EvaluateFolderUpdates();

@@ -140,6 +140,7 @@ namespace dlss_updater.Services
                     ["ExpandList"] = "Show folders",
                     ["CollapseList"] = "Hide folders",
                     ["JustAdded"] = "Just added",
+                    ["FoldersJustAdded"] = "{0} just added",
                     ["Remove"] = "Remove"
                 },
                 ["de"] = new Dictionary<string, string>
@@ -245,6 +246,7 @@ namespace dlss_updater.Services
                     ["ExpandList"] = "Ordner anzeigen",
                     ["CollapseList"] = "Ordner ausblenden",
                     ["JustAdded"] = "Gerade hinzugefügt",
+                    ["FoldersJustAdded"] = "{0} gerade hinzugefügt",
                     ["Remove"] = "Entfernen"
                 },
                 ["fr"] = new Dictionary<string, string>
@@ -350,6 +352,7 @@ namespace dlss_updater.Services
                     ["ExpandList"] = "Afficher les dossiers",
                     ["CollapseList"] = "Masquer les dossiers",
                     ["JustAdded"] = "Ajouté à l'instant",
+                    ["FoldersJustAdded"] = "{0} ajouté(s)",
                     ["Remove"] = "Retirer"
                 },
                 ["es"] = new Dictionary<string, string>
@@ -455,6 +458,7 @@ namespace dlss_updater.Services
                     ["ExpandList"] = "Mostrar carpetas",
                     ["CollapseList"] = "Ocultar carpetas",
                     ["JustAdded"] = "Recién añadida",
+                    ["FoldersJustAdded"] = "Añadidas: {0}",
                     ["Remove"] = "Quitar"
                 },
                 ["it"] = new Dictionary<string, string>
@@ -560,6 +564,7 @@ namespace dlss_updater.Services
                     ["ExpandList"] = "Mostra cartelle",
                     ["CollapseList"] = "Nascondi cartelle",
                     ["JustAdded"] = "Appena aggiunta",
+                    ["FoldersJustAdded"] = "Aggiunte: {0}",
                     ["Remove"] = "Rimuovi"
                 },
                 ["pl"] = new Dictionary<string, string>
@@ -665,6 +670,7 @@ namespace dlss_updater.Services
                     ["ExpandList"] = "Pokaż foldery",
                     ["CollapseList"] = "Ukryj foldery",
                     ["JustAdded"] = "Właśnie dodano",
+                    ["FoldersJustAdded"] = "Dodano: {0}",
                     ["Remove"] = "Usuń"
                 },
                 ["uk"] = new Dictionary<string, string>
@@ -770,6 +776,7 @@ namespace dlss_updater.Services
                     ["ExpandList"] = "Показати папки",
                     ["CollapseList"] = "Сховати папки",
                     ["JustAdded"] = "Щойно додано",
+                    ["FoldersJustAdded"] = "Додано: {0}",
                     ["Remove"] = "Прибрати"
                 },
                 ["zh"] = new Dictionary<string, string>
@@ -875,6 +882,7 @@ namespace dlss_updater.Services
                     ["ExpandList"] = "显示文件夹",
                     ["CollapseList"] = "隐藏文件夹",
                     ["JustAdded"] = "刚刚添加",
+                    ["FoldersJustAdded"] = "已添加 {0} 个",
                     ["Remove"] = "移除"
                 },
                 ["ru"] = new Dictionary<string, string>
@@ -980,6 +988,7 @@ namespace dlss_updater.Services
                     ["ExpandList"] = "Показать папки",
                     ["CollapseList"] = "Скрыть папки",
                     ["JustAdded"] = "Только что добавлено",
+                    ["FoldersJustAdded"] = "Добавлено: {0}",
                     ["Remove"] = "Убрать"
                 },
                 ["ja"] = new Dictionary<string, string>
@@ -1085,6 +1094,7 @@ namespace dlss_updater.Services
                     ["ExpandList"] = "フォルダーを表示",
                     ["CollapseList"] = "フォルダーを隠す",
                     ["JustAdded"] = "追加済み",
+                    ["FoldersJustAdded"] = "{0} 個を追加しました",
                     ["Remove"] = "削除"
                 },
                 ["ko"] = new Dictionary<string, string>
@@ -1190,6 +1200,7 @@ namespace dlss_updater.Services
                     ["ExpandList"] = "폴더 표시",
                     ["CollapseList"] = "폴더 숨기기",
                     ["JustAdded"] = "방금 추가됨",
+                    ["FoldersJustAdded"] = "{0}개 추가됨",
                     ["Remove"] = "제거"
                 },
                 ["cs"] = new Dictionary<string, string>
@@ -1295,6 +1306,7 @@ namespace dlss_updater.Services
                     ["ExpandList"] = "Zobrazit složky",
                     ["CollapseList"] = "Skrýt složky",
                     ["JustAdded"] = "Právě přidáno",
+                    ["FoldersJustAdded"] = "Přidáno: {0}",
                     ["Remove"] = "Odebrat"
                 },
                 ["nl"] = new Dictionary<string, string>
@@ -1400,6 +1412,7 @@ namespace dlss_updater.Services
                     ["ExpandList"] = "Mappen tonen",
                     ["CollapseList"] = "Mappen verbergen",
                     ["JustAdded"] = "Zojuist toegevoegd",
+                    ["FoldersJustAdded"] = "{0} zojuist toegevoegd",
                     ["Remove"] = "Verwijderen"
                 },
                 ["pt"] = new Dictionary<string, string>
@@ -1505,6 +1518,7 @@ namespace dlss_updater.Services
                     ["ExpandList"] = "Mostrar pastas",
                     ["CollapseList"] = "Ocultar pastas",
                     ["JustAdded"] = "Recém-adicionada",
+                    ["FoldersJustAdded"] = "Adicionadas: {0}",
                     ["Remove"] = "Remover"
                 }
             };

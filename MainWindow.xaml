@@ -1011,6 +1011,7 @@
 
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -1028,8 +1029,20 @@
                                            Foreground="#E6B84A"/>
                             </StackPanel>
 
+                            <!-- "2 just added": counts the folders Update added
+                                 since the list was last opened. -->
+                            <TextBlock x:Name="JustAddedText"
+                                       Grid.Column="1"
+                                       FontSize="13"
+                                       Foreground="#86CC0A"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,10,0"
+                                       TextTrimming="CharacterEllipsis"
+                                       Visibility="Collapsed"/>
+
                             <Button x:Name="UpdateAllButton"
-                                    Grid.Column="1"
+                                    Grid.Column="2"
                                     Height="30"
                                     FontSize="13"
                                     Cursor="Arrow"
@@ -1039,56 +1052,12 @@
                                     Click="UpdateAllButton_Click"/>
 
                             <Button x:Name="SavedFoldersExpandButton"
-                                    Grid.Column="2"
+                                    Grid.Column="3"
                                     Style="{StaticResource ExpandButton}"
                                     Content="▼"
                                     Margin="0,0,10,0"
                                     VerticalAlignment="Center"
                                     Click="SavedFoldersExpandButton_Click"/>
-                        </Grid>
-
-                    </Border>
-
-                    <!-- Shown after Update adds a new folder to the list,
-                         even while the list is collapsed. -->
-                    <Border x:Name="JustAddedNotice"
-                            Visibility="Collapsed"
-                            BorderBrush="#343B34"
-                            BorderThickness="0,1,0,0">
-
-                        <Grid Margin="18,9,10,9">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock x:Name="JustAddedFolderText"
-                                       FontSize="13"
-                                       VerticalAlignment="Center"
-                                       TextTrimming="CharacterEllipsis"/>
-
-                            <Border Grid.Column="1"
-                                    Background="#1F2A14"
-                                    BorderBrush="#4E7A10"
-                                    BorderThickness="1"
-                                    CornerRadius="9"
-                                    Padding="8,1,8,2"
-                                    Margin="12,0,0,0"
-                                    VerticalAlignment="Center">
-                                <TextBlock Text="{services:Tr JustAdded}"
-                                           FontSize="11"
-                                           Foreground="#86CC0A"/>
-                            </Border>
-
-                            <Button Grid.Column="2"
-                                    Content="{services:Tr Remove}"
-                                    Height="30"
-                                    MinWidth="70"
-                                    FontSize="13"
-                                    Margin="12,0,4,0"
-                                    VerticalAlignment="Center"
-                                    Click="JustAddedRemoveButton_Click"/>
                         </Grid>
 
                     </Border>
