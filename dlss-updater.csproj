@@ -64,6 +64,7 @@
     <Compile Include="Services\FolderPicker.cs" />
     <Compile Include="Services\FolderScanner.cs" />
     <Compile Include="Services\BackupScanner.cs" />
+    <Compile Include="Services\BackupIndexStore.cs" />
     <Compile Include="Services\DlssReleaseClient.cs" />
     <Compile Include="Services\BackupArchiveService.cs" />
     <Compile Include="Services\GameFolderUpdateService.cs" />
@@ -84,6 +85,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MainWindow.Library.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.Menu.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

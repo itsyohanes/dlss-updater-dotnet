@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace dlss_updater.Services
@@ -29,7 +30,20 @@ namespace dlss_updater.Services
                 results,
                 warningPaths);
 
+            // Remember them for File > Delete all backups, including
+            // backups made by older versions of the app.
+            if (results.Count > 0)
+            {
+                BackupIndexStore.Record(results.Select(file => file.Path));
+            }
+
             return results;
+        }
+
+        public static bool IsBackupFileName(string fileName)
+        {
+            return !string.IsNullOrEmpty(fileName) &&
+                BackupFileNamePattern.IsMatch(fileName);
         }
 
         private static void SearchDirectory(

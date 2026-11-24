@@ -27,6 +27,7 @@ namespace dlss_updater.Services
 
             if (File.Exists(backupPath) && !overwriteExisting)
             {
+                BackupIndexStore.Record(new[] { backupPath });
                 return backupPath;
             }
 
@@ -70,6 +71,7 @@ namespace dlss_updater.Services
                         backupPath);
                 }
 
+                BackupIndexStore.Record(new[] { backupPath });
                 return backupPath;
             }
             catch

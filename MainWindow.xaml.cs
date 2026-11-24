@@ -51,8 +51,7 @@ namespace dlss_updater
         {
             InitializeComponent();
 
-            LanguagePicker.ItemsSource = Translator.Languages;
-            LanguagePicker.SelectedValue = Translator.Instance.Language;
+            BuildLanguageMenu();
             Language = XmlLanguage.GetLanguage(Translator.Instance.Language);
             Translator.Instance.LanguageChanged += Localization_LanguageChanged;
             Closed += (sender, e) =>
@@ -60,22 +59,12 @@ namespace dlss_updater
             Loaded += MainWindow_Loaded;
         }
 
-        private void LanguagePicker_SelectionChanged(
-            object sender,
-            SelectionChangedEventArgs e)
-        {
-            string language = LanguagePicker.SelectedValue as string;
-            if (language != null)
-            {
-                Translator.Instance.Language = language;
-            }
-        }
-
         private void Localization_LanguageChanged(
             object sender,
             EventArgs e)
         {
             Language = XmlLanguage.GetLanguage(Translator.Instance.Language);
+            UpdateLanguageMenuChecks();
 
             foreach (Action apply in _localizedSetters.Values)
             {
@@ -916,7 +905,9 @@ namespace dlss_updater
             ShowDetailsButton.IsEnabled = !inProgress &&
                 (hasFiles || _scanWarningPaths.Count > 0);
             SetBackupButtonsEnabled(!inProgress && _backupFiles.Count > 0);
-            LanguagePicker.IsEnabled = !inProgress;
+            LanguageMenu.IsEnabled = !inProgress;
+            RemoveAppDataMenuItem.IsEnabled = !inProgress;
+            DeleteAllBackupsMenuItem.IsEnabled = !inProgress;
             SavedGamesPanel.IsEnabled = !inProgress;
             UpdateAllButton.IsEnabled = !inProgress;
         }

@@ -50,6 +50,7 @@
       "Finds nvngx_dlss.dll, nvngx_dlssd.dll and nvngx_dlssg.dll in a folder and its subfolders",
       "Updates only files that are older than the latest supported version",
       "Backs up each file before replacing it, with one-click restore",
+      "Deletes every backup it has made in one go from the File menu",
       "Remembers folders you update and updates them all at once with Update all",
       "Tells you on startup when newer DLSS files are available",
       "Portable, with no installation",
@@ -82,7 +83,7 @@
 
       <img src="./assets/app-demo.svg"
         alt="Animation of the DLSS Updater desktop app scanning Cyberpunk 2077, updating its DLSS file and adding it to Your folders"
-        class="screenshot hero-screenshot" width="736" height="702">
+        class="screenshot hero-screenshot" width="736" height="688">
     </section>
 
     <section class="container column info faq-section" aria-labelledby="faq-title">
@@ -143,10 +144,10 @@
         <details class="faq-item">
           <summary>How do I uninstall DLSS Updater?</summary>
           <p>DLSS Updater is portable, so there's nothing to uninstall. It doesn't install services, run background
-            processes, or make permanent system changes. To remove it, close the application and delete the executable.
-            Cached DLSS files are stored in <code>%LOCALAPPDATA%\DLSS Updater</code>, so delete that folder to remove
-            them as well. Backups created during updates are stored beside the original DLSS files as
-            <code>.dubackup.zip</code> files and can be deleted manually if you no longer need them.</p>
+            processes, or make permanent system changes. To remove it, optionally choose
+            <strong>File &gt; Delete all backups</strong> to delete the <code>.dubackup.zip</code> backups it made beside
+            your DLSS files, then choose <strong>File &gt; Remove cached files and settings</strong>, which deletes
+            <code>%LOCALAPPDATA%\DLSS Updater</code> and closes the app. Then delete the executable.</p>
         </details>
 
         <details class="faq-item">
@@ -158,7 +159,7 @@
           <summary>What languages does it support?</summary>
           <p>DLSS Updater is available in English, German, French, Spanish, Italian, Polish, Ukrainian, Simplified
             Chinese, Russian, Japanese, Korean, Czech, Dutch, and Portuguese. It uses your system language by default
-            when supported, and you can change it at any time from the language picker.</p>
+            when supported, and you can change it at any time from the Language menu.</p>
         </details>
 
         <details class="faq-item">

@@ -657,232 +657,200 @@
 
 
 
-        <Style x:Key="LanguagePickerItem"
-               TargetType="ComboBoxItem">
-
+        <!-- Menu bar (File, Language, Help): dark versions of the standard
+             Menu / MenuItem / Separator so the drop-downs match the window. -->
+        <Style x:Key="MenuBar"
+               TargetType="Menu">
+            <Setter Property="Background"
+                    Value="#1C211C"/>
+            <Setter Property="BorderBrush"
+                    Value="#2A302A"/>
+            <Setter Property="BorderThickness"
+                    Value="0,0,0,1"/>
+            <Setter Property="Padding"
+                    Value="8,0"/>
+            <Setter Property="FontFamily"
+                    Value="Segoe UI"/>
+            <Setter Property="FontSize"
+                    Value="13"/>
             <Setter Property="Foreground"
                     Value="#E8EDE8"/>
+        </Style>
 
+        <Style TargetType="MenuItem">
+            <Setter Property="Foreground"
+                    Value="#E8EDE8"/>
+            <Setter Property="FontSize"
+                    Value="13"/>
+            <Setter Property="Padding"
+                    Value="12,7"/>
             <Setter Property="Template">
-
                 <Setter.Value>
-
-                    <ControlTemplate TargetType="ComboBoxItem">
-
+                    <ControlTemplate TargetType="MenuItem">
                         <Border x:Name="ItemBorder"
                                 Background="Transparent"
-                                Padding="12,6">
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="True">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <ContentPresenter VerticalAlignment="Center"/>
+                                <ContentPresenter x:Name="IconPresenter"
+                                                  ContentSource="Icon"
+                                                  VerticalAlignment="Center"
+                                                  Margin="0,0,10,0"/>
 
+                                <ContentPresenter Grid.Column="1"
+                                                  ContentSource="Header"
+                                                  RecognizesAccessKey="True"
+                                                  VerticalAlignment="Center"/>
+
+                                <TextBlock x:Name="GestureText"
+                                           Grid.Column="2"
+                                           Text="{TemplateBinding InputGestureText}"
+                                           FontSize="12"
+                                           Foreground="#A4AEA2"
+                                           VerticalAlignment="Center"
+                                           Margin="24,0,0,0"/>
+
+                                <TextBlock x:Name="CheckMark"
+                                           Grid.Column="3"
+                                           Text="&#xE73E;"
+                                           FontFamily="Segoe MDL2 Assets"
+                                           FontSize="11"
+                                           Foreground="#76B900"
+                                           VerticalAlignment="Center"
+                                           Margin="16,0,0,0"
+                                           Visibility="Collapsed"/>
+
+                                <Popup x:Name="PART_Popup"
+                                       IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                                       Placement="Bottom"
+                                       AllowsTransparency="True"
+                                       Focusable="False"
+                                       PopupAnimation="Fade">
+                                    <Border Background="#202420"
+                                            BorderBrush="#465046"
+                                            BorderThickness="1"
+                                            CornerRadius="4"
+                                            Padding="0,4"
+                                            Margin="0,2,0,0"
+                                            MinWidth="200">
+                                        <StackPanel IsItemsHost="True"
+                                                    KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                                    </Border>
+                                </Popup>
+                            </Grid>
                         </Border>
 
-
                         <ControlTemplate.Triggers>
-
+                            <Trigger Property="Role"
+                                     Value="TopLevelHeader">
+                                <Setter Property="Padding"
+                                        Value="10,6"/>
+                            </Trigger>
+                            <Trigger Property="Role"
+                                     Value="TopLevelItem">
+                                <Setter Property="Padding"
+                                        Value="10,6"/>
+                            </Trigger>
+                            <Trigger Property="Icon"
+                                     Value="{x:Null}">
+                                <Setter TargetName="IconPresenter"
+                                        Property="Visibility"
+                                        Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="InputGestureText"
+                                     Value="">
+                                <Setter TargetName="GestureText"
+                                        Property="Visibility"
+                                        Value="Collapsed"/>
+                            </Trigger>
                             <Trigger Property="IsHighlighted"
                                      Value="True">
-
                                 <Setter TargetName="ItemBorder"
                                         Property="Background"
                                         Value="#303630"/>
-
                             </Trigger>
-
-
-                            <Trigger Property="IsSelected"
+                            <Trigger Property="IsSubmenuOpen"
                                      Value="True">
-
+                                <Setter TargetName="ItemBorder"
+                                        Property="Background"
+                                        Value="#394139"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked"
+                                     Value="True">
                                 <Setter Property="Foreground"
                                         Value="#76B900"/>
-
+                                <Setter TargetName="CheckMark"
+                                        Property="Visibility"
+                                        Value="Visible"/>
                             </Trigger>
-
-                        </ControlTemplate.Triggers>
-
-                    </ControlTemplate>
-
-                </Setter.Value>
-
-            </Setter>
-
-        </Style>
-
-
-
-
-        <Style x:Key="LanguagePicker"
-               TargetType="ComboBox">
-
-            <Setter Property="Height"
-                    Value="32"/>
-
-            <Setter Property="MinWidth"
-                    Value="140"/>
-
-            <Setter Property="FontFamily"
-                    Value="Segoe UI"/>
-
-            <Setter Property="FontSize"
-                    Value="13"/>
-
-            <Setter Property="Foreground"
-                    Value="#E8EDE8"/>
-
-            <Setter Property="Background"
-                    Value="#2A302A"/>
-
-            <Setter Property="BorderBrush"
-                    Value="#465046"/>
-
-            <Setter Property="ItemContainerStyle"
-                    Value="{StaticResource LanguagePickerItem}"/>
-
-            <Setter Property="Template">
-
-                <Setter.Value>
-
-                    <ControlTemplate TargetType="ComboBox">
-
-                        <Grid>
-
-                            <ToggleButton Focusable="False"
-                                          ClickMode="Press"
-                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
-
-                                <ToggleButton.Template>
-
-                                    <ControlTemplate TargetType="ToggleButton">
-
-                                        <Border x:Name="PickerBorder"
-                                                Background="#2A302A"
-                                                BorderBrush="#465046"
-                                                BorderThickness="1"
-                                                CornerRadius="4"
-                                                SnapsToDevicePixels="True">
-
-                                            <TextBlock Text="&#xE70D;"
-                                                       FontFamily="Segoe MDL2 Assets"
-                                                       FontSize="10"
-                                                       Foreground="#A4AEA2"
-                                                       HorizontalAlignment="Right"
-                                                       VerticalAlignment="Center"
-                                                       Margin="0,0,11,0"/>
-
-                                        </Border>
-
-
-                                        <ControlTemplate.Triggers>
-
-                                            <Trigger Property="IsMouseOver"
-                                                     Value="True">
-
-                                                <Setter TargetName="PickerBorder"
-                                                        Property="Background"
-                                                        Value="#303630"/>
-
-                                            </Trigger>
-
-
-                                            <Trigger Property="IsChecked"
-                                                     Value="True">
-
-                                                <Setter TargetName="PickerBorder"
-                                                        Property="Background"
-                                                        Value="#394139"/>
-
-                                            </Trigger>
-
-                                        </ControlTemplate.Triggers>
-
-                                    </ControlTemplate>
-
-                                </ToggleButton.Template>
-
-                            </ToggleButton>
-
-
-                            <StackPanel Orientation="Horizontal"
-                                        IsHitTestVisible="False"
-                                        VerticalAlignment="Center"
-                                        Margin="11,0,32,0">
-
-                                <Image Source="{Binding SelectedItem.Flag, RelativeSource={RelativeSource TemplatedParent}}"
-                                       Width="18"
-                                       Height="12"
-                                       Stretch="Fill"
-                                       VerticalAlignment="Center"
-                                       Margin="0,0,8,0"/>
-
-                                <ContentPresenter Content="{TemplateBinding SelectionBoxItem}"
-                                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                                  VerticalAlignment="Center"/>
-
-                            </StackPanel>
-
-
-                            <Popup x:Name="PART_Popup"
-                                   IsOpen="{TemplateBinding IsDropDownOpen}"
-                                   Placement="Bottom"
-                                   AllowsTransparency="True"
-                                   Focusable="False"
-                                   PopupAnimation="Fade">
-
-                                <Border Background="#202420"
-                                        BorderBrush="#465046"
-                                        BorderThickness="1"
-                                        CornerRadius="4"
-                                        Padding="0,4"
-                                        Margin="0,4,0,0"
-                                        MinWidth="{TemplateBinding ActualWidth}">
-
-                                    <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/>
-
-                                </Border>
-
-                            </Popup>
-
-                        </Grid>
-
-
-                        <ControlTemplate.Triggers>
-
                             <Trigger Property="IsEnabled"
                                      Value="False">
-
                                 <Setter Property="Opacity"
                                         Value="0.5"/>
-
                             </Trigger>
-
                         </ControlTemplate.Triggers>
-
                     </ControlTemplate>
-
                 </Setter.Value>
-
             </Setter>
+        </Style>
 
+        <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}"
+               TargetType="Separator">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Separator">
+                        <Border Height="1"
+                                Margin="0,4"
+                                Background="#2A302A"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
     </Window.Resources>
 
 
-    <Grid Margin="28">
+    <DockPanel>
+
+    <Menu x:Name="MainMenu"
+          DockPanel.Dock="Top"
+          Style="{StaticResource MenuBar}">
+        <MenuItem Header="{services:Tr MenuFile}">
+            <MenuItem x:Name="DeleteAllBackupsMenuItem"
+                      Header="{services:Tr DeleteAllBackups}"
+                      Click="DeleteAllBackupsMenuItem_Click"/>
+            <MenuItem x:Name="RemoveAppDataMenuItem"
+                      Header="{services:Tr RemoveAppData}"
+                      Click="RemoveAppDataMenuItem_Click"/>
+            <Separator/>
+            <MenuItem Header="{services:Tr MenuExit}"
+                      InputGestureText="Alt+F4"
+                      Click="ExitMenuItem_Click"/>
+        </MenuItem>
+        <!-- One item per language, added in code. -->
+        <MenuItem x:Name="LanguageMenu"
+                  Header="{services:Tr MenuLanguage}"/>
+        <MenuItem Header="{services:Tr MenuHelp}">
+            <MenuItem Header="{services:Tr VisitWebsite}"
+                      Click="VisitWebsiteMenuItem_Click"/>
+            <Separator/>
+            <MenuItem Header="{services:Tr AboutApp}"
+                      Click="AboutMenuItem_Click"/>
+        </MenuItem>
+    </Menu>
+
+    <Grid Margin="28,32,28,28">
 
         <StackPanel x:Name="MainPage">
 
 
-
-
-        <ComboBox x:Name="LanguagePicker"
-                  Style="{StaticResource LanguagePicker}"
-                  HorizontalAlignment="Right"
-                  Margin="0,0,0,16"
-                  DisplayMemberPath="Name"
-                  SelectedValuePath="Code"
-                  ToolTip="{services:Tr Language}"
-                  SelectionChanged="LanguagePicker_SelectionChanged"/>
 
 
         <!-- Startup notice: shown when the manifest has newer DLSS files
@@ -1647,5 +1615,7 @@
         </Grid>
 
     </Grid>
+
+    </DockPanel>
 
 </Window>
