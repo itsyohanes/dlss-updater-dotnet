@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="dlss-updater.csproj" Id="08d23967-7fef-4922-9e81-24117a7d6b39" />
+  <Project Path="tests/DlssUpdater.Tests/DlssUpdater.Tests.csproj" />
 </Solution>
