@@ -121,6 +121,50 @@ namespace dlss_updater.Services
             return added;
         }
 
+        // Re-reads the version of every saved DLL from disk. A game patch or
+        // a Steam "verify files" can put an older DLL back after we updated
+        // it, and the list should say so instead of showing the old result.
+        // Files that no longer exist are dropped.
+        public static void RefreshFileVersions()
+        {
+            bool changed = false;
+
+            foreach (SavedGame game in State.Games)
+            {
+                if (!Directory.Exists(game.Folder))
+                {
+                    continue;
+                }
+
+                List<SavedGameFile> current = new List<SavedGameFile>();
+
+                foreach (SavedGameFile file in game.Files)
+                {
+                    if (!File.Exists(file.Path))
+                    {
+                        changed = true;
+                        continue;
+                    }
+
+                    string version = FolderScanner.GetFileVersion(file.Path);
+                    if (!string.Equals(version, file.Version, StringComparison.Ordinal))
+                    {
+                        file.Version = version;
+                        changed = true;
+                    }
+
+                    current.Add(file);
+                }
+
+                game.Files = current;
+            }
+
+            if (changed)
+            {
+                Save();
+            }
+        }
+
         public static void Remove(string folder)
         {
             SavedGame game = Find(folder);

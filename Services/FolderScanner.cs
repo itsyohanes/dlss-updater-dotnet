@@ -88,7 +88,7 @@ namespace dlss_updater.Services
             }
         }
 
-        private static string GetFileVersion(
+        public static string GetFileVersion(
             string filePath)
         {
             try

@@ -61,6 +61,7 @@ namespace dlss_updater
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            SavedGamesStore.RefreshFileVersions();
             RefreshSavedGames();
 
             Dictionary<string, string> versions;
