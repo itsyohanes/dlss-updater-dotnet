@@ -34,6 +34,28 @@ namespace DlssUpdater.Tests
             Assert.False(BackupScanner.IsBackupFileName(fileName));
         }
 
+        [Theory]
+        [InlineData("nvngx_dlss.dll.310.9.16.0.dubackup.zip", "310.9.16.0")]
+        [InlineData("NVNGX_DLSSG.DLL.2.5.1.DUBACKUP.ZIP", "2.5.1")]
+        public void TryGetBackupVersion_ReadsTheVersionFromTheName(string fileName, string expected)
+        {
+            string version;
+
+            Assert.True(BackupScanner.TryGetBackupVersion(fileName, out version));
+            Assert.Equal(expected, version);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("nvngx_dlss.dll")]
+        public void TryGetBackupVersion_RejectsOtherFiles(string fileName)
+        {
+            string version;
+
+            Assert.False(BackupScanner.TryGetBackupVersion(fileName, out version));
+            Assert.Null(version);
+        }
+
         [Fact]
         public void RestoreLatestBackups_RestoresNewestBackupAndDeletesIt()
         {

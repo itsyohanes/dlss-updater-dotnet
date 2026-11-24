@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace dlss_updater.Services
@@ -296,6 +297,8 @@ namespace dlss_updater.Services
                 Path.GetTempPath(),
                 "dlss-updater-" + Guid.NewGuid().ToString("N") + "-" + fileName);
 
+            CancellationTokenSource stall = new CancellationTokenSource();
+
             try
             {
                 using (HttpResponseMessage response =
@@ -305,6 +308,16 @@ namespace dlss_updater.Services
                 {
                     response.EnsureSuccessStatusCode();
 
+                    long? announced = response.Content.Headers.ContentLength;
+                    if (announced > MaxDownloadBytes)
+                    {
+                        throw new InvalidDataException(Translator.T("DownloadTooLarge", fileName));
+                    }
+
+                    // HttpClient.Timeout stops applying once the headers
+                    // arrive, so a connection that goes quiet mid-download
+                    // would hang. Closing the response ends the pending read.
+                    using (stall.Token.Register(response.Dispose))
                     using (Stream source = await response.Content.ReadAsStreamAsync())
                     using (FileStream destination = new FileStream(
                         temporaryPath,
@@ -312,16 +325,46 @@ namespace dlss_updater.Services
                         FileAccess.Write,
                         FileShare.None))
                     {
-                        await source.CopyToAsync(destination);
+                        byte[] buffer = new byte[81920];
+                        long total = 0;
+
+                        while (true)
+                        {
+                            stall.CancelAfter(DownloadStallTimeout);
+                            int read = await source.ReadAsync(buffer, 0, buffer.Length);
+                            if (read <= 0)
+                            {
+                                break;
+                            }
+
+                            total += read;
+                            if (total > MaxDownloadBytes)
+                            {
+                                throw new InvalidDataException(Translator.T("DownloadTooLarge", fileName));
+                            }
+
+                            await destination.WriteAsync(buffer, 0, read);
+                        }
+
+                        stall.CancelAfter(Timeout.Infinite);
                     }
                 }
 
                 return temporaryPath;
             }
+            catch (Exception) when (stall.IsCancellationRequested)
+            {
+                TryDeleteFile(temporaryPath);
+                throw new TimeoutException(Translator.T("DownloadStalled", fileName));
+            }
             catch
             {
                 TryDeleteFile(temporaryPath);
                 throw;
+            }
+            finally
+            {
+                stall.Dispose();
             }
         }
 
@@ -340,7 +383,8 @@ namespace dlss_updater.Services
                     return false;
                 }
 
-                if (FileMatchesSha256(cachedPath, expectedSha256))
+                if (FileMatchesSha256(cachedPath, expectedSha256) &&
+                    HasRequiredSignature(cachedPath, expectedSha256))
                 {
                     return true;
                 }
@@ -384,6 +428,8 @@ namespace dlss_updater.Services
         }
 
         private const long MaxExtractedDllBytes = 512L * 1024 * 1024;
+        private const long MaxDownloadBytes = 512L * 1024 * 1024;
+        private static readonly TimeSpan DownloadStallTimeout = TimeSpan.FromSeconds(30);
 
         private static async Task<string> DownloadZippedDllAsync(
             DlssReleaseAsset asset,
@@ -494,6 +540,12 @@ namespace dlss_updater.Services
                 {
                     throw new InvalidDataException(
                         Translator.T("ShaMismatch", fileName));
+                }
+
+                if (!HasRequiredSignature(downloadedPath, expectedSha256))
+                {
+                    throw new InvalidDataException(
+                        Translator.T("NotSignedByNvidia", fileName));
                 }
 
                 File.Copy(downloadedPath, stagingPath, false);
@@ -662,6 +714,14 @@ namespace dlss_updater.Services
             catch
             {
             }
+        }
+
+        // Every DLL must be signed by NVIDIA, except the legacy DLSS 1 file:
+        // its hash is built into the app, so the release can't change it.
+        private static bool HasRequiredSignature(string path, string expectedSha256)
+        {
+            return string.Equals(expectedSha256, LegacyDlssSha256, StringComparison.OrdinalIgnoreCase) ||
+                NvidiaSignature.IsSignedByNvidia(path);
         }
 
         private static bool IsLegacyDlss(string fileName, string version)

@@ -61,10 +61,15 @@ namespace dlss_updater
         private List<KeyValuePair<string, string>> _bannerNewVersions =
             new List<KeyValuePair<string, string>>();
 
+        // Saved folders (normalized) that weren't on disk at the last check.
+        // Filled in off the UI thread; see RefreshSavedFoldersFromDiskAsync.
+        private HashSet<string> _missingFolders =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            SavedGamesStore.RefreshFileVersions();
             RefreshSavedGames();
+            RefreshSavedFoldersFromDiskAsync();
 
             Dictionary<string, string> versions;
 
@@ -87,6 +92,39 @@ namespace dlss_updater
 
             RefreshSavedGames();
             ShowStartupBannerIfNeeded(versions);
+        }
+
+        // Re-reads the saved folders and their DLL versions on a background
+        // thread, so a sleeping drive or an unreachable network share can't
+        // freeze the window, then redraws the list.
+        private async void RefreshSavedFoldersFromDiskAsync()
+        {
+            List<SavedFolderSnapshot> snapshot = SavedGamesStore.GetFolderSnapshot();
+            if (snapshot.Count == 0)
+            {
+                return;
+            }
+
+            SavedFoldersDiskState state;
+
+            try
+            {
+                state = await Task.Run(() => SavedGamesStore.ReadDiskState(snapshot));
+            }
+            catch
+            {
+                return;
+            }
+
+            SavedGamesStore.ApplyDiskState(state);
+            _missingFolders = SavedGamesStore.GetMissingFolders(state);
+            RefreshSavedGames();
+        }
+
+        // A folder that was just scanned exists, whatever the last check said.
+        private void MarkFolderPresent(string folder)
+        {
+            _missingFolders.Remove(SavedGamesStore.NormalizeFolder(folder));
         }
 
         // ---- Update check for the scanned folder ----
@@ -398,7 +436,7 @@ namespace dlss_updater
         {
             target = null;
 
-            if (!Directory.Exists(game.Folder))
+            if (_missingFolders.Contains(SavedGamesStore.NormalizeFolder(game.Folder)))
             {
                 return SavedGameStatus.Missing;
             }
@@ -626,8 +664,15 @@ namespace dlss_updater
 
         private async Task UpdateSavedFolderAsync(string folder)
         {
-            if (_updateInProgress || !Directory.Exists(folder))
+            if (_updateInProgress)
             {
+                return;
+            }
+
+            if (!await Task.Run(() => Directory.Exists(folder)))
+            {
+                _missingFolders.Add(SavedGamesStore.NormalizeFolder(folder));
+                RefreshSavedGames();
                 return;
             }
 

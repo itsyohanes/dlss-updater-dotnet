@@ -337,41 +337,7 @@ namespace dlss_updater
             Stopwatch stopwatch =
                 Stopwatch.StartNew();
 
-            List<string> dlssWarnings = new List<string>();
-            List<string> dlssdWarnings = new List<string>();
-            List<string> dlssgWarnings = new List<string>();
-            List<string> backupWarnings = new List<string>();
-
-            Task<List<ScannedFile>> dlssTask =
-                Task.Run(() =>
-                    FolderScanner.FindFiles(
-                        folder,
-                        "nvngx_dlss.dll",
-                        dlssWarnings));
-
-            Task<List<ScannedFile>> dlssdTask =
-                Task.Run(() =>
-                    FolderScanner.FindFiles(
-                        folder,
-                        "nvngx_dlssd.dll",
-                        dlssdWarnings));
-
-            Task<List<ScannedFile>> dlssgTask =
-                Task.Run(() =>
-                    FolderScanner.FindFiles(
-                        folder,
-                        "nvngx_dlssg.dll",
-                        dlssgWarnings));
-
-            Task<List<ScannedFile>> backupTask =
-                Task.Run(() =>
-                    BackupScanner.FindBackupFiles(folder, backupWarnings));
-
-            await Task.WhenAll(
-                dlssTask,
-                dlssdTask,
-                dlssgTask,
-                backupTask);
+            FolderScanResult scan = await Task.Run(() => FolderScanner.Scan(folder));
 
             if (generation != _folderScanGeneration)
             {
@@ -392,16 +358,9 @@ namespace dlss_updater
                 return;
             }
 
-            _dlssFiles = await dlssTask;
-            _dlssdFiles = await dlssdTask;
-            _dlssgFiles = await dlssgTask;
-            _backupFiles = await backupTask;
-            _scanWarningPaths = MergeScanWarningPaths(
-                dlssWarnings,
-                dlssdWarnings,
-                dlssgWarnings,
-                backupWarnings);
+            ApplyScanResult(scan);
             _scannedFolderPath = folder;
+            MarkFolderPresent(folder);
             UpdateDlssSummary();
             PopulateDlssDetails(folder);
             UpdateBackupResult(_backupFiles);
@@ -542,14 +501,20 @@ namespace dlss_updater
                 return;
             }
 
-            SetBackupButtonsEnabled(false);
+            if (!TryBeginBackupOperation())
+            {
+                return;
+            }
+
+            string folder = GetOperationFolder();
+            List<ScannedFile> backups = _backupFiles;
 
             try
             {
                 BackupOperationResult result = await Task.Run(() =>
-                    BackupArchiveService.RestoreLatestBackups(_backupFiles));
+                    BackupArchiveService.RestoreLatestBackups(backups));
 
-                await RefreshScannedFilesAsync(FolderPathTextBox.Text);
+                await RefreshScannedFilesAsync(folder);
 
                 InvokeOnUiThread(() => ShowOperationResult(
                     result.GetSummary(true),
@@ -567,8 +532,36 @@ namespace dlss_updater
             }
             finally
             {
-                InvokeOnUiThread(() => SetBackupButtonsEnabled(_backupFiles.Count > 0));
+                InvokeOnUiThread(EndBackupOperation);
             }
+        }
+
+        // Restore and Delete lock the window like an update does, so an
+        // update can't replace the same DLL while a backup is restored.
+        private bool TryBeginBackupOperation()
+        {
+            if (_updateInProgress)
+            {
+                return false;
+            }
+
+            SetUpdateInProgress(true);
+            ApplyUpdateButtonState();
+            return true;
+        }
+
+        private void EndBackupOperation()
+        {
+            SetUpdateInProgress(false);
+            ApplyUpdateButtonState();
+        }
+
+        // The folder the backups were found in, not whatever is typed now.
+        private string GetOperationFolder()
+        {
+            return string.IsNullOrWhiteSpace(_scannedFolderPath)
+                ? FolderPathTextBox.Text
+                : _scannedFolderPath;
         }
 
         private async void DeleteBackupButton_Click(
@@ -587,13 +580,18 @@ namespace dlss_updater
                 return;
             }
 
-            string folder = FolderPathTextBox.Text;
-            SetBackupButtonsEnabled(false);
+            if (!TryBeginBackupOperation())
+            {
+                return;
+            }
+
+            string folder = GetOperationFolder();
+            List<ScannedFile> backups = _backupFiles;
 
             try
             {
                 BackupOperationResult result = await Task.Run(() =>
-                    BackupArchiveService.DeleteBackups(_backupFiles));
+                    BackupArchiveService.DeleteBackups(backups));
 
                 List<string> backupWarnings = new List<string>();
                 _backupFiles = await Task.Run(() =>
@@ -623,36 +621,23 @@ namespace dlss_updater
             }
             finally
             {
-                InvokeOnUiThread(() => SetBackupButtonsEnabled(_backupFiles.Count > 0));
+                InvokeOnUiThread(EndBackupOperation);
             }
+        }
+
+        private void ApplyScanResult(FolderScanResult scan)
+        {
+            _dlssFiles = scan.DlssFiles;
+            _dlssdFiles = scan.DlssdFiles;
+            _dlssgFiles = scan.DlssgFiles;
+            _backupFiles = scan.BackupFiles;
+            _scanWarningPaths = MergeScanWarningPaths(scan.WarningPaths);
         }
 
         private async Task RefreshScannedFilesAsync(string folder)
         {
-            List<string> dlssWarnings = new List<string>();
-            List<string> dlssdWarnings = new List<string>();
-            List<string> dlssgWarnings = new List<string>();
-            List<string> backupWarnings = new List<string>();
-            Task<List<ScannedFile>> dlssTask = Task.Run(() =>
-                FolderScanner.FindFiles(folder, "nvngx_dlss.dll", dlssWarnings));
-            Task<List<ScannedFile>> dlssdTask = Task.Run(() =>
-                FolderScanner.FindFiles(folder, "nvngx_dlssd.dll", dlssdWarnings));
-            Task<List<ScannedFile>> dlssgTask = Task.Run(() =>
-                FolderScanner.FindFiles(folder, "nvngx_dlssg.dll", dlssgWarnings));
-            Task<List<ScannedFile>> backupTask = Task.Run(() =>
-                BackupScanner.FindBackupFiles(folder, backupWarnings));
-
-            await Task.WhenAll(dlssTask, dlssdTask, dlssgTask, backupTask);
-
-            _dlssFiles = await dlssTask;
-            _dlssdFiles = await dlssdTask;
-            _dlssgFiles = await dlssgTask;
-            _backupFiles = await backupTask;
-            _scanWarningPaths = MergeScanWarningPaths(
-                dlssWarnings,
-                dlssdWarnings,
-                dlssgWarnings,
-                backupWarnings);
+            FolderScanResult scan = await Task.Run(() => FolderScanner.Scan(folder));
+            ApplyScanResult(scan);
 
             InvokeOnUiThread(() =>
             {
@@ -993,7 +978,18 @@ namespace dlss_updater
                 }
             }
 
-            return false;
+            // Nothing inside Windows either: the NVIDIA driver keeps its own
+            // DLSS files in System32\DriverStore, and those must not change.
+            string windowsFolder = Environment.GetFolderPath(Environment.SpecialFolder.Windows)
+                .TrimEnd(
+                    System.IO.Path.DirectorySeparatorChar,
+                    System.IO.Path.AltDirectorySeparatorChar);
+
+            return !string.IsNullOrEmpty(windowsFolder) &&
+                (string.Equals(fullPath, windowsFolder, StringComparison.OrdinalIgnoreCase) ||
+                 fullPath.StartsWith(
+                     windowsFolder + System.IO.Path.DirectorySeparatorChar,
+                     StringComparison.OrdinalIgnoreCase));
         }
 
         private void SetSearchingState()
