@@ -70,6 +70,12 @@ namespace dlss_updater.Services
                     Fill(flag, "#FF0000", 12, 0, Width - 12, Height);
                     Shape(flag, "#FFCC00", new EllipseGeometry(new Point(12, 10), 4.5, 4.5));
                     break;
+                case "id":
+                    Horizontal(flag, "#CE1126", "#FFFFFF");
+                    break;
+                case "th":
+                    Horizontal(flag, "#A51931", "#F4F5F8", "#2D2A4A", "#2D2A4A", "#F4F5F8", "#A51931");
+                    break;
                 default:
                     Fill(flag, "#596359", 0, 0, Width, Height);
                     break;
