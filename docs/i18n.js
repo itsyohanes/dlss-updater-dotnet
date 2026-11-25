@@ -11,28 +11,32 @@
 // data-name attribute, and {date} from data-date as a date in that language.
 //
 // The language is picked from ?lang=, then the visitor's last choice, then
-// the browser's languages, then English. The list matches the app's.
+// the browser's languages, then English. The list matches the app's, in the
+// same order: alphabetical by each language's own name, Latin script first.
 (function () {
   "use strict";
 
   var LANGUAGES = [
-    { code: "en", name: "English", tag: "en-AU" },
-    { code: "de", name: "Deutsch", tag: "de" },
-    { code: "fr", name: "Français", tag: "fr" },
-    { code: "es", name: "Español", tag: "es" },
-    { code: "it", name: "Italiano", tag: "it" },
-    { code: "pl", name: "Polski", tag: "pl" },
-    { code: "uk", name: "Українська", tag: "uk" },
-    { code: "zh", name: "简体中文", tag: "zh-CN" },
-    { code: "ru", name: "Русский", tag: "ru" },
-    { code: "ja", name: "日本語", tag: "ja" },
-    { code: "ko", name: "한국어", tag: "ko" },
-    { code: "cs", name: "Čeština", tag: "cs" },
-    { code: "nl", name: "Nederlands", tag: "nl" },
-    { code: "pt", name: "Português", tag: "pt-PT" },
     { code: "id", name: "Bahasa Indonesia", tag: "id" },
-    { code: "th", name: "ไทย", tag: "th" }
+    { code: "cs", name: "Čeština", tag: "cs" },
+    { code: "de", name: "Deutsch", tag: "de" },
+    { code: "en", name: "English", tag: "en-AU" },
+    { code: "es", name: "Español", tag: "es" },
+    { code: "fr", name: "Français", tag: "fr" },
+    { code: "it", name: "Italiano", tag: "it" },
+    { code: "nl", name: "Nederlands", tag: "nl" },
+    { code: "pl", name: "Polski", tag: "pl" },
+    { code: "pt", name: "Português", tag: "pt-PT" },
+    { code: "ru", name: "Русский", tag: "ru" },
+    { code: "uk", name: "Українська", tag: "uk" },
+    { code: "th", name: "ไทย", tag: "th" },
+    { code: "ja", name: "日本語", tag: "ja" },
+    { code: "zh", name: "简体中文", tag: "zh-CN" },
+    { code: "ko", name: "한국어", tag: "ko" }
   ];
+  var ENGLISH = LANGUAGES.filter(function (language) {
+    return language.code === "en";
+  })[0];
 
   var STORAGE_KEY = "lang";
   var baseUrl = new URL("i18n/", document.currentScript.src);
@@ -416,7 +420,7 @@
     pending.then(function (strings) {
       show(current, strings);
     }, function () {
-      current = LANGUAGES[0];
+      current = ENGLISH;
       show(current, {});
     });
 
@@ -433,7 +437,7 @@
       load(language.code).then(function (strings) {
         if (current === language) show(language, strings);
       }, function () {
-        select.value = root.lang ? (find(root.lang.split("-")[0]) || LANGUAGES[0]).code : "en";
+        select.value = root.lang ? (find(root.lang.split("-")[0]) || ENGLISH).code : "en";
       });
     });
   });

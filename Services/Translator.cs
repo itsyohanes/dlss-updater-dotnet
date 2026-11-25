@@ -2096,24 +2096,27 @@ namespace dlss_updater.Services
 
         public static Translator Instance { get; } = new Translator();
 
+        // Shown in this order in the Language menu: alphabetical by each
+        // language's own name, Latin script first, then the others. The
+        // site's picker (docs/i18n.js) uses the same order.
         public static IList<LanguageOption> Languages { get; } = new List<LanguageOption>
         {
-            new LanguageOption("en", "English"),
-            new LanguageOption("de", "Deutsch"),
-            new LanguageOption("fr", "Français"),
-            new LanguageOption("es", "Español"),
-            new LanguageOption("it", "Italiano"),
-            new LanguageOption("pl", "Polski"),
-            new LanguageOption("uk", "Українська"),
-            new LanguageOption("zh", "简体中文"),
-            new LanguageOption("ru", "Русский"),
-            new LanguageOption("ja", "日本語"),
-            new LanguageOption("ko", "한국어"),
-            new LanguageOption("cs", "Čeština"),
-            new LanguageOption("nl", "Nederlands"),
-            new LanguageOption("pt", "Português"),
             new LanguageOption("id", "Bahasa Indonesia"),
-            new LanguageOption("th", "ไทย")
+            new LanguageOption("cs", "Čeština"),
+            new LanguageOption("de", "Deutsch"),
+            new LanguageOption("en", "English"),
+            new LanguageOption("es", "Español"),
+            new LanguageOption("fr", "Français"),
+            new LanguageOption("it", "Italiano"),
+            new LanguageOption("nl", "Nederlands"),
+            new LanguageOption("pl", "Polski"),
+            new LanguageOption("pt", "Português"),
+            new LanguageOption("ru", "Русский"),
+            new LanguageOption("uk", "Українська"),
+            new LanguageOption("th", "ไทย"),
+            new LanguageOption("ja", "日本語"),
+            new LanguageOption("zh", "简体中文"),
+            new LanguageOption("ko", "한국어")
         };
 
         public event PropertyChangedEventHandler PropertyChanged;
