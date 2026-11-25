@@ -752,6 +752,9 @@
                                      Value="TopLevelHeader">
                                 <Setter Property="Padding"
                                         Value="10,6"/>
+                                <Setter TargetName="IconPresenter"
+                                        Property="Margin"
+                                        Value="0,0,7,0"/>
                             </Trigger>
                             <Trigger Property="Role"
                                      Value="TopLevelItem">

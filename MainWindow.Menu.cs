@@ -58,6 +58,21 @@ namespace dlss_updater
 
         private void UpdateLanguageMenuChecks()
         {
+            // The menu bar shows the flag of the language in use.
+            LanguageOption current = Translator.Languages.FirstOrDefault(option => string.Equals(
+                option.Code,
+                Translator.Instance.Language,
+                StringComparison.OrdinalIgnoreCase));
+            LanguageMenu.Icon = current == null
+                ? null
+                : new Image
+                {
+                    Source = current.Flag,
+                    Width = 18,
+                    Height = 12,
+                    Stretch = Stretch.Fill
+                };
+
             foreach (object entry in LanguageMenu.Items)
             {
                 MenuItem item = entry as MenuItem;
