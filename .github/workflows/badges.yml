@@ -15,9 +15,11 @@ on:
 # and run in the read-only build job.
 permissions: {}
 
+# A merge and a release published soon after it both start a run. Queue the
+# newer one instead of cancelling the older, so no run shows as cancelled.
 concurrency:
   group: badges
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
