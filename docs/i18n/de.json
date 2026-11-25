@@ -28,7 +28,7 @@
   "sizeQ": "Wie groß ist der Download?",
   "sizeA": "Die ausführbare Datei ist etwa {exe} groß, als ZIP etwa {zip}. Beim Herunterladen aktualisierter DLSS-Dateien wird zusätzlicher Speicherplatz belegt.",
   "languagesQ": "Welche Sprachen werden unterstützt?",
-  "languagesA": "DLSS Updater gibt es auf Englisch, Deutsch, Französisch, Spanisch, Italienisch, Polnisch, Ukrainisch, vereinfachtem Chinesisch, Russisch, Japanisch, Koreanisch, Tschechisch, Niederländisch, Portugiesisch, Indonesisch und Thai. Standardmäßig wird deine Systemsprache verwendet, sofern sie unterstützt wird, und du kannst sie jederzeit im Menü „Sprache“ ändern.",
+  "languagesA": "DLSS Updater gibt es auf Englisch, Deutsch, Französisch, Spanisch, Italienisch, Polnisch, Ukrainisch, vereinfachtem Chinesisch, traditionellem Chinesisch, Russisch, Japanisch, Koreanisch, Tschechisch, Niederländisch, Portugiesisch (Brasilien und Portugal), Indonesisch, Thai, Türkisch und Vietnamesisch. Standardmäßig wird deine Systemsprache verwendet, sofern sie unterstützt wird, und du kannst sie jederzeit im Menü „Sprache“ ändern.",
   "breakAppsQ": "Kann das Aktualisieren von DLSS-Dateien meine Anwendungen beschädigen?",
   "breakAppsA": "Ja. Neuere DLSS-Versionen funktionieren nicht garantiert mit jeder Anwendung einwandfrei. Aktualisierte Dateien können Kompatibilitätsprobleme, Grafikfehler oder Abstürze verursachen. Sichere deine Originaldateien vor dem Aktualisieren, damit du sie bei Bedarf wiederherstellen kannst.",
   "antivirusQ": "Warum hat mein Virenschutz DLSS Updater gemeldet?",

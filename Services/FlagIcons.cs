@@ -76,6 +76,32 @@ namespace dlss_updater.Services
                 case "th":
                     Horizontal(flag, "#A51931", "#F4F5F8", "#2D2A4A", "#2D2A4A", "#F4F5F8", "#A51931");
                     break;
+                case "tr":
+                    Fill(flag, "#E30A17", 0, 0, Width, Height);
+                    Shape(flag, "#FFFFFF", new EllipseGeometry(new Point(10, 10), 5, 5));
+                    Shape(flag, "#E30A17", new EllipseGeometry(new Point(11.25, 10), 4, 4));
+                    Shape(flag, "#FFFFFF", Star(17.4, 10, 2.5, 5, 0.382, Math.PI));
+                    break;
+                case "vi":
+                    Fill(flag, "#DA251D", 0, 0, Width, Height);
+                    Shape(flag, "#FFFF00", Star(15, 10.5, 6));
+                    break;
+                case "pt-BR":
+                    Fill(flag, "#009C3B", 0, 0, Width, Height);
+                    Shape(flag, "#FFDF00", Polygon(
+                        new Point(2.5, 10),
+                        new Point(15, 1.7),
+                        new Point(27.5, 10),
+                        new Point(15, 18.3)));
+                    Shape(flag, "#002776", new EllipseGeometry(new Point(15, 10), 5, 5));
+                    break;
+                case "zh-Hant":
+                    Fill(flag, "#FE0000", 0, 0, Width, Height);
+                    Fill(flag, "#000095", 0, 0, 15, 10);
+                    Shape(flag, "#FFFFFF", Star(7.5, 5, 3.75, 12, 0.55));
+                    Shape(flag, "#000095", new EllipseGeometry(new Point(7.5, 5), 2.1, 2.1));
+                    Shape(flag, "#FFFFFF", new EllipseGeometry(new Point(7.5, 5), 1.8, 1.8));
+                    break;
                 default:
                     Fill(flag, "#596359", 0, 0, Width, Height);
                     break;
@@ -177,13 +203,21 @@ namespace dlss_updater.Services
             flag.Children.Add(new GeometryDrawing(Paint(color), null, geometry));
         }
 
-        private static Geometry Star(double centerX, double centerY, double radius)
+        // A star with its first point at the given angle (straight up by
+        // default). The inner corners sit at inner x radius.
+        private static Geometry Star(
+            double centerX,
+            double centerY,
+            double radius,
+            int tips = 5,
+            double inner = 0.382,
+            double rotation = -Math.PI / 2)
         {
-            Point[] points = new Point[10];
+            Point[] points = new Point[tips * 2];
             for (int i = 0; i < points.Length; i++)
             {
-                double length = i % 2 == 0 ? radius : radius * 0.382;
-                double angle = -Math.PI / 2 + i * Math.PI / 5;
+                double length = i % 2 == 0 ? radius : radius * inner;
+                double angle = rotation + i * Math.PI / tips;
                 points[i] = new Point(
                     centerX + length * Math.Cos(angle),
                     centerY + length * Math.Sin(angle));

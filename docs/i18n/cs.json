@@ -28,7 +28,7 @@
   "sizeQ": "Jak velké je stahování?",
   "sizeA": "Spustitelný soubor má asi {exe}, v archivu ZIP asi {zip}. Stažení aktualizovaných souborů DLSS zabere další místo na disku.",
   "languagesQ": "Jaké jazyky jsou podporovány?",
-  "languagesA": "DLSS Updater je k dispozici v angličtině, němčině, francouzštině, španělštině, italštině, polštině, ukrajinštině, zjednodušené čínštině, ruštině, japonštině, korejštině, češtině, nizozemštině, portugalštině, indonéštině a thajštině. Ve výchozím nastavení používá jazyk systému, pokud je podporován, a změnit ho můžete kdykoli v nabídce Jazyk.",
+  "languagesA": "DLSS Updater je k dispozici v angličtině, němčině, francouzštině, španělštině, italštině, polštině, ukrajinštině, zjednodušené čínštině, tradiční čínštině, ruštině, japonštině, korejštině, češtině, nizozemštině, portugalštině (brazilské i evropské), indonéštině, thajštině, turečtině a vietnamštině. Ve výchozím nastavení používá jazyk systému, pokud je podporován, a změnit ho můžete kdykoli v nabídce Jazyk.",
   "breakAppsQ": "Může aktualizace souborů DLSS poškodit moje aplikace?",
   "breakAppsA": "Ano. Novější verze DLSS nemusí správně fungovat s každou aplikací. Aktualizované soubory mohou způsobit problémy s kompatibilitou, grafické chyby nebo pády. Před aktualizací si zálohujte původní soubory, abyste je v případě potřeby mohli obnovit.",
   "antivirusQ": "Proč můj antivirus označil DLSS Updater?",

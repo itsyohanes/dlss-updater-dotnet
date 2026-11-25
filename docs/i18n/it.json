@@ -28,7 +28,7 @@
   "sizeQ": "Quanto pesa il download?",
   "sizeA": "L’eseguibile pesa circa {exe}, circa {zip} in formato ZIP. Altro spazio verrà usato quando si scaricano i file DLSS aggiornati.",
   "languagesQ": "Quali lingue supporta?",
-  "languagesA": "DLSS Updater è disponibile in inglese, tedesco, francese, spagnolo, italiano, polacco, ucraino, cinese semplificato, russo, giapponese, coreano, ceco, olandese, portoghese, indonesiano e thailandese. Usa la lingua del sistema per impostazione predefinita, se supportata, e puoi cambiarla in qualsiasi momento dal menu Lingua.",
+  "languagesA": "DLSS Updater è disponibile in inglese, tedesco, francese, spagnolo, italiano, polacco, ucraino, cinese semplificato, cinese tradizionale, russo, giapponese, coreano, ceco, olandese, portoghese (brasiliano ed europeo), indonesiano, thailandese, turco e vietnamita. Usa la lingua del sistema per impostazione predefinita, se supportata, e puoi cambiarla in qualsiasi momento dal menu Lingua.",
   "breakAppsQ": "Aggiornare i file DLSS può causare problemi alle mie applicazioni?",
   "breakAppsA": "Sì. Non è garantito che le versioni più recenti di DLSS funzionino correttamente con ogni applicazione. L’aggiornamento dei file può causare problemi di compatibilità, difetti grafici o arresti anomali. Fai un backup dei file originali prima di aggiornare, così potrai ripristinarli se necessario.",
   "antivirusQ": "Perché il mio antivirus ha segnalato DLSS Updater?",

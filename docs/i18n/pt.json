@@ -28,7 +28,7 @@
   "sizeQ": "Qual é o tamanho da transferência?",
   "sizeA": "O ficheiro executável tem cerca de {exe}, ou cerca de {zip} em ZIP. A transferência de ficheiros DLSS atualizados ocupa espaço adicional em disco.",
   "languagesQ": "Que idiomas são suportados?",
-  "languagesA": "O DLSS Updater está disponível em inglês, alemão, francês, espanhol, italiano, polaco, ucraniano, chinês simplificado, russo, japonês, coreano, checo, neerlandês, português, indonésio e tailandês. Por predefinição, utiliza o idioma do sistema se for suportado, e pode alterá-lo a qualquer momento no menu Idioma.",
+  "languagesA": "O DLSS Updater está disponível em inglês, alemão, francês, espanhol, italiano, polaco, ucraniano, chinês simplificado, chinês tradicional, russo, japonês, coreano, checo, neerlandês, português (do Brasil e de Portugal), indonésio, tailandês, turco e vietnamita. Por predefinição, utiliza o idioma do sistema se for suportado, e pode alterá-lo a qualquer momento no menu Idioma.",
   "breakAppsQ": "Atualizar os ficheiros DLSS pode estragar as minhas aplicações?",
   "breakAppsA": "Sim. Não é garantido que as versões mais recentes do DLSS funcionem corretamente com todas as aplicações. Os ficheiros atualizados podem causar problemas de compatibilidade, falhas gráficas ou bloqueios. Faça uma cópia de segurança dos ficheiros originais antes de os atualizar, para os poder restaurar se for necessário.",
   "antivirusQ": "Porque é que o meu antivírus assinalou o DLSS Updater?",
