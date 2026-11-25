@@ -82,79 +82,87 @@
     <!-- Menu bar -->
     <rect y="31" width="736" height="30" fill="#1C211C"/>
     <path d="M0 60.5h736" class="rule"/>
-    <text x="18" y="51" style="font-size:13px">File</text>
-    <text x="57" y="51" style="font-size:13px">Language</text>
-    <text x="133" y="51" style="font-size:13px">Help</text>
+    <text x="18" y="51" style="font-size:13px" data-k="menuFile">File</text>
+    <!-- The flag of the language in use, as the app shows it (FlagIcons.cs, 18 x 12) -->
+    <svg data-k="flag" x="57" y="40" width="18" height="12" viewBox="0 0 30 20" preserveAspectRatio="none">
+      <rect fill="#012169" width="30" height="20"/>
+      <path d="M0 0L30 20M0 20L30 0" stroke="#FFFFFF" stroke-width="4"/>
+      <path d="M0 0L30 20M0 20L30 0" stroke="#C8102E" stroke-width="1.4"/>
+      <rect fill="#FFFFFF" x="11.7" width="6.6" height="20"/><rect fill="#FFFFFF" y="6.7" width="30" height="6.6"/>
+      <rect fill="#C8102E" x="13" width="4" height="20"/><rect fill="#C8102E" y="8" width="30" height="4"/>
+    </svg>
+    <text x="82" y="51" style="font-size:13px" data-k="menuLanguage">Language</text>
+    <text x="158" y="51" style="font-size:13px" data-k="menuHelp">Help</text>
 
     <!-- Everything under the menu bar sits 14px higher than the old picker layout -->
     <g transform="translate(0 -14)">
     <!-- Folder to scan, with the saved folders list underneath (stays collapsed) -->
     <rect class="panel" x="29.5" y="107.5" width="677" height="172" rx="6"/>
-    <text class="h" x="48" y="139">Folder to scan</text>
+    <text class="h" x="48" y="139" data-k="folderToScan">Folder to scan</text>
     <path d="M30 157.5h676" class="rule"/>
-    <rect x="48.5" y="178.5" width="543" height="36" rx="4" fill="#171A17" stroke="#394139"/>
-    <rect class="anim focus" x="48.5" y="178.5" width="543" height="36" rx="4" fill="none" stroke="#76B900" opacity="0"/>
+    <rect data-field="" x="48.5" y="178.5" width="543" height="36" rx="4" fill="#171A17" stroke="#394139"/>
+    <rect data-field="" class="anim focus" x="48.5" y="178.5" width="543" height="36" rx="4" fill="none" stroke="#76B900" opacity="0"/>
     <text x="60" y="202" clip-path="url(#typing)">C:\Program Files\Epic Games\Twinmotion2026.2</text>
-    <rect x="600.5" y="178.5" width="87" height="36" rx="4" class="btn"/>
-    <text class="c" x="644" y="202">Browse</text>
+    <rect data-btn="browse" x="600.5" y="178.5" width="87" height="36" rx="4" class="btn"/>
+    <text data-btn="browse" data-k="browse" class="c" x="644" y="202">Browse</text>
 
     <path d="M30 235.5h676" class="rule"/>
-    <text class="muted anim before" x="48" y="262" style="font-size:13px;font-weight:600" opacity="0">Your folders (3)</text>
-    <text class="muted anim done" x="48" y="262" style="font-size:13px;font-weight:600">Your folders (4)</text>
+    <text class="muted anim before" x="48" y="262" style="font-size:13px;font-weight:600" opacity="0" data-k="yourFolders3">Your folders (3)</text>
+    <text class="muted anim done" x="48" y="262" style="font-size:13px;font-weight:600" data-k="yourFolders4">Your folders (4)</text>
     <path d="M676.5 254.5h10l-5 6z" fill="#A4AEA2"/>
 
     <!-- Header note: appears once Update adds Twinmotion 2026.2 to the list -->
-    <text class="anim notice e" x="664" y="262" opacity="0" style="font-size:13px;fill:#86CC0A">1 just added</text>
+    <text class="anim notice e" x="664" y="262" opacity="0" style="font-size:13px;fill:#86CC0A" data-k="justAdded">1 just added</text>
 
     <g>
       <!-- Scan results -->
       <rect x="29.5" y="296.5" width="677" height="103" rx="6" class="panel"/>
-      <text class="h dim" x="48" y="328">Scan results</text>
-      <text class="h anim ready" x="48" y="328">Scan results</text>
+      <text class="h dim" x="48" y="328" data-k="scanResults">Scan results</text>
+      <text class="h anim ready" x="48" y="328" data-k="scanResults">Scan results</text>
       <path d="M30 346.5h676" class="rule"/>
       <rect class="anim bar" x="30" y="345" width="0" height="3" fill="#76B900"/>
-      <text class="muted anim scanning" x="48" y="378" opacity="0">Searching...</text>
-      <text class="muted anim found" x="48" y="378" opacity="0">Found 1 DLSS file<tspan class="warn"> · 1 update available</tspan></text>
-      <text class="muted anim updating" x="48" y="378" opacity="0">Updating nvngx_dlss.dll…</text>
-      <text class="muted anim done" x="48" y="378">Found 1 DLSS file<tspan class="ok"> · all up to date</tspan></text>
-      <rect x="576.5" y="355.5" width="111" height="36" rx="4" class="btn-off"/>
-      <text class="c dim" x="632" y="379">Show details</text>
+      <text class="muted anim scanning" x="48" y="378" opacity="0" data-k="searching">Searching...</text>
+      <text class="muted anim found" x="48" y="378" opacity="0" data-k="foundOne">Found 1 DLSS file<tspan class="warn" data-k="updateAvailable"> · 1 update available</tspan></text>
+      <text class="muted anim updating" x="48" y="378" opacity="0" data-k="updatingFile">Updating nvngx_dlss.dll…</text>
+      <text class="muted anim done" x="48" y="378" data-k="foundOne">Found 1 DLSS file<tspan class="ok" data-k="allUpToDate"> · all up to date</tspan></text>
+      <rect data-btn="details" x="576.5" y="355.5" width="111" height="36" rx="4" class="btn-off"/>
+      <text data-btn="details" data-k="showDetails" class="c dim" x="632" y="379">Show details</text>
       <g class="anim ready">
-        <rect x="576.5" y="355.5" width="111" height="36" rx="4" class="btn"/>
-        <text class="c" x="632" y="379">Show details</text>
+        <rect data-btn="details" x="576.5" y="355.5" width="111" height="36" rx="4" class="btn"/>
+        <text data-btn="details" data-k="showDetails" class="c" x="632" y="379">Show details</text>
       </g>
 
       <!-- Backup -->
       <rect x="29.5" y="416.5" width="677" height="156" rx="6" class="panel"/>
-      <text class="h dim" x="48" y="448">Backup</text>
-      <text class="h anim ready" x="48" y="448">Backup</text>
+      <text class="h dim" x="48" y="448" data-k="backup">Backup</text>
+      <text class="h anim ready" x="48" y="448" data-k="backup">Backup</text>
       <path d="M30 467.5h676" class="rule"/>
-      <text class="muted anim scanned" x="48" y="499" opacity="0">No backups detected</text>
-      <text class="anim done" x="48" y="499" style="fill:#86CC0A">✓  Backup found (310.2.1)</text>
-      <rect x="415.5" y="475.5" width="134" height="36" rx="4" class="btn-off"/>
-      <text class="c dim" x="482" y="499">Restore backups</text>
-      <rect x="558.5" y="475.5" width="129" height="36" rx="4" class="btn-off"/>
-      <text class="c dim" x="623" y="499">Delete backups</text>
+      <text class="muted anim scanned" x="48" y="499" opacity="0" data-k="noBackups">No backups detected</text>
+      <text class="anim done" x="48" y="499" style="fill:#86CC0A" data-k="backupFound">✓  Backup found (310.2.1)</text>
+      <rect data-btn="restore" x="415.5" y="475.5" width="134" height="36" rx="4" class="btn-off"/>
+      <text data-btn="restore" data-k="restoreBackups" class="c dim" x="482" y="499">Restore backups</text>
+      <rect data-btn="delete" x="558.5" y="475.5" width="129" height="36" rx="4" class="btn-off"/>
+      <text data-btn="delete" data-k="deleteBackups" class="c dim" x="623" y="499">Delete backups</text>
       <g class="anim done">
-        <rect x="415.5" y="475.5" width="134" height="36" rx="4" class="btn"/>
-        <text class="c" x="482" y="499">Restore backups</text>
-        <rect x="558.5" y="475.5" width="129" height="36" rx="4" class="btn"/>
-        <text class="c" x="623" y="499">Delete backups</text>
+        <rect data-btn="restore" x="415.5" y="475.5" width="134" height="36" rx="4" class="btn"/>
+        <text data-btn="restore" data-k="restoreBackups" class="c" x="482" y="499">Restore backups</text>
+        <rect data-btn="delete" x="558.5" y="475.5" width="129" height="36" rx="4" class="btn"/>
+        <text data-btn="delete" data-k="deleteBackups" class="c" x="623" y="499">Delete backups</text>
       </g>
       <path d="M30 520.5h676" class="rule"/>
-      <text class="muted" x="48" y="552">Overwrite backup when updating</text>
-      <text class="muted" x="622" y="552">On</text>
+      <text class="muted" x="48" y="552" data-k="overwriteBackup">Overwrite backup when updating</text>
+      <text class="muted e" x="640" y="552" data-k="on">On</text>
       <rect x="648" y="536" width="40" height="20" rx="10" fill="#609600"/>
       <circle cx="678" cy="546" r="7" fill="#E8EDE8"/>
 
       <!-- Update: enabled once the scan finds a newer version -->
-      <rect x="597" y="635" width="110" height="37" rx="4" fill="#2C3A1C"/>
-      <text class="c" x="652" y="659" style="fill:#5B6B45">Update</text>
+      <rect data-btn="update" x="597" y="635" width="110" height="37" rx="4" fill="#2C3A1C"/>
+      <text data-btn="update" data-k="update" class="c" x="652" y="659" style="fill:#5B6B45">Update</text>
       <g class="anim press">
         <g class="anim scanned" opacity="0">
-          <rect x="597" y="635" width="110" height="37" rx="4" fill="#76B900"/>
-          <text class="c anim found" x="652" y="659" opacity="0" style="fill:#11170D;font-weight:600">Update (1)</text>
-          <text class="c anim updating" x="652" y="659" opacity="0" style="fill:#11170D;font-weight:600">Updating...</text>
+          <rect data-btn="update" x="597" y="635" width="110" height="37" rx="4" fill="#76B900"/>
+          <text data-btn="update" data-k="updateCount" class="c anim found" x="652" y="659" opacity="0" style="fill:#11170D;font-weight:600">Update (1)</text>
+          <text data-btn="update" data-k="updating" class="c anim updating" x="652" y="659" opacity="0" style="fill:#11170D;font-weight:600">Updating...</text>
         </g>
       </g>
     </g>
