@@ -104,6 +104,35 @@ namespace DlssUpdater.Tests
             Assert.Empty(Tables[code].Where(entry => string.IsNullOrWhiteSpace(entry.Value)).Select(entry => entry.Key));
         }
 
+        [Theory]
+        [InlineData("de-DE", "de")]
+        [InlineData("tr-TR", "tr")]
+        [InlineData("vi-VN", "vi")]
+        [InlineData("zh-CN", "zh")]
+        [InlineData("zh-SG", "zh")]
+        [InlineData("zh-Hans", "zh")]
+        [InlineData("zh-CHS", "zh")]
+        [InlineData("zh", "zh")]
+        [InlineData("zh-TW", "zh-Hant")]
+        [InlineData("zh-HK", "zh-Hant")]
+        [InlineData("zh-MO", "zh-Hant")]
+        [InlineData("zh-Hant", "zh-Hant")]
+        [InlineData("zh-Hant-TW", "zh-Hant")]
+        [InlineData("zh-CHT", "zh-Hant")]
+        [InlineData("pt-BR", "pt-BR")]
+        [InlineData("pt_br", "pt-BR")]
+        [InlineData("pt-PT", "pt")]
+        [InlineData("pt-AO", "pt")]
+        [InlineData("pt", "pt")]
+        [InlineData("en-US", "en")]
+        [InlineData("sv-SE", "en")]
+        [InlineData("", "en")]
+        [InlineData(null, "en")]
+        public void SystemCulturePicksTheRightTranslation(string culture, string expected)
+        {
+            Assert.Equal(expected, Translator.MatchCulture(culture));
+        }
+
         [Fact]
         public void UnknownKeyFallsBackToTheKey()
         {

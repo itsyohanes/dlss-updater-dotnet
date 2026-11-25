@@ -28,7 +28,7 @@
   "sizeQ": "Hoe groot is de download?",
   "sizeA": "Het uitvoerbare bestand is ongeveer {exe}, of ongeveer {zip} als zip. Het downloaden van bijgewerkte DLSS-bestanden gebruikt extra schijfruimte.",
   "languagesQ": "Welke talen worden ondersteund?",
-  "languagesA": "DLSS Updater is beschikbaar in het Engels, Duits, Frans, Spaans, Italiaans, Pools, Oekraïens, Vereenvoudigd Chinees, Russisch, Japans, Koreaans, Tsjechisch, Nederlands, Portugees, Indonesisch en Thai. Standaard gebruikt het de taal van je systeem als die wordt ondersteund, en je kunt de taal altijd wijzigen via het menu Taal.",
+  "languagesA": "DLSS Updater is beschikbaar in het Engels, Duits, Frans, Spaans, Italiaans, Pools, Oekraïens, Vereenvoudigd Chinees, Traditioneel Chinees, Russisch, Japans, Koreaans, Tsjechisch, Nederlands, Portugees (Braziliaans en Europees), Indonesisch, Thai, Turks en Vietnamees. Standaard gebruikt het de taal van je systeem als die wordt ondersteund, en je kunt de taal altijd wijzigen via het menu Taal.",
   "breakAppsQ": "Kan het bijwerken van DLSS-bestanden mijn applicaties kapotmaken?",
   "breakAppsA": "Ja. Nieuwere DLSS-versies werken niet gegarandeerd goed met elke applicatie. Bijgewerkte bestanden kunnen compatibiliteitsproblemen, grafische fouten of crashes veroorzaken. Maak een back-up van je oorspronkelijke bestanden voordat je ze bijwerkt, zodat je ze zo nodig kunt herstellen.",
   "antivirusQ": "Waarom markeerde mijn antivirus DLSS Updater?",

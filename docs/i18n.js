@@ -26,12 +26,16 @@
     { code: "it", name: "Italiano", tag: "it" },
     { code: "nl", name: "Nederlands", tag: "nl" },
     { code: "pl", name: "Polski", tag: "pl" },
-    { code: "pt", name: "Português", tag: "pt-PT" },
+    { code: "pt-BR", name: "Português (Brasil)", tag: "pt-BR" },
+    { code: "pt", name: "Português (Portugal)", tag: "pt-PT" },
+    { code: "vi", name: "Tiếng Việt", tag: "vi" },
+    { code: "tr", name: "Türkçe", tag: "tr" },
     { code: "ru", name: "Русский", tag: "ru" },
     { code: "uk", name: "Українська", tag: "uk" },
     { code: "th", name: "ไทย", tag: "th" },
     { code: "ja", name: "日本語", tag: "ja" },
     { code: "zh", name: "简体中文", tag: "zh-CN" },
+    { code: "zh-Hant", name: "繁體中文", tag: "zh-Hant" },
     { code: "ko", name: "한국어", tag: "ko" }
   ];
   var ENGLISH = LANGUAGES.filter(function (language) {
@@ -47,9 +51,24 @@
   function find(code) {
     code = String(code || "").toLowerCase();
     for (var i = 0; i < LANGUAGES.length; i++) {
-      if (LANGUAGES[i].code === code) return LANGUAGES[i];
+      if (LANGUAGES[i].code.toLowerCase() === code) return LANGUAGES[i];
     }
     return null;
+  }
+
+  // A browser language such as "de-AT" to one of ours, the same way the app
+  // reads the Windows language: Traditional Chinese for Taiwan, Hong Kong,
+  // Macau and "Hant", Brazilian Portuguese for Brazil.
+  function match(tag) {
+    var parts = String(tag || "").toLowerCase().replace(/_/g, "-").split("-");
+    if (parts[0] === "zh") {
+      var traditional = parts.some(function (part) {
+        return ["hant", "cht", "tw", "hk", "mo"].indexOf(part) !== -1;
+      });
+      return find(traditional ? "zh-Hant" : "zh");
+    }
+    if (parts[0] === "pt") return find(parts.indexOf("br") > 0 ? "pt-BR" : "pt");
+    return find(parts[0]);
   }
 
   function initialLanguage() {
@@ -65,8 +84,8 @@
 
     var preferred = navigator.languages || [navigator.language];
     for (var i = 0; i < preferred.length; i++) {
-      var match = find(String(preferred[i] || "").split("-")[0]);
-      if (match) return match.code;
+      var found = match(preferred[i]);
+      if (found) return found.code;
     }
     return "en";
   }
@@ -175,14 +194,21 @@
     }).join(" ") + '"/>';
   }
 
-  function star(cx, cy, r) {
+  function star(cx, cy, r, color, tips, inner, rotation) {
+    tips = tips || 5;
+    inner = inner || 0.382;
+    rotation = rotation === undefined ? -Math.PI / 2 : rotation;
     var points = [];
-    for (var i = 0; i < 10; i++) {
-      var length = i % 2 === 0 ? r : r * 0.382;
-      var angle = -Math.PI / 2 + i * Math.PI / 5;
+    for (var i = 0; i < tips * 2; i++) {
+      var length = i % 2 === 0 ? r : r * inner;
+      var angle = rotation + i * Math.PI / tips;
       points.push([cx + length * Math.cos(angle), cy + length * Math.sin(angle)]);
     }
-    return polygon("#FFFF00", points);
+    return polygon(color || "#FFFF00", points);
+  }
+
+  function circle(color, cx, cy, r) {
+    return '<circle fill="' + color + '" cx="' + cx + '" cy="' + cy + '" r="' + r + '"/>';
   }
 
   function koreaBar(x, y) {
@@ -216,7 +242,14 @@
     pt: rect("#006600", 0, 0, 12, 20) + rect("#FF0000", 12, 0, 18, 20) +
       '<circle fill="#FFCC00" cx="12" cy="10" r="4.5"/>',
     id: stripes(true, ["#CE1126", "#FFFFFF"]),
-    th: stripes(true, ["#A51931", "#F4F5F8", "#2D2A4A", "#2D2A4A", "#F4F5F8", "#A51931"])
+    th: stripes(true, ["#A51931", "#F4F5F8", "#2D2A4A", "#2D2A4A", "#F4F5F8", "#A51931"]),
+    tr: rect("#E30A17", 0, 0, 30, 20) + circle("#FFFFFF", 10, 10, 5) + circle("#E30A17", 11.25, 10, 4) +
+      star(17.4, 10, 2.5, "#FFFFFF", 5, 0.382, Math.PI),
+    vi: rect("#DA251D", 0, 0, 30, 20) + star(15, 10.5, 6),
+    "pt-BR": rect("#009C3B", 0, 0, 30, 20) + polygon("#FFDF00", [[2.5, 10], [15, 1.7], [27.5, 10], [15, 18.3]]) +
+      circle("#002776", 15, 10, 5),
+    "zh-Hant": rect("#FE0000", 0, 0, 30, 20) + rect("#000095", 0, 0, 15, 10) +
+      star(7.5, 5, 3.75, "#FFFFFF", 12, 0.55) + circle("#000095", 7.5, 5, 2.1) + circle("#FFFFFF", 7.5, 5, 1.8)
   };
 
   function flagSvg(code) {
@@ -437,7 +470,10 @@
       load(language.code).then(function (strings) {
         if (current === language) show(language, strings);
       }, function () {
-        select.value = root.lang ? (find(root.lang.split("-")[0]) || ENGLISH).code : "en";
+        var shown = LANGUAGES.filter(function (language) {
+          return language.tag === root.lang;
+        })[0];
+        select.value = (shown || ENGLISH).code;
       });
     });
   });
