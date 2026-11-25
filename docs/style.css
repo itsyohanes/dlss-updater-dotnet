@@ -95,6 +95,86 @@ a:focus-visible {
 	border-radius: 4px;
 }
 
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* Hidden for a moment while a translation loads (see i18n.js). */
+html.i18n-pending body {
+	visibility: hidden;
+}
+
+/* Language picker */
+.site-header {
+	display: flex;
+	justify-content: flex-end;
+	max-width: var(--page-width);
+	min-height: 48px;
+	margin: 0 auto;
+	padding: var(--space-3) var(--space-4) 0;
+}
+
+.lang-picker {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+}
+
+.lang-picker[hidden] {
+	display: none;
+}
+
+.lang-flag {
+	position: absolute;
+	left: 12px;
+	display: flex;
+	pointer-events: none;
+}
+
+.lang-flag svg {
+	display: block;
+	border-radius: 2px;
+	box-shadow: 0 0 0 1px rgb(255 255 255 / 12%);
+}
+
+#lang-select {
+	appearance: none;
+	height: 36px;
+	padding: 0 34px 0 42px;
+	border: 1px solid var(--color-border);
+	border-radius: 999px;
+	background: var(--color-panel)
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5' fill='none' stroke='%23a4ab9b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+		no-repeat right 12px center;
+	color: var(--color-text);
+	font: inherit;
+	font-size: 0.875rem;
+	cursor: pointer;
+	transition: border-color 150ms ease;
+}
+
+#lang-select:hover {
+	border-color: #465046;
+}
+
+#lang-select:focus-visible {
+	outline: 3px solid var(--color-link);
+	outline-offset: 2px;
+}
+
+#lang-select option {
+	background: var(--color-panel);
+	color: var(--color-text);
+}
+
 /* Page layout and content panels */
 .page {
 	display: flex;
@@ -102,7 +182,7 @@ a:focus-visible {
 	gap: var(--space-4);
 	width: 100%;
 	max-width: var(--page-width);
-	margin: 48px auto 0;
+	margin: 0 auto;
 	padding: 16px;
 }
 
@@ -472,7 +552,7 @@ hr {
 	}
 
 	.page {
-		margin-top: var(--space-5);
+		margin-top: 0;
 	}
 
 	h1 {

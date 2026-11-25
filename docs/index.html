@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DLSS Updater: Update NVIDIA DLSS Files in Your Apps and Games</title>
-  <meta name="description" content="DLSS Updater is a small, free, open-source Windows tool that finds the NVIDIA DLSS files in your apps and games and updates them to the latest version, with a backup of each one.">
+  <title data-i18n="title">DLSS Updater: Update NVIDIA DLSS Files in Your Apps and Games</title>
+  <meta name="description" data-i18n-content="description" content="DLSS Updater is a small, free, open-source Windows tool that finds the NVIDIA DLSS files in your apps and games and updates them to the latest version, with a backup of each one.">
   <meta name="theme-color" content="#10130f">
   <link rel="canonical" href="https://www.dlssupdater.com/">
 
@@ -29,6 +29,10 @@
 
   <link rel="stylesheet" href="./normalize.css">
   <link rel="stylesheet" href="./style.css">
+
+  <!-- Language picker and translations. English is the text in this page;
+       other languages come from i18n/<code>.json. -->
+  <script src="./i18n.js"></script>
 
   <script type="application/ld+json">
   {
@@ -54,36 +58,45 @@
       "Remembers folders you update and updates them all at once with Update all",
       "Tells you on startup when newer DLSS files are available",
       "Portable, with no installation",
-      "Available in 14 languages"
+      "Available in 16 languages"
     ]
   }
   </script>
 </head>
 
 <body>
+  <header class="site-header">
+    <div class="lang-picker" hidden>
+      <span class="lang-flag" aria-hidden="true"></span>
+      <label class="visually-hidden" for="lang-select" data-i18n="language">Language</label>
+      <select id="lang-select"></select>
+    </div>
+  </header>
+
   <main class="page">
     <section class="hero" aria-labelledby="page-title">
       <h1 id="page-title" class="title"><img class="title-logo" src="./assets/logo.svg" alt="" width="48"
           height="48">DLSS Updater</h1>
 
-      <p class="lede">A simple, open-source desktop tool for finding and updating NVIDIA DLSS files across your
+      <p class="lede" data-i18n="lede">A simple, open-source desktop tool for finding and updating NVIDIA DLSS files across your
         applications.</p>
 
       <div class="cta">
         <a class="file-download-link" href="https://github.com/itsyohanes/dlss-updater-dotnet/releases/latest"
           target="_blank" rel="noopener noreferrer" data-umami-event="visit-external-link"
           data-umami-event-link="github-latest-release"><img class="external-icon" src="./assets/external-link.svg"
-            alt="">Download from GitHub</a>
+            alt=""><span data-i18n="download">Download from GitHub</span></a>
         <a class="source-link" href="https://github.com/itsyohanes/dlss-updater-dotnet" target="_blank"
           rel="noopener noreferrer" data-umami-event="visit-external-link"
-          data-umami-event-link="github-source-code-hero">View the source &rarr;</a>
+          data-umami-event-link="github-source-code-hero" data-i18n="source">View the source &rarr;</a>
       </div>
 
-      <p class="meta"><span>Version 1.2.7</span><span>291 KB</span><span>Windows 10 &amp; 11</span><span>Portable</span><span>Free, MIT licence</span></p>
+      <p class="meta"><span><span data-i18n="version">Version</span> 1.2.7</span><span>291 KB</span><span data-i18n="windows">Windows 10 &amp; 11</span><span data-i18n="portable">Portable</span><span data-i18n="licence">Free, MIT licence</span></p>
 
       <!-- ?v= is the first 8 characters of `git hash-object docs/assets/app-demo.svg`.
            Update it whenever the demo changes so browsers fetch the new file. -->
-      <img src="./assets/app-demo.svg?v=e32a6bc5"
+      <img src="./assets/app-demo.svg?v=90047a59" data-demo
+        data-i18n-alt="demoAlt"
         alt="Animation of the DLSS Updater desktop app scanning Twinmotion 2026.2, updating its DLSS file and adding it to Your folders"
         class="screenshot hero-screenshot" width="736" height="688">
     </section>
@@ -91,25 +104,25 @@
     <section class="container column info faq-section" aria-labelledby="faq-title">
 
       <div class="faq" aria-labelledby="faq-title">
-        <h2 id="faq-title">FAQ</h2>
+        <h2 id="faq-title" data-i18n="faq">FAQ</h2>
 
         <details class="faq-item">
-          <summary>What are DLSS files?</summary>
-          <p>DLSS files are NVIDIA libraries used by supported applications for features such as AI upscaling, frame
+          <summary data-i18n="whatQ">What are DLSS files?</summary>
+          <p data-i18n="whatA">DLSS files are NVIDIA libraries used by supported applications for features such as AI upscaling, frame
             generation, and ray reconstruction. Files like <code>nvngx_dlss.dll</code>, <code>nvngx_dlssg.dll</code>, and <code>nvngx_dlssd.dll</code>
             are typically bundled with applications and can be updated to access newer versions of these features,
             potentially improving image quality, performance, or compatibility.</p>
         </details>
 
         <details class="faq-item">
-          <summary>How does DLSS Updater work?</summary>
-          <p>It scans a selected folder, detects DLSS files, and updates them when newer versions are
+          <summary data-i18n="howQ">How does DLSS Updater work?</summary>
+          <p data-i18n="howA">It scans a selected folder, detects DLSS files, and updates them when newer versions are
             available.</p>
         </details>
 
         <details class="faq-item">
-          <summary>Where do the DLSS files come from?</summary>
-          <p>
+          <summary data-i18n="filesSourceQ">Where do the DLSS files come from?</summary>
+          <p data-i18n="filesSourceA">
             DLSS files are now served from the
             <a href="https://github.com/itsyohanes/dlss-updater-dotnet/releases/tag/dlss-files" target="_blank"
               rel="noopener noreferrer" data-umami-event="visit-external-link"
@@ -122,8 +135,8 @@
         </details>
 
         <details class="faq-item">
-          <summary>“But you can swap DLSS files with the NVIDIA App now, why do I need this?”</summary>
-          <p>DLSS Updater exists for people who don't want a ~170 MB application and its background processes
+          <summary data-i18n="nvidiaAppQ">“But you can swap DLSS files with the NVIDIA App now, why do I need this?”</summary>
+          <p data-i18n="nvidiaAppA">DLSS Updater exists for people who don't want a ~170 MB application and its background processes
             just to manage a few DLSS files. It's a small tool that does one job and then gets out of the way. I'm not a
             fan of software accumulating features until a simple utility turns into an entire platform. Not everything
             needs to be bundled into an app that manages your apps, runs in the background, collects usage data, and
@@ -132,20 +145,20 @@
         </details>
 
         <details class="faq-item">
-          <summary>Why choose this over DLSS Swapper or other similar apps?</summary>
-          <p>Other apps offer more features, but DLSS Updater focuses on simplicity. It's a lightweight,
+          <summary data-i18n="swapperQ">Why choose this over DLSS Swapper or other similar apps?</summary>
+          <p data-i18n="swapperA">Other apps offer more features, but DLSS Updater focuses on simplicity. It's a lightweight,
             no-setup tool that quickly scans your application folders and updates DLSS files without extra integrations
             or background processes.</p>
         </details>
 
         <details class="faq-item">
-          <summary>Does it require installation?</summary>
-          <p>No. DLSS Updater is a portable tool and can be run directly from a folder or USB drive.</p>
+          <summary data-i18n="installQ">Does it require installation?</summary>
+          <p data-i18n="installA">No. DLSS Updater is a portable tool and can be run directly from a folder or USB drive.</p>
         </details>
 
         <details class="faq-item">
-          <summary>How do I uninstall DLSS Updater?</summary>
-          <p>DLSS Updater is portable, so there's nothing to uninstall. It doesn't install services, run background
+          <summary data-i18n="uninstallQ">How do I uninstall DLSS Updater?</summary>
+          <p data-i18n="uninstallA">DLSS Updater is portable, so there's nothing to uninstall. It doesn't install services, run background
             processes, or make permanent system changes. To remove it, optionally choose
             <strong>File &gt; Delete all backups</strong> to delete the <code>.dubackup.zip</code> backups it made beside
             your DLSS files, then choose <strong>File &gt; Remove cached files and settings</strong>, which deletes
@@ -153,27 +166,28 @@
         </details>
 
         <details class="faq-item">
-          <summary>How large is the download?</summary>
-          <p>The executable is around 291 KB, or around 122 KB as a ZIP. Additional space will be used when downloading updated DLSS files.</p>
+          <summary data-i18n="sizeQ">How large is the download?</summary>
+          <!-- Translations take the sizes from data-exe and data-zip, so update those with the text. -->
+          <p data-i18n="sizeA" data-exe="291 KB" data-zip="122 KB">The executable is around 291 KB, or around 122 KB as a ZIP. Additional space will be used when downloading updated DLSS files.</p>
         </details>
 
         <details class="faq-item">
-          <summary>What languages does it support?</summary>
-          <p>DLSS Updater is available in English, German, French, Spanish, Italian, Polish, Ukrainian, Simplified
-            Chinese, Russian, Japanese, Korean, Czech, Dutch, and Portuguese. It uses your system language by default
+          <summary data-i18n="languagesQ">What languages does it support?</summary>
+          <p data-i18n="languagesA">DLSS Updater is available in English, German, French, Spanish, Italian, Polish, Ukrainian,
+            Simplified Chinese, Russian, Japanese, Korean, Czech, Dutch, Portuguese, Indonesian, and Thai. It uses your system language by default
             when supported, and you can change it at any time from the Language menu.</p>
         </details>
 
         <details class="faq-item">
-          <summary>Can updating DLSS files break my applications?</summary>
-          <p>Yes. Newer DLSS versions aren't guaranteed to work correctly with every application. Updating files can
+          <summary data-i18n="breakAppsQ">Can updating DLSS files break my applications?</summary>
+          <p data-i18n="breakAppsA">Yes. Newer DLSS versions aren't guaranteed to work correctly with every application. Updating files can
             cause compatibility issues, visual glitches, or crashes. Back up your original files before updating so you
             can restore them if necessary.</p>
         </details>
 
         <details class="faq-item">
-          <summary>Why did my antivirus flag DLSS Updater?</summary>
-          <p>Some antivirus software may flag the tool because downloading and replacing files can resemble behaviour
+          <summary data-i18n="antivirusQ">Why did my antivirus flag DLSS Updater?</summary>
+          <p data-i18n="antivirusA">Some antivirus software may flag the tool because downloading and replacing files can resemble behaviour
             associated with malware. This can trigger heuristic detections, particularly in small utilities distributed
             as standalone executables. DLSS Updater is open source, so you can inspect its code. To reduce the risk of
             downloading a modified or malicious copy, obtain it from the official project source and review any
@@ -181,8 +195,8 @@
         </details>
 
         <details class="faq-item">
-          <summary>Why was the original repository unavailable for so long?</summary>
-          <p>
+          <summary data-i18n="dmcaQ">Why was the original repository unavailable for so long?</summary>
+          <p data-i18n="dmcaA">
             The original Python repository was taken down following a DMCA notice filed by the owner of
             Recol/DLSS-Updater. I believe the notice abused the DMCA process and kept the repository offline for far too
             long. GitHub has since reinstated the <a href="https://github.com/itsyohanes/dlss-updater"
@@ -193,8 +207,8 @@
         </details>
 
         <details class="faq-item">
-          <summary>What happened to the Python version?</summary>
-          <p>
+          <summary data-i18n="pythonQ">What happened to the Python version?</summary>
+          <p data-i18n="pythonA">
             The Python version is now a legacy release, and development has moved to C#. You can still find the Python
             version's
             <a href="https://github.com/itsyohanes/dlss-updater" target="_blank" rel="noopener noreferrer" 
@@ -207,8 +221,8 @@
         </details>
 
         <details class="faq-item">
-          <summary>Where can I find the source code?</summary>
-          <p>
+          <summary data-i18n="sourceCodeQ">Where can I find the source code?</summary>
+          <p data-i18n="sourceCodeA">
             The current .NET version's source code is available in the
             <a href="https://github.com/itsyohanes/dlss-updater-dotnet" target="_blank"
               rel="noopener noreferrer"  data-umami-event="visit-external-link" data-umami-event-link="github-source-code">DLSS Updater .NET GitHub repository</a>.
@@ -217,27 +231,27 @@
       </div>
 
       <section class="version-info" aria-labelledby="version-title">
-        <h2 id="version-title">DLSS Version Support</h2>
+        <h2 id="version-title" data-i18n="versionSupport">DLSS Version Support</h2>
 
         <div>
-          <p class="filename">Super Resolution</p>
+          <p class="filename" data-i18n="superResolution">Super Resolution</p>
           <p class="dllname">nvngx_dlss.dll</p>
           <p class="fileversion">310.9.16</p>
-          <p class="fileadded">Added November 24, 2026</p>
+          <p class="fileadded" data-i18n="added" data-date="2026-11-24">Added November 24, 2026</p>
         </div>
 
         <div>
-          <p class="filename">Ray Reconstruction</p>
+          <p class="filename" data-i18n="rayReconstruction">Ray Reconstruction</p>
           <p class="dllname">nvngx_dlssd.dll</p>
           <p class="fileversion">310.9.16</p>
-          <p class="fileadded">Added November 24, 2026</p>
+          <p class="fileadded" data-i18n="added" data-date="2026-11-24">Added November 24, 2026</p>
         </div>
 
         <div>
-          <p class="filename">Frame Generation</p>
+          <p class="filename" data-i18n="frameGeneration">Frame Generation</p>
           <p class="dllname">nvngx_dlssg.dll</p>
           <p class="fileversion">310.9.16</p>
-          <p class="fileadded">Added November 24, 2026</p>
+          <p class="fileadded" data-i18n="added" data-date="2026-11-24">Added November 24, 2026</p>
         </div>
       </section>
     </section>
@@ -249,9 +263,9 @@
       <a href="https://github.com/itsyohanes/dlss-updater-dotnet" target="_blank" rel="noopener noreferrer">GitHub</a>
       <span aria-hidden="true">·</span>
       <a href="https://github.com/itsyohanes/dlss-updater-dotnet/releases" target="_blank"
-        rel="noopener noreferrer">Releases</a>
+        rel="noopener noreferrer" data-i18n="releases">Releases</a>
       <span aria-hidden="true">·</span>
-      <a href="./dmca/">DMCA response</a>
+      <a href="./dmca/" data-i18n="dmcaResponse">DMCA response</a>
     </p>
   </footer>
 
